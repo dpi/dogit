@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace dogit\Commands\Traits;
 
+use dogit\Flysystem2Storage;
 use GuzzleHttp\Client as GuzzleClient;
 use GuzzleHttp\Cookie\CookieJar;
 use GuzzleHttp\Cookie\SetCookie;
@@ -13,7 +14,6 @@ use GuzzleHttp\Middleware;
 use Http\Adapter\Guzzle7\Client;
 use Http\Discovery\Psr17FactoryDiscovery;
 use Kevinrob\GuzzleCache\CacheMiddleware;
-use Kevinrob\GuzzleCache\Storage\Flysystem2Storage;
 use Kevinrob\GuzzleCache\Strategy\PrivateCacheStrategy;
 use League\Flysystem\Local\LocalFilesystemAdapter;
 use Psr\Log\LoggerInterface;

@@ -1,0 +1,168 @@
+{
+  "taxonomy_vocabulary_9": [
+    {
+      "uri": "https:\/\/www.drupal.org\/api-d7\/taxonomy_term\/179939",
+      "id": "179939",
+      "resource": "taxonomy_term"
+    },
+    {
+      "uri": "https:\/\/www.drupal.org\/api-d7\/taxonomy_term\/33114",
+      "id": "33114",
+      "resource": "taxonomy_term"
+    }
+  ],
+  "body": {
+    "value": "\u003Ch3 id=\u0022summary-problem-motivation\u0022\u003EProblem\/Motivation\u003C\/h3\u003E\n\u003Cp\u003EAt the moment there is no generic revision UI, this means that every module with revisionable entities will need to create their own UI similar to the Node revision overview page (node\/{node_id}\/revisions. This means quite a bit of boilerplate code, especially for modules with multiply revisionable entities.\u003C\/p\u003E\n\u003Ch3 id=\u0022summary-proposed-resolution\u0022\u003EProposed resolution\u003C\/h3\u003E\n\u003Cp\u003ECreate a route provider for generating revision list, revision revert form, revision delete form based derived from link templates.\u003C\/p\u003E\n\u003Ch3 id=\u0022summary-remaining-tasks\u0022\u003ERemaining tasks\u003C\/h3\u003E\n\u003Cli\u003EDecide if we want to improve this in core\u003C\/li\u003E\n\u003Cli\u003ECreate a plan\u003C\/li\u003E\n\u003Cli\u003EImplement the plan\u003C\/li\u003E\n\u003Ch3\u003EDirection\/decisions\u003C\/h3\u003E\n\u003Cp\u003EItems needing discussion\u003C\/p\u003E\n\u003Cul\u003E\n\u003Cli\u003E\u2705Whether to continue blocking this issue on \u003Cspan class=\u0022project-issue-issue-link project-issue-status-info project-issue-status-13\u0022\u003E\u003Ca href=\u0022\/project\/drupal\/issues\/3043321\u0022 title=\u0022Status: Needs work\u0022\u003E#3043321: Use generic access API for node and media revision UI\u003C\/a\u003E\u003C\/span\u003E, an access checker will be added and immediately deprecated.\u003C\/li\u003E\n\u003Cli\u003E\u274cWhether Node should use this in this issue.\u003C\/li\u003E\n\u003Cli\u003E\u2705Whether we should generate local tasks, or if entities should add their own.\u003C\/li\u003E\n\u003Cli\u003E\u003Cem\u003ERevert\u003C\/em\u003E terminology updated to be agnostic of target revision\u0027 time.\u003C\/li\u003E\n\u003Cli\u003EShould we adopt \u003Cem\u003EVersion\u003C\/em\u003E terminology (per patch)?\u003C\/li\u003E\n\u003C\/ul\u003E\n\u003Ch3\u003EBlockers\u003C\/h3\u003E\n\u003Cul\u003E\n\u003Cli\u003E\u003Cdel\u003E\u003Cspan class=\u0022project-issue-issue-link project-issue-status-info project-issue-status-7\u0022\u003E\u003Ca href=\u0022\/project\/drupal\/issues\/2927077\u0022 title=\u0022Status: Closed (fixed)\u0022\u003E#2927077: $entity-\u0026gt;toUrl(\u0027revision-*\u0027) should fill revision parameter on all applicable routes.\u003C\/a\u003E\u003C\/span\u003E per 45, 59, others.\u003C\/del\u003E\u003C\/li\u003E\n\u003Cli\u003E\u003Cspan class=\u0022project-issue-issue-link project-issue-status-info project-issue-status-13\u0022\u003E\u003Ca href=\u0022\/project\/drupal\/issues\/3043321\u0022 title=\u0022Status: Needs work\u0022\u003E#3043321: Use generic access API for node and media revision UI\u003C\/a\u003E\u003C\/span\u003E per 67.\u003C\/li\u003E\n\u003C\/ul\u003E\n\u003Cp\u003EPatch to date for this issue relies on patches in these.\u003C\/p\u003E\n\u003Ch3 id=\u0022summary-ui-changes\u0022\u003EUser interface changes\u003C\/h3\u003E\n\u003Cp\u003ENew opt-in UI based on features already established by Node.\u003C\/p\u003E\n\u003Ch3 id=\u0022summary-api-changes\u0022\u003EAPI changes\u003C\/h3\u003E\n\u003Cp\u003ENone\u003C\/p\u003E\n\u003Ch3 id=\u0022summary-data-model-changes\u0022\u003EData model changes\u003C\/h3\u003E\n\u003Cp\u003ENone.\u003C\/p\u003E\n\u003Ch3 id=\u0022summary-release-notes\u0022\u003ERelease notes snippet\u003C\/h3\u003E",
+    "summary": "",
+    "format": "1"
+  },
+  "field_issue_status": "8",
+  "field_issue_priority": "200",
+  "field_issue_category": "3",
+  "field_issue_component": "entity system",
+  "field_project": {
+    "uri": "https:\/\/www.drupal.org\/api-d7\/node\/3060",
+    "id": "3060",
+    "resource": "node",
+    "machine_name": "drupal"
+  },
+  "field_issue_files": [
+    {
+      "file": {
+        "uri": "https:\/\/www.drupal.org\/api-d7\/file\/22220001",
+        "id": "22220001",
+        "resource": "file",
+        "cid": "13370001"
+      },
+      "display": "0"
+    },
+    {
+      "file": {
+        "uri": "https:\/\/www.drupal.org\/api-d7\/file\/22220002",
+        "id": "22220002",
+        "resource": "file",
+        "cid": "13370005"
+      },
+      "display": "0"
+    },
+    {
+      "file": {
+        "uri": "https:\/\/www.drupal.org\/api-d7\/file\/22220003",
+        "id": "22220003",
+        "resource": "file",
+        "cid": "13370007"
+      },
+      "display": "0"
+    },
+    {
+      "file": {
+        "uri": "https:\/\/www.drupal.org\/api-d7\/file\/22220004",
+        "id": "22220004",
+        "resource": "file",
+        "cid": "13370007"
+      },
+      "display": "0"
+    }
+  ],
+  "field_issue_related": [
+    {
+      "uri": "https:\/\/www.drupal.org\/api-d7\/node\/2452523",
+      "id": "2452523",
+      "resource": "node"
+    }
+  ],
+  "field_issue_version": "9.3.x-dev",
+  "field_issue_credit": [
+    {
+      "uri": "https:\/\/www.drupal.org\/api-d7\/comment\/12422790",
+      "id": "12422790",
+      "resource": "comment"
+    },
+    {
+      "uri": "https:\/\/www.drupal.org\/api-d7\/comment\/12587774",
+      "id": "12587774",
+      "resource": "comment"
+    }
+  ],
+  "field_issue_last_status_change": "1623906919",
+  "flag_project_issue_follow_user": {
+    "0": {
+      "uri": "https:\/\/www.drupal.org\/api-d7\/user\/3217695",
+      "id": 3217695,
+      "resource": "user"
+    }
+  },
+  "nid": "2350939",
+  "vid": "12323596",
+  "is_new": false,
+  "type": "project_issue",
+  "title": "[PP-1] Implement a generic revision UI",
+  "language": "und",
+  "url": "https:\/\/www.drupal.org\/project\/drupal\/issues\/2350939",
+  "edit_url": "https:\/\/www.drupal.org\/node\/2350939\/edit",
+  "status": "1",
+  "promote": "0",
+  "sticky": "0",
+  "created": "1412524021",
+  "changed": "1623906919",
+  "author": {
+    "uri": "https:\/\/www.drupal.org\/api-d7\/user\/1957356",
+    "id": "1957356",
+    "resource": "user"
+  },
+  "log": "",
+  "revision": null,
+  "book_ancestors": [],
+  "comment": "2",
+  "comments": [
+    {
+      "uri": "https:\/\/www.drupal.org\/api-d7\/comment\/13370001",
+      "id": 13370001,
+      "resource": "comment"
+    },
+    {
+      "uri": "https:\/\/www.drupal.org\/api-d7\/comment\/13370002",
+      "id": 13370002,
+      "resource": "comment"
+    },
+    {
+      "uri": "https:\/\/www.drupal.org\/api-d7\/comment\/13370003",
+      "id": 13370003,
+      "resource": "comment"
+    },
+    {
+      "uri": "https:\/\/www.drupal.org\/api-d7\/comment\/13370004",
+      "id": 13370004,
+      "resource": "comment"
+    },
+    {
+      "uri": "https:\/\/www.drupal.org\/api-d7\/comment\/13370005",
+      "id": 13370005,
+      "resource": "comment"
+    },
+    {
+      "uri": "https:\/\/www.drupal.org\/api-d7\/comment\/13370006",
+      "id": 13370006,
+      "resource": "comment"
+    },
+    {
+      "uri": "https:\/\/www.drupal.org\/api-d7\/comment\/13370007",
+      "id": 13370007,
+      "resource": "comment"
+    },
+    {
+      "uri": "https:\/\/www.drupal.org\/api-d7\/comment\/13370008",
+      "id": 13370008,
+      "resource": "comment"
+    }
+  ],
+  "comment_count": "182",
+  "comment_count_new": "8",
+  "feeds_item_guid": null,
+  "feeds_item_url": null,
+  "feed_nid": null,
+  "flag_flag_tracker_follow_user": [],
+  "flag_tracker_follower_count": "143",
+  "has_new_content": " \u003Cspan class=\u0022marker\u0022\u003Eupdated\u003C\/span\u003E",
+  "last_comment_timestamp": "1623906919"
+}

@@ -1,0 +1,43 @@
+<?php
+
+declare(strict_types=1);
+
+namespace dogit\DrupalOrg\IssueGraph\Events;
+
+use dogit\DrupalOrg\Objects\DrupalOrgComment;
+
+final class AssignmentChangeEvent implements IssueEventInterface
+{
+    use IssueEventTrait;
+
+    /**
+     * From account name.
+     */
+    protected string $from;
+
+    /**
+     * To account name.
+     */
+    protected string $to;
+
+    public function __construct(protected DrupalOrgComment $comment, string $from, string $to)
+    {
+        $this->from = trim($from, " \t\n\r\0\x0B»");
+        $this->to = trim($to, " \t\n\r\0\x0B»");
+    }
+
+    public function from(): string
+    {
+        return $this->from;
+    }
+
+    public function to(): string
+    {
+        return $this->to;
+    }
+
+    public function __toString(): string
+    {
+        return sprintf('Assignment change from %s to %s', $this->from(), $this->to());
+    }
+}

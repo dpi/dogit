@@ -1,0 +1,36 @@
+{
+  "comment_body": {
+    "value": "Comment text",
+    "format": "1"
+  },
+  "field_attribute_contribution_to": [],
+  "field_for_customer": [],
+  "field_attribute_as_volunteer": [],
+  "cid": "13370001",
+  "name": "larowlan",
+  "homepage": "",
+  "subject": "",
+  "url": "https:\/\/www.drupal.org\/project\/drupal\/issues\/2350939#comment-13370001",
+  "edit_url": "https:\/\/www.drupal.org\/comment\/edit\/13370001",
+  "created": "1400010000",
+  "node": {
+    "uri": "https:\/\/www.drupal.org\/api-d7\/node\/2350939",
+    "id": "2350939",
+    "resource": "node"
+  },
+  "author": {
+    "uri": "https:\/\/www.drupal.org\/api-d7\/user\/395439",
+    "id": "395439",
+    "resource": "user"
+  },
+  "feeds_item_guid": null,
+  "feeds_item_url": null,
+  "feed_nid": null,
+  "comment_files": [
+    {
+      "id": "22220001",
+      "url": "https:\/\/www.drupal.org\/files\/issues\/alpha.patch",
+      "filename": "alpha.patch"
+    }
+  ]
+}

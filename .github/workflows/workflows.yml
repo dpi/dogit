@@ -1,0 +1,54 @@
+name: DOGIT
+on: [push]
+jobs:
+  code-style:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: "shivammathur/setup-php@v2"
+        with:
+          php-version: "8.0"
+        env:
+          COMPOSER_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: "Install dependencies"
+        uses: "ramsey/composer-install@v1"
+      - name: "Run PHP CS Fixer"
+        run: |
+          ./vendor/bin/php-cs-fixer --allow-risky=yes --dry-run fix
+
+  static-analysis:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: "shivammathur/setup-php@v2"
+        with:
+          php-version: "8.0"
+        env:
+          COMPOSER_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: "Install dependencies"
+        uses: "ramsey/composer-install@v1"
+      - name: "Run PHPStan"
+        run: |
+          ./vendor/bin/phpstan analyse --no-progress
+
+  tests:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: "shivammathur/setup-php@v2"
+        with:
+          php-version: "8.0"
+        env:
+          COMPOSER_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: "Install dependencies"
+        uses: "ramsey/composer-install@v1"
+      - name: "Prepare for tests"
+        run: "mkdir -p build/logs"
+      - name: "Run tests"
+        run: |
+          ./vendor/bin/phpunit
+      - name: "Publish coverage report to Codecov"
+        uses: "codecov/codecov-action@v1"
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          files: build/logs/clover.xml

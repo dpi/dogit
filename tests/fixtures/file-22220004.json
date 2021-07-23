@@ -1,0 +1,16 @@
+{
+  "fid": "22220004",
+  "name": "delta.jpg",
+  "mime": "image/jpeg",
+  "size": "13337",
+  "url": "https:\/\/www.drupal.org\/files\/issues\/delta.jpg",
+  "timestamp": "1428704703",
+  "owner": {
+    "uri": "https:\/\/www.drupal.org\/api-d7\/user\/395439",
+    "id": "395439",
+    "resource": "user"
+  },
+  "feeds_item_guid": null,
+  "feeds_item_url": null,
+  "feed_nid": null
+}

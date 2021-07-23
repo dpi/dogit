@@ -1,5 +1,8 @@
 # doGit
 
+![Codecov](https://img.shields.io/codecov/c/github/dpi/dogit)
+![GitHub](https://img.shields.io/github/license/dpi/dogit)
+![GitHub branch checks state](https://img.shields.io/github/checks-status/dpi/dogit/1.x)
 
 _[Drupal.org](https://www.drupal.org/) + Git CLI application._
 

@@ -3,11 +3,13 @@
 
 require __DIR__.'/../vendor/autoload.php';
 
+use dogit\Commands\GitCommand;
 use dogit\Commands\IssueTimelineCommand;
 use Symfony\Component\Console\Application;
 
 $application = new Application();
 
+$application->add(new GitCommand());
 $application->add(new IssueTimelineCommand());
 
 $application->run();

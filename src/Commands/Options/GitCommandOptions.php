@@ -55,7 +55,7 @@ final class GitCommandOptions
         // @phpstan-ignore-next-line
         $instance->excludeComments = $input->getOption(static::OPTION_EXCLUDE);
         // @phpstan-ignore-next-line
-        $instance->gitDirectory = (string) $input->getArgument(static::ARGUMENT_WORKING_DIRECTORY) ?? getcwd();
+        $instance->gitDirectory = (string) ($input->getArgument(static::ARGUMENT_WORKING_DIRECTORY) ?? getcwd());
 
         $nid = $input->getArgument(static::ARGUMENT_ISSUE_ID);
 

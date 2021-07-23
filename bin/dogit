@@ -3,6 +3,7 @@
 
 require __DIR__.'/../vendor/autoload.php';
 
+use dogit\Commands\IssueClone;
 use dogit\Commands\GitCommand;
 use dogit\Commands\IssueTimelineCommand;
 use Symfony\Component\Console\Application;
@@ -10,6 +11,7 @@ use Symfony\Component\Console\Application;
 $application = new Application();
 
 $application->add(new GitCommand());
+$application->add(new IssueClone());
 $application->add(new IssueTimelineCommand());
 
 $application->run();

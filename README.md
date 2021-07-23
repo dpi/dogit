@@ -22,6 +22,6 @@ Various commands are included:
  - **Clone** a project, as `dogit project:clone PROJECT`.
  - **Show** an issue timeline, as `dogit issue:timeline ISSUE-ID`.
 
-Start with `dogit list` or `dogit COMMAND --help`
+Start with the [wiki](https://github.com/dpi/dogit/wiki), or run `dogit list` or `dogit COMMAND --help`
  
 _Drupal is a registered trademark of Dries Buytaert._

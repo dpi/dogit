@@ -5,7 +5,7 @@
 require __DIR__ . '/../vendor/autoload.php';
 
 use dogit\Commands\CloneProjectMergeRequest;
-use dogit\Commands\IssueClone;
+use dogit\Commands\IssueMergeRequest;
 use dogit\Commands\ProjectCloneCommand;
 use dogit\Commands\GitCommand;
 use dogit\Commands\IssueTimelineCommand;
@@ -15,7 +15,7 @@ $application = new Application();
 
 $application->add(new CloneProjectMergeRequest());
 $application->add(new GitCommand());
-$application->add(new IssueClone());
+$application->add(new IssueMergeRequest());
 $application->add(new IssueTimelineCommand());
 $application->add(new ProjectCloneCommand());
 

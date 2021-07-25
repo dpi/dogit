@@ -6,11 +6,12 @@ namespace dogit\Commands\Options;
 
 use Symfony\Component\Console\Input\InputInterface;
 
-final class IssueCloneOptions
+final class IssueMergeRequestOptions
 {
     public const ARGUMENT_DIRECTORY = 'directory';
     public const ARGUMENT_ISSUE_ID = 'issue-id';
     public const OPTION_COOKIE = 'cookie';
+    public const OPTION_HTTP = 'http';
     public const OPTION_SINGLE = 'single';
     public const OPTION_NO_CACHE = 'no-cache';
 
@@ -19,6 +20,7 @@ final class IssueCloneOptions
      */
     public array $cookies;
     public string $directory;
+    public bool $isHttp;
     public int $nid;
     public bool $noHttpCache;
     public bool $single;
@@ -30,6 +32,8 @@ final class IssueCloneOptions
         $instance->cookies = $input->getOption(static::OPTION_COOKIE);
         // @phpstan-ignore-next-line
         $instance->directory = (string) $input->getArgument(static::ARGUMENT_DIRECTORY);
+        // @phpstan-ignore-next-line
+        $instance->isHttp = $input->getOption(static::OPTION_HTTP);
 
         $nid = $input->getArgument(static::ARGUMENT_ISSUE_ID);
         // @phpstan-ignore-next-line

@@ -30,7 +30,7 @@ final class IssueMergeRequestTest extends TestCase
     /**
      * @covers ::execute
      */
-    public function testCommand(): void
+    public function testCommandX(): void
     {
         $testRepoDir = '/tmp/dogit-testing/fakedir';
 
@@ -58,8 +58,7 @@ final class IssueMergeRequestTest extends TestCase
         $command->handlerStack()->push(new DogitGuzzleTestMiddleware());
         $tester = new CommandTester($command);
         $tester->setInputs([
-            '',
-            'Merge request !9: 3073549-increase-visibility-of from comment #5',
+            '333',
         ]);
         $result = $tester->execute([
             IssueMergeRequestOptions::ARGUMENT_ISSUE_ID => '11110003',
@@ -73,8 +72,7 @@ final class IssueMergeRequestTest extends TestCase
         
          Please select merge request to checkout [Merge request !333: my-cool-branch-name from comment #9]:
           [333] Merge request !333: my-cool-branch-name from comment #9
-         > 
-        
+         > 3[K3[K3[K\n
          ! [NOTE] Checking out merge request !333: my-cool-branch-name from comment #9 into directory /tmp/dogit-testing/fakedir
         
          ! [NOTE] Interpreting directory `/tmp/dogit-testing/fakedir` as not a Git repository, cloning...                       
@@ -115,7 +113,7 @@ final class IssueMergeRequestTest extends TestCase
                 $this->returnValue(['git@github.com:test-bar/remote.git']),
                 [],
                 [],
-                ["Branch 'dasds' set up to track remote branch '3073549-increase-visibility-of' from 'scheduled_transitions-3073549'."]
+                ["Branch 'my-cool-branch-name' set up to track remote branch 'my-cool-branch-name' from 'drupal-11110003/my-cool-branch-name'."]
             );
 
         $repo->expects($this->once())
@@ -146,8 +144,7 @@ final class IssueMergeRequestTest extends TestCase
         $command->handlerStack()->push(new DogitGuzzleTestMiddleware());
         $tester = new CommandTester($command);
         $tester->setInputs([
-            '',
-            'Merge request !9: 3073549-increase-visibility-of from comment #5',
+            '333',
         ]);
         $result = $tester->execute([
             IssueMergeRequestOptions::ARGUMENT_ISSUE_ID => '11110003',
@@ -161,8 +158,7 @@ final class IssueMergeRequestTest extends TestCase
         
          Please select merge request to checkout [Merge request !333: my-cool-branch-name from comment #9]:
           [333] Merge request !333: my-cool-branch-name from comment #9
-         > 
-        
+         > 3[K3[K3[K\n
          ! [NOTE] Checking out merge request !333: my-cool-branch-name from comment #9 into directory /tmp/dogit-testing/fakedir
         
          ! [NOTE] Directory `/tmp/dogit-testing/fakedir` looks like an existing Git repository.                                 

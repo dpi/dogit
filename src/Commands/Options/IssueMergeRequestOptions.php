@@ -31,7 +31,7 @@ final class IssueMergeRequestOptions
         // @phpstan-ignore-next-line
         $instance->cookies = $input->getOption(static::OPTION_COOKIE);
         // @phpstan-ignore-next-line
-        $instance->directory = (string) $input->getArgument(static::ARGUMENT_DIRECTORY);
+        $instance->directory = (string) ($input->getArgument(static::ARGUMENT_DIRECTORY) ?? \getcwd());
         // @phpstan-ignore-next-line
         $instance->isHttp = $input->getOption(static::OPTION_HTTP);
 

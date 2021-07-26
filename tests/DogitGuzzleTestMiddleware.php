@@ -22,7 +22,16 @@ final class DogitGuzzleTestMiddleware
         return function (RequestInterface $request, array $options): PromiseInterface {
             $path = $request->getUri()->getPath();
 
-            if (str_contains($path, '/api-d7/node/')) {
+            if (str_contains($path, '/api-d7/node/11110003')) {
+                return new FulfilledPromise(
+                    new Response(200, [], TestUtilities::getFixture('issue-11110003.json')),
+                );
+            }
+            if (str_contains($path, '/api-d7/node/11110002')) {
+                return new FulfilledPromise(
+                    new Response(200, [], TestUtilities::getFixture('issue-11110002.json')),
+                );
+            } elseif (str_contains($path, '/api-d7/node/')) {
                 return new FulfilledPromise(
                     new Response(200, [], TestUtilities::getFixture('issue.json')),
                 );
@@ -49,6 +58,15 @@ final class DogitGuzzleTestMiddleware
             if (str_contains($path, '/project/drupal/issues/11110001')) {
                 return new FulfilledPromise(
                     new Response(200, [], TestUtilities::getFixture('issue-11110001.html')),
+                );
+            }
+            if (str_contains($path, '/project/drupal/issues/11110003')) {
+                return new FulfilledPromise(
+                    new Response(200, [], TestUtilities::getFixture('issue-11110003.html')),
+                );
+            } elseif (str_contains($path, '/project/drupal/issues/11110002')) {
+                return new FulfilledPromise(
+                    new Response(200, [], TestUtilities::getFixture('issue-11110002.html')),
                 );
             } elseif (str_contains($path, '/project/drupal/issues/')) {
                 return new FulfilledPromise(

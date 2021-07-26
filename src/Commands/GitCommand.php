@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace dogit\Commands;
 
+use CzProject\GitPhp\Git;
+use CzProject\GitPhp\IRunner;
 use dogit\Commands\Options\GitCommandOptions;
 use dogit\DrupalOrg\DrupalApi;
 use dogit\DrupalOrg\DrupalOrgObjectIterator;
@@ -18,6 +20,7 @@ use dogit\Events\GitCommand\GitBranchEvent;
 use dogit\Events\GitCommand\TerminateEvent;
 use dogit\Events\GitCommand\ValidateLocalRepositoryEvent;
 use dogit\Events\GitCommand\VersionEvent;
+use dogit\Git\CliRunner;
 use dogit\Git\GitOperator;
 use dogit\Listeners\GitCommand\Filter\ByConstraintOption;
 use dogit\Listeners\GitCommand\Filter\ByExcludedCommentOption;
@@ -145,7 +148,9 @@ final class GitCommand extends Command
             return static::FAILURE;
         }
         $logger->debug('Using directory {working_directory} for git repository.', ['working_directory' => $options->gitDirectory]);
-        $gitIo = GitOperator::fromDirectory($options->gitDirectory);
+
+        $git = $this->git(new CliRunner());
+        $gitIo = GitOperator::fromDirectory($git, $options->gitDirectory);
 
         $io->writeln('Validating local repository.');
         $event = new ValidateLocalRepositoryEvent($gitIo, $options->gitDirectory, $logger, $options);
@@ -220,5 +225,10 @@ final class GitCommand extends Command
         // can compute version for patches before the first explicit version
         // change.
         return Utility::ensureInitialVersionChange($issueEvents, $issue);
+    }
+
+    protected function git(IRunner $runner): Git
+    {
+        return new Git($runner);
     }
 }

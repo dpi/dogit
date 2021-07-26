@@ -6,6 +6,7 @@ namespace dogit\Commands;
 
 use CzProject\GitPhp\Git;
 use CzProject\GitPhp\GitException;
+use CzProject\GitPhp\IRunner;
 use dogit\Commands\Options\IssueMergeRequestOptions;
 use dogit\DrupalOrg\DrupalApi;
 use dogit\DrupalOrg\DrupalOrgObjectRepository;
@@ -25,18 +26,25 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 /**
  * Clones or checks out an existing Merge request for an issue.
  */
-final class IssueMergeRequest extends Command
+class IssueMergeRequest extends Command
 {
     use Traits\HttpTrait;
 
     protected static $defaultName = 'issue:clone';
+    protected Git $git;
+
+    public function __construct(IRunner $runner = null)
+    {
+        parent::__construct();
+        $this->git = $this->git($runner ?? new CliRunner());
+    }
 
     protected function configure(): void
     {
         $this
             ->setDescription('Interactively check out a MR for an issue.')
             ->addArgument(IssueMergeRequestOptions::ARGUMENT_ISSUE_ID, InputArgument::REQUIRED)
-            ->addArgument(IssueMergeRequestOptions::ARGUMENT_DIRECTORY, InputArgument::REQUIRED)
+            ->addArgument(IssueMergeRequestOptions::ARGUMENT_DIRECTORY, InputArgument::OPTIONAL, 'The repository directory.', '.')
             ->addOption(IssueMergeRequestOptions::OPTION_COOKIE, null, InputOption::VALUE_OPTIONAL | InputOption::VALUE_IS_ARRAY, 'Add cookies to HTTP requests.', [])
             ->addOption(IssueMergeRequestOptions::OPTION_HTTP, null, InputOption::VALUE_NONE, 'Use HTTP instead of SSH.')
             ->addOption(IssueMergeRequestOptions::OPTION_SINGLE, 's', InputOption::VALUE_NONE, '(no interaction) If there is only one merge request then check it out without prompting. If multiple merge requests are found then the command will quit.')
@@ -119,17 +127,14 @@ final class IssueMergeRequest extends Command
             $options->directory,
         ));
 
-        $runner = new CliRunner();
-        $git = new Git($runner);
-
         // If this is an existing repo.
         try {
-            $gitIo = GitOperator::fromDirectory($options->directory);
+            $gitIo = GitOperator::fromDirectory($this->git, $options->directory);
             $io->note('Directory `' . $options->directory . '` looks like an existing Git repository.');
-        } catch (GitException $e) {
+        } catch (GitException) {
             $io->note('Interpreting directory `' . $options->directory . '` as not a Git repository, cloning...');
 
-            $git->cloneRepository(
+            $this->git->cloneRepository(
                 $mergeRequestCreateEvent->getGitUrl(),
                 $options->directory,
                 [
@@ -148,11 +153,11 @@ final class IssueMergeRequest extends Command
             $branch = $io->ask(sprintf('Local branch with name `%s` already exists. Enter new branch name:', $branch), $branch);
         }
 
-        $remotes = $gitIo->execute('remote');
+        $remotes = $gitIo->getRemotes();
         $remoteUrls = [];
         foreach ($remotes as $remoteName) {
             $urls = array_fill_keys(
-                $gitIo->execute('remote', 'get-url', $remoteName),
+                $gitIo->getRemoteUrls($remoteName),
                 $remoteName,
             );
             $remoteUrls = array_merge($remoteUrls, $urls);
@@ -180,18 +185,23 @@ final class IssueMergeRequest extends Command
             }
 
             $io->note(sprintf('Setting up new remote: %s @ %s', $remoteName, $gitUrl));
-            $gitIo->execute('remote', 'add', $remoteName, $gitUrl);
+            $gitIo->addRemote($remoteName, $gitUrl);
         }
 
         $io->note(sprintf('Fetching remote: %s @ %s', $remoteName, $gitUrl));
-        $gitIo->execute('fetch', $remoteName);
+        $gitIo->fetchRemote($remoteName);
 
         // Check if the SSH or HTTP URL for the MR we want to check out is already a remote:
         $io->note(sprintf('Checking out branch: %s', $branch));
-        $gitIo->execute('checkout', '-b', "$branch", '--track', sprintf('%s/%s', $remoteName, $mergeRequestCreateEvent->getGitBranch()));
+        $gitIo->checkoutNewTrackCustom($branch, $remoteName, $mergeRequestCreateEvent->getGitBranch());
 
         $io->success('Done');
 
         return Command::SUCCESS;
+    }
+
+    protected function git(IRunner $runner): Git
+    {
+        return new Git($runner);
     }
 }

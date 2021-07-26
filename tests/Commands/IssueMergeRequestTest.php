@@ -20,7 +20,6 @@ use Symfony\Component\Console\Tester\CommandTester;
  */
 final class IssueMergeRequestTest extends TestCase
 {
-
     protected function setUp(): void
     {
         parent::setUp();
@@ -58,6 +57,10 @@ final class IssueMergeRequestTest extends TestCase
 
         $command->handlerStack()->push(new DogitGuzzleTestMiddleware());
         $tester = new CommandTester($command);
+        $tester->setInputs([
+            '',
+            'Merge request !9: 3073549-increase-visibility-of from comment #5',
+        ]);
         $result = $tester->execute([
             IssueMergeRequestOptions::ARGUMENT_ISSUE_ID => '11110003',
             IssueMergeRequestOptions::ARGUMENT_DIRECTORY => $testRepoDir,
@@ -71,6 +74,7 @@ final class IssueMergeRequestTest extends TestCase
          Please select merge request to checkout [Merge request !333: my-cool-branch-name from comment #9]:
           [333] Merge request !333: my-cool-branch-name from comment #9
          > 
+        
          ! [NOTE] Checking out merge request !333: my-cool-branch-name from comment #9 into directory /tmp/dogit-testing/fakedir
         
          ! [NOTE] Interpreting directory `/tmp/dogit-testing/fakedir` as not a Git repository, cloning...                       
@@ -141,7 +145,10 @@ final class IssueMergeRequestTest extends TestCase
 
         $command->handlerStack()->push(new DogitGuzzleTestMiddleware());
         $tester = new CommandTester($command);
-        $tester->setInputs([]);
+        $tester->setInputs([
+            '',
+            'Merge request !9: 3073549-increase-visibility-of from comment #5',
+        ]);
         $result = $tester->execute([
             IssueMergeRequestOptions::ARGUMENT_ISSUE_ID => '11110003',
             IssueMergeRequestOptions::ARGUMENT_DIRECTORY => $testRepoDir,
@@ -155,6 +162,7 @@ final class IssueMergeRequestTest extends TestCase
          Please select merge request to checkout [Merge request !333: my-cool-branch-name from comment #9]:
           [333] Merge request !333: my-cool-branch-name from comment #9
          > 
+        
          ! [NOTE] Checking out merge request !333: my-cool-branch-name from comment #9 into directory /tmp/dogit-testing/fakedir
         
          ! [NOTE] Directory `/tmp/dogit-testing/fakedir` looks like an existing Git repository.                                 

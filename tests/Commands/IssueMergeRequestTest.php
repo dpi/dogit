@@ -20,6 +20,14 @@ use Symfony\Component\Console\Tester\CommandTester;
  */
 final class IssueMergeRequestTest extends TestCase
 {
+
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        putenv('COLUMNS=120');
+    }
+
     /**
      * @covers ::execute
      */

@@ -66,21 +66,11 @@ final class IssueMergeRequestTest extends TestCase
         ]);
         $this->assertEquals(0, $result);
 
-        $this->assertEquals(<<<OUTPUT
-        
-         Issue #11110003 for drupal at Sun, 05 Oct 2014 15:47:01 +0000: Issue for testing with merge requests
-        
-         Please select merge request to checkout [Merge request !333: my-cool-branch-name from comment #9]:
-          [333] Merge request !333: my-cool-branch-name from comment #9
-         > 3[K3[K3[K\n
-         ! [NOTE] Checking out merge request !333: my-cool-branch-name from comment #9 into directory /tmp/dogit-testing/fakedir
-        
-         ! [NOTE] Interpreting directory `/tmp/dogit-testing/fakedir` as not a Git repository, cloning...                       
-        
-         [OK] Done                                                                                                              
-        
-
-        OUTPUT, $tester->getDisplay());
+        $this->assertStringContainsString('Issue #11110003 for drupal at Sun, 05 Oct 2014 15:47:01 +0000: Issue for testing with merge requests', $tester->getDisplay());
+        $this->assertStringContainsString('Please select merge request to checkout [Merge request !333: my-cool-branch-name from comment #9]:', $tester->getDisplay());
+        $this->assertStringContainsString('! [NOTE] Checking out merge request !333: my-cool-branch-name from comment #9 into directory /tmp/dogit-testing/fakedir', $tester->getDisplay());
+        $this->assertStringContainsString('! [NOTE] Interpreting directory `/tmp/dogit-testing/fakedir` as not a Git repository, cloning...', $tester->getDisplay());
+        $this->assertStringContainsString('[OK] Done', $tester->getDisplay());
     }
 
     /**
@@ -152,29 +142,15 @@ final class IssueMergeRequestTest extends TestCase
         ]);
         $this->assertEquals(0, $result);
 
-        $this->assertEquals(<<<OUTPUT
-        
-         Issue #11110003 for drupal at Sun, 05 Oct 2014 15:47:01 +0000: Issue for testing with merge requests
-        
-         Please select merge request to checkout [Merge request !333: my-cool-branch-name from comment #9]:
-          [333] Merge request !333: my-cool-branch-name from comment #9
-         > 3[K3[K3[K\n
-         ! [NOTE] Checking out merge request !333: my-cool-branch-name from comment #9 into directory /tmp/dogit-testing/fakedir
-        
-         ! [NOTE] Directory `/tmp/dogit-testing/fakedir` looks like an existing Git repository.                                 
-        
-         ! [NOTE] No existing HTTP remote for this merge request found.                                                         
-        
-         ! [NOTE] Setting up new remote: drupal-11110003 @ git@git.drupal.org:issue/drupal-11110003.git                         
-        
-         ! [NOTE] Fetching remote: drupal-11110003 @ git@git.drupal.org:issue/drupal-11110003.git                               
-        
-         ! [NOTE] Checking out branch: my-cool-branch-name                                                                      
-        
-         [OK] Done                                                                                                              
-        
-        
-        OUTPUT, $tester->getDisplay());
+        $this->assertStringContainsString('Issue #11110003 for drupal at Sun, 05 Oct 2014 15:47:01 +0000: Issue for testing with merge requests', $tester->getDisplay());
+        $this->assertStringContainsString('[333] Merge request !333: my-cool-branch-name from comment #9', $tester->getDisplay());
+        $this->assertStringContainsString('! [NOTE] Checking out merge request !333: my-cool-branch-name from comment #9 into directory /tmp/dogit-testing/fakedir', $tester->getDisplay());
+        $this->assertStringContainsString('! [NOTE] Directory `/tmp/dogit-testing/fakedir` looks like an existing Git repository.', $tester->getDisplay());
+        $this->assertStringContainsString('! [NOTE] No existing HTTP remote for this merge request found.', $tester->getDisplay());
+        $this->assertStringContainsString('! [NOTE] Setting up new remote: drupal-11110003 @ git@git.drupal.org:issue/drupal-11110003.git', $tester->getDisplay());
+        $this->assertStringContainsString('! [NOTE] Fetching remote: drupal-11110003 @ git@git.drupal.org:issue/drupal-11110003.git', $tester->getDisplay());
+        $this->assertStringContainsString('! [NOTE] Checking out branch: my-cool-branch-name', $tester->getDisplay());
+        $this->assertStringContainsString('[OK] Done', $tester->getDisplay());
     }
 
     /**

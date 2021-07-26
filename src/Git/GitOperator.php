@@ -7,7 +7,6 @@ namespace dogit\Git;
 use CzProject\GitPhp\Git;
 use CzProject\GitPhp\GitException;
 use CzProject\GitPhp\GitRepository;
-use dogit\Git\CliRunner as DogitCliRunner;
 
 final class GitOperator
 {
@@ -136,6 +135,43 @@ final class GitOperator
     }
 
     /**
+     * @return string[]
+     */
+    public function getRemotes(): array
+    {
+        return $this->gitRepository->execute('remote');
+    }
+
+    /**
+     * @return string[]
+     */
+    public function getRemoteUrls(string $remoteName): array
+    {
+        return $this->gitRepository->execute('remote', 'get-url', $remoteName);
+    }
+
+    public function addRemote(string $remoteName, string $gitUrl): void
+    {
+        $this->gitRepository->addRemote($remoteName, $gitUrl);
+    }
+
+    public function fetchRemote(string $remoteName): void
+    {
+        $this->gitRepository->fetch($remoteName);
+    }
+
+    public function checkoutNewTrackCustom(string $branch, string $remoteName, string $remoteBranch): void
+    {
+        $this->gitRepository->execute(
+            'checkout',
+            '-b',
+            $branch,
+            '--track',
+            sprintf('%s/%s', $remoteName, $remoteBranch),
+        );
+    }
+
+    /**
      * @param mixed ...$args
      *
      * @return string[]
@@ -158,10 +194,12 @@ final class GitOperator
         return $this->gitRepository->getRepositoryPath();
     }
 
-    public static function fromDirectory(string $directory): static
+    /**
+     * @throws \CzProject\GitPhp\GitException
+     */
+    public static function fromDirectory(Git $git, string $directory): static
     {
-        $runner = new DogitCliRunner();
-        $repo = (new Git($runner))->open($directory);
+        $repo = $git->open($directory);
 
         return new static($repo);
     }

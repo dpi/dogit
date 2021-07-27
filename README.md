@@ -1,8 +1,10 @@
 # doGit
 
-![Codecov](https://img.shields.io/codecov/c/github/dpi/dogit)
-![GitHub](https://img.shields.io/github/license/dpi/dogit)
-![GitHub branch checks state](https://img.shields.io/github/checks-status/dpi/dogit/1.x)
+[![Latest Stable Version](http://poser.pugx.org/dpi/dogit/v)](https://packagist.org/packages/dpi/dogit)
+[![Total Downloads](http://poser.pugx.org/dpi/dogit/downloads)](https://packagist.org/packages/dpi/dogit)
+[![Codecov](https://img.shields.io/codecov/c/github/dpi/dogit)][code-coverage]
+[![GitHub branch checks state](https://img.shields.io/github/checks-status/dpi/dogit/1.x)][ci]
+[![License](http://poser.pugx.org/dpi/dogit/license)](https://packagist.org/packages/dpi/dogit)
 
 _[Drupal.org](https://www.drupal.org/) + Git CLI application._
 
@@ -26,6 +28,8 @@ Start with the [wiki](https://github.com/dpi/dogit/wiki), or run `dogit list` or
  
 _Drupal is a registered trademark of Dries Buytaert._
 
+[ci]: https://github.com/dpi/dogit/actions
+[code-coverage]: https://app.codecov.io/gh/dpi/dogit
 [wiki-GitCommand]: https://github.com/dpi/dogit/wiki/Issue-Patches-to-Git-Branch-Command
 [wiki-CloneProjectMergeRequest]: https://github.com/dpi/dogit/wiki/Clone-Project-Merge-Request-Command
 [wiki-IssueMergeRequest]: https://github.com/dpi/dogit/wiki/Clone-Issue-Merge-Request-Command

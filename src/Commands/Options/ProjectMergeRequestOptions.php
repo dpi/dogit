@@ -6,11 +6,12 @@ namespace dogit\Commands\Options;
 
 use Symfony\Component\Console\Input\InputInterface;
 
-final class CloneProjectMergeRequestOptions
+final class ProjectMergeRequestOptions
 {
     public const ARGUMENT_DIRECTORY = 'directory';
     public const ARGUMENT_PROJECT = 'project';
     public const OPTION_ALL = 'all';
+    public const OPTION_BRANCH = 'branch';
     public const OPTION_HTTP = 'http';
     public const OPTION_ONLY_CLOSED = 'include-closed';
     public const OPTION_ONLY_MERGED = 'include-merged';
@@ -18,6 +19,7 @@ final class CloneProjectMergeRequestOptions
 
     public string $directory;
     public string $project;
+    public ?string $branchName;
     public bool $includeAll;
     public bool $isHttp;
     public bool $onlyClosed;
@@ -28,7 +30,8 @@ final class CloneProjectMergeRequestOptions
     {
         $instance = new static();
 
-        $instance->directory = $input->getArgument(static::ARGUMENT_DIRECTORY);
+        $instance->branchName = $input->getOption(static::OPTION_BRANCH);
+        $instance->directory = (string) ($input->getArgument(static::ARGUMENT_DIRECTORY) ?? \getcwd());
         $instance->project = $input->getArgument(static::ARGUMENT_PROJECT);
         $instance->isHttp = $input->getOption(static::OPTION_HTTP);
         $instance->includeAll = (bool) $input->getOption(static::OPTION_ALL);

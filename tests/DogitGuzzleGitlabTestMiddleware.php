@@ -34,32 +34,25 @@ final class DogitGuzzleGitlabTestMiddleware
                         'Content-Type' => 'application/json',
                     ], TestUtilities::getFixture('gitlab/project-foo_bar_baz.json')),
                 );
-            }
-
-            if ('/api/v4/projects/13371337/merge_requests' === $path) {
+            } elseif ('/api/v4/projects/13371337/merge_requests' === $path) {
                 return new FulfilledPromise(
                     new Response(200, [
                         'Content-Type' => 'application/json',
                     ], TestUtilities::getFixture('gitlab/merge_requests-foo_bar_baz.json')),
                 );
-            }
-
-            if ('/api/v4/projects/73253' === $path) {
+            } elseif ('/api/v4/projects/73253' === $path) {
                 return new FulfilledPromise(
                     new Response(200, [
                         'Content-Type' => 'application/json',
                     ], TestUtilities::getFixture('gitlab/project-mr.json')),
                 );
-            }
-            if ('/api/v4/projects/project%2Fnomrs' === $path) {
+            } elseif ('/api/v4/projects/project%2Fnomrs' === $path) {
                 return new FulfilledPromise(
                     new Response(200, [
                         'Content-Type' => 'application/json',
                     ], TestUtilities::getFixture('gitlab/project-nomrs.json')),
                 );
-            }
-
-            if ('/api/v4/projects/13371338/merge_requests' === $path) {
+            } elseif ('/api/v4/projects/13371338/merge_requests' === $path) {
                 return new FulfilledPromise(
                     new Response(200, [
                         'Content-Type' => 'application/json',

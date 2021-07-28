@@ -11,11 +11,13 @@ use dogit\Commands\Options\ProjectMergeRequestOptions as Options;
 use dogit\Git\CliRunner;
 use dogit\Git\GitOperator;
 use Gitlab\Api\MergeRequests;
-use Gitlab\Client;
+use Gitlab\Client as GitlabClient;
+use Gitlab\HttpClient\Builder;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
+use Symfony\Component\Console\Logger\ConsoleLogger;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
@@ -26,7 +28,7 @@ use Symfony\Component\Console\Style\SymfonyStyle;
  * which merge request to clone. By default, only open merge requests are
  * listed.
  */
-final class ProjectMergeRequest extends Command
+class ProjectMergeRequest extends Command
 {
     use Traits\HttpTrait;
 
@@ -48,6 +50,7 @@ final class ProjectMergeRequest extends Command
             ->addOption(Options::OPTION_ALL, 'a', InputOption::VALUE_NONE, 'Whether to show merge requests regardless of state.')
             ->addOption(Options::OPTION_BRANCH, 'b', InputOption::VALUE_OPTIONAL, 'Specify a custom branch name.')
             ->addOption(Options::OPTION_HTTP, null, InputOption::VALUE_NONE, 'Use HTTP instead of SSH.')
+            ->addOption(Options::OPTION_NO_CACHE, null, InputOption::VALUE_NONE, 'Whether to not use a HTTP cache.')
             ->addOption(Options::OPTION_ONLY_CLOSED, 'c', InputOption::VALUE_NONE, 'Whether to show only closed merge requests.')
             ->addOption(Options::OPTION_ONLY_MERGED, 'm', InputOption::VALUE_NONE, 'Whether to show only merged merge requests.');
     }
@@ -55,6 +58,7 @@ final class ProjectMergeRequest extends Command
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $io = new SymfonyStyle($input, $output);
+        $logger = new ConsoleLogger($io);
         $options = Options::fromInput($input);
 
         $state = match (true) {
@@ -64,11 +68,12 @@ final class ProjectMergeRequest extends Command
             default => MergeRequests::STATE_OPENED,
         };
 
-        $client = new Client();
-        $client->setUrl('https://git.drupalcode.org');
+        [$httpFactory, $httpAsyncClient] = $this->http($logger, $options->noHttpCache, []);
+        $httpClientBuilder = new Builder($httpAsyncClient, $httpFactory);
+        $gitlab = new GitlabClient($httpClientBuilder);
+        $gitlab->setUrl('https://git.drupalcode.org');
 
-        //path, name,
-        $project = $client->projects()->show(sprintf('project/%s', $options->project));
+        $project = $gitlab->projects()->show(sprintf('project/%s', $options->project));
         $projectId = $project['id'] ?? null;
         if (!$projectId) {
             $io->error('Invalid project or identifier.');
@@ -83,7 +88,7 @@ final class ProjectMergeRequest extends Command
             $projectId,
         ));
 
-        $mergeRequests = $client->mergeRequests()->all($projectId, [
+        $mergeRequests = $gitlab->mergeRequests()->all($projectId, [
             'state' => $state,
         ]);
         if (0 === count($mergeRequests)) {
@@ -131,7 +136,7 @@ final class ProjectMergeRequest extends Command
         ));
 
         $sourceProjectId = (int) $mergeRequest['source_project_id'];
-        $sourceProject = $client->projects()->show($sourceProjectId);
+        $sourceProject = $gitlab->projects()->show($sourceProjectId);
 
         $gitUrl = $options->isHttp
             ? $sourceProject['ssh_url_to_repo']

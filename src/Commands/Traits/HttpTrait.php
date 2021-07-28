@@ -26,7 +26,7 @@ trait HttpTrait
     /**
      * @param string[] $cookies
      *
-     * @return array{0:\Psr\Http\Message\RequestFactoryInterface, 1:\Http\Client\HttpAsyncClient}
+     * @return array{0:\Psr\Http\Message\RequestFactoryInterface, 1:\Http\Client\HttpClient&\Http\Client\HttpAsyncClient}
      */
     protected function http(LoggerInterface $logger, bool $noHttpCache = false, array $cookies = [])
     {

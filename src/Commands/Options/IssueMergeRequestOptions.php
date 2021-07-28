@@ -28,15 +28,11 @@ final class IssueMergeRequestOptions
     public static function fromInput(InputInterface $input): static
     {
         $instance = new static();
-        // @phpstan-ignore-next-line
         $instance->cookies = $input->getOption(static::OPTION_COOKIE);
-        // @phpstan-ignore-next-line
         $instance->directory = (string) ($input->getArgument(static::ARGUMENT_DIRECTORY) ?? \getcwd());
-        // @phpstan-ignore-next-line
         $instance->isHttp = $input->getOption(static::OPTION_HTTP);
 
         $nid = $input->getArgument(static::ARGUMENT_ISSUE_ID);
-        // @phpstan-ignore-next-line
         $instance->nid = (1 === preg_match('/^\d{1,10}$/m', $nid)) ? (int) $nid : throw new \UnexpectedValueException('Issue ID is not valid');
         $instance->noHttpCache = (bool) $input->getOption(static::OPTION_NO_CACHE);
         $instance->single = (bool) $input->getOption(static::OPTION_SINGLE);

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace dogit\tests;
 
+use GuzzleHttp\Exception\InvalidArgumentException;
 use GuzzleHttp\Promise\FulfilledPromise;
 use GuzzleHttp\Promise\PromiseInterface;
 use GuzzleHttp\Psr7\Response;
@@ -80,7 +81,7 @@ final class DogitGuzzleTestMiddleware
                 );
             }
 
-            throw new \Exception('Unhandled scenario.');
+            throw new InvalidArgumentException('Unhandled scenario.');
         };
     }
 }

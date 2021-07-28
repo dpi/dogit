@@ -11,7 +11,7 @@ use GuzzleHttp\Psr7\Response;
 use Psr\Http\Message\RequestInterface;
 
 /**
- * Captures requests to the Drupal Gitlab instance.s.
+ * Captures requests to the Drupal Gitlab instances.
  *
  * If a scenario isnt handled an exception is thrown, a real request
  * is never sent to the real endpoint.

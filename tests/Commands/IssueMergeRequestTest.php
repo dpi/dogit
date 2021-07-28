@@ -30,7 +30,7 @@ final class IssueMergeRequestTest extends TestCase
     /**
      * @covers ::execute
      */
-    public function testCommandX(): void
+    public function testCommand(): void
     {
         $testRepoDir = '/tmp/dogit-testing/fakedir';
 

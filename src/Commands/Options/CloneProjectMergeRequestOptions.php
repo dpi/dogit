@@ -28,11 +28,8 @@ final class CloneProjectMergeRequestOptions
     {
         $instance = new static();
 
-        // @phpstan-ignore-next-line
         $instance->directory = $input->getArgument(static::ARGUMENT_DIRECTORY);
-        // @phpstan-ignore-next-line
         $instance->project = $input->getArgument(static::ARGUMENT_PROJECT);
-        // @phpstan-ignore-next-line
         $instance->isHttp = $input->getOption(static::OPTION_HTTP);
         $instance->includeAll = (bool) $input->getOption(static::OPTION_ALL);
         $instance->onlyClosed = (bool) $input->getOption(static::OPTION_ONLY_CLOSED);

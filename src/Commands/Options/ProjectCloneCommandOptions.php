@@ -22,13 +22,9 @@ final class ProjectCloneCommandOptions
     {
         $instance = new static();
 
-        // @phpstan-ignore-next-line
         $instance->directory = $input->getArgument(static::ARGUMENT_DIRECTORY);
-        // @phpstan-ignore-next-line
         $instance->project = $input->getArgument(static::ARGUMENT_PROJECT);
-        // @phpstan-ignore-next-line
         $instance->branch = $input->getOption(static::OPTION_BRANCH) ?? null;
-        // @phpstan-ignore-next-line
         $instance->isHttp = $input->getOption(static::OPTION_HTTP);
 
         return $instance;

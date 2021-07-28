@@ -47,31 +47,23 @@ final class GitCommandOptions
     {
         $instance = new static();
 
-        // @phpstan-ignore-next-line
         $instance->branchName = $input->getOption(static::OPTION_BRANCH);
         $instance->branchDeleteExisting = (bool) $input->getOption(static::OPTION_DELETE_EXISTING_BRANCH);
-        // @phpstan-ignore-next-line
         $instance->cookies = $input->getOption(static::OPTION_COOKIE);
-        // @phpstan-ignore-next-line
         $instance->excludeComments = $input->getOption(static::OPTION_EXCLUDE);
-        // @phpstan-ignore-next-line
         $instance->gitDirectory = (string) ($input->getArgument(static::ARGUMENT_WORKING_DIRECTORY) ?? getcwd());
 
         $nid = $input->getArgument(static::ARGUMENT_ISSUE_ID);
 
-        // @phpstan-ignore-next-line
         $instance->nid = (1 === preg_match('/^\d{1,10}$/m', $nid)) ? (int) $nid : throw new \UnexpectedValueException('Issue ID is not valid');
         $instance->noHttpCache = (bool) $input->getOption(static::OPTION_NO_CACHE);
-        // @phpstan-ignore-next-line
         $instance->onlyLastPatch = $input->getOption(static::OPTION_LAST);
 
         $patchLevel = $input->getOption(static::OPTION_PATCH_LEVEL);
-        // @phpstan-ignore-next-line
         $instance->patchLevel = (1 === preg_match('/^\d$/m', (string) $patchLevel)) ? (int) $patchLevel : throw new \UnexpectedValueException('Patch level is not valid');
         $instance->resetUnclean = (bool) $input->getOption(static::OPTION_RESET);
 
         // Check is a proper Composer constraint. e.g 8.8.x is not accepted:
-        // @phpstan-ignore-next-line
         $constraint = (string) $input->getArgument(static::ARGUMENT_VERSION_CONSTRAINTS);
         if (!empty($constraint)) {
             try {

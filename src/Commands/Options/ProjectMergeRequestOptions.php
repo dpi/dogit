@@ -37,6 +37,7 @@ final class ProjectMergeRequestOptions
         $instance->includeAll = (bool) $input->getOption(static::OPTION_ALL);
         $instance->onlyClosed = (bool) $input->getOption(static::OPTION_ONLY_CLOSED);
         $instance->onlyMerged = (bool) $input->getOption(static::OPTION_ONLY_MERGED);
+        $instance->noHttpCache = (bool) $input->getOption(static::OPTION_NO_CACHE);
 
         return $instance;
     }

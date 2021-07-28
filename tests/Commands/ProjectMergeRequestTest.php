@@ -70,7 +70,6 @@ final class ProjectMergeRequestTest extends TestCase
         $this->assertStringContainsString('Select merge request to checkout:', $tester->getDisplay());
         $this->assertStringContainsString('[9] Merge request !9: Issue #2866889: WSD on workflow module states page by dpi', $tester->getDisplay());
         $this->assertStringContainsString('[8] Merge request !8: Issue #2845094: Batch field creation by dpi', $tester->getDisplay());
-        $this->assertStringContainsString('> 8', $tester->getDisplay());
         $this->assertStringContainsString('Checking out merge request !8: Issue #2845094: Batch field creation by dpi into directory /tmp/dogit-testing/fakedir', $tester->getDisplay());
         $this->assertStringContainsString('! [NOTE] Interpreting directory `/tmp/dogit-testing/fakedir` as not a Git repository, cloning..', $tester->getDisplay());
         $this->assertStringContainsString('[OK] Done', $tester->getDisplay());
@@ -149,7 +148,6 @@ final class ProjectMergeRequestTest extends TestCase
         $this->assertStringContainsString('Select merge request to checkout:', $tester->getDisplay());
         $this->assertStringContainsString('[9] Merge request !9: Issue #2866889: WSD on workflow module states page by dpi', $tester->getDisplay());
         $this->assertStringContainsString('[8] Merge request !8: Issue #2845094: Batch field creation by dpi', $tester->getDisplay());
-        $this->assertStringContainsString('> 8', $tester->getDisplay());
         $this->assertStringContainsString('Checking out merge request !8: Issue #2845094: Batch field creation by dpi into directory /tmp/dogit-testing/fakedir', $tester->getDisplay());
         $this->assertStringContainsString('! [NOTE] Directory `/tmp/dogit-testing/fakedir` looks like an existing Git repository.', $tester->getDisplay());
         $this->assertStringContainsString('! [NOTE] Setting up new remote: foo_bar_baz-2845094 @ https://git.drupalcode.org/issue/foo_bar_baz-2845094.git', $tester->getDisplay());

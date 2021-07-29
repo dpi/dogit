@@ -119,13 +119,6 @@ final class ProjectMergeRequestTest extends TestCase
         ]);
 
         $this->assertEquals(0, $result);
-        $this->assertStringContainsString('Found project foo_bar_baz with ID #13371337', $tester->getDisplay());
-        $this->assertStringContainsString('Select merge request to checkout:', $tester->getDisplay());
-        $this->assertStringContainsString('[9] Merge request !9: Issue #2866889: WSD on workflow module states page by dpi', $tester->getDisplay());
-        $this->assertStringContainsString('[8] Merge request !8: Issue #2845094: Batch field creation by dpi', $tester->getDisplay());
-        $this->assertStringContainsString('Checking out merge request !8: Issue #2845094: Batch field creation by dpi into directory /tmp/dogit-testing/fakedir', $tester->getDisplay());
-        $this->assertStringContainsString('! [NOTE] Interpreting directory `/tmp/dogit-testing/fakedir` as not a Git repository, cloning..', $tester->getDisplay());
-        $this->assertStringContainsString('[OK] Done', $tester->getDisplay());
     }
 
     /**

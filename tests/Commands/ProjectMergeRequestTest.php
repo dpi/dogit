@@ -30,7 +30,7 @@ final class ProjectMergeRequestTest extends TestCase
     /**
      * @covers ::execute
      */
-    public function testCommand(): void
+    public function testCommandClone(): void
     {
         $testRepoDir = '/tmp/dogit-testing/fakedir';
 
@@ -41,7 +41,9 @@ final class ProjectMergeRequestTest extends TestCase
             ->with($testRepoDir)
             ->willThrowException(new GitException("Repository 'Blurgh' not found."));
         $git->expects($this->once())
-            ->method('cloneRepository');
+            ->method('cloneRepository')
+            // Expect SSH endpoint:
+            ->with('git@git.drupal.org:issue/foo_bar_baz-2845094.git', '/tmp/dogit-testing/fakedir');
 
         $runner = $this->getMockBuilder(IRunner::class)
             ->getMock();
@@ -73,6 +75,50 @@ final class ProjectMergeRequestTest extends TestCase
         $this->assertStringContainsString('Checking out merge request !8: Issue #2845094: Batch field creation by dpi into directory /tmp/dogit-testing/fakedir', $tester->getDisplay());
         $this->assertStringContainsString('! [NOTE] Interpreting directory `/tmp/dogit-testing/fakedir` as not a Git repository, cloning..', $tester->getDisplay());
         $this->assertStringContainsString('[OK] Done', $tester->getDisplay());
+    }
+
+    /**
+     * @covers ::execute
+     */
+    public function testCommandCloneHttp(): void
+    {
+        $testRepoDir = '/tmp/dogit-testing/fakedir';
+
+        $git = $this->getMockBuilder(Git::class)
+            ->getMock();
+        $git->expects($this->once())
+            ->method('open')
+            ->with($testRepoDir)
+            ->willThrowException(new GitException("Repository 'Blurgh' not found."));
+        $git->expects($this->once())
+            ->method('cloneRepository')
+            // Expect HTTP endpoint:
+            ->with('https://git.drupalcode.org/issue/foo_bar_baz-2845094.git', '/tmp/dogit-testing/fakedir');
+
+        $runner = $this->getMockBuilder(IRunner::class)
+            ->getMock();
+
+        $command = $this->getMockBuilder(ProjectMergeRequest::class)
+            ->onlyMethods(['git'])
+            ->disableOriginalConstructor()
+            ->getMock();
+        $command->expects($this->once())
+            ->method('git')
+            ->willReturn($git);
+        $command->__construct($runner);
+
+        $command->handlerStack()->push(new DogitGuzzleGitlabTestMiddleware());
+        $tester = new CommandTester($command);
+        $tester->setInputs([
+            '8',
+        ]);
+        $result = $tester->execute([
+            ProjectMergeRequestOptions::ARGUMENT_PROJECT => 'foo_bar_baz',
+            ProjectMergeRequestOptions::ARGUMENT_DIRECTORY => $testRepoDir,
+            '--' . ProjectMergeRequestOptions::OPTION_HTTP => true,
+        ]);
+
+        $this->assertEquals(0, $result);
     }
 
     /**
@@ -110,7 +156,7 @@ final class ProjectMergeRequestTest extends TestCase
 
         $repo->expects($this->once())
             ->method('addRemote')
-            ->with('foo_bar_baz-2845094', 'https://git.drupalcode.org/issue/foo_bar_baz-2845094.git');
+            ->with('foo_bar_baz-2845094', 'git@git.drupal.org:issue/foo_bar_baz-2845094.git');
         $repo->expects($this->once())->method('fetch')
             ->with('foo_bar_baz-2845094');
 
@@ -150,8 +196,8 @@ final class ProjectMergeRequestTest extends TestCase
         $this->assertStringContainsString('[8] Merge request !8: Issue #2845094: Batch field creation by dpi', $tester->getDisplay());
         $this->assertStringContainsString('Checking out merge request !8: Issue #2845094: Batch field creation by dpi into directory /tmp/dogit-testing/fakedir', $tester->getDisplay());
         $this->assertStringContainsString('! [NOTE] Directory `/tmp/dogit-testing/fakedir` looks like an existing Git repository.', $tester->getDisplay());
-        $this->assertStringContainsString('! [NOTE] Setting up new remote: foo_bar_baz-2845094 @ https://git.drupalcode.org/issue/foo_bar_baz-2845094.git', $tester->getDisplay());
-        $this->assertStringContainsString('! [NOTE] Fetching remote: foo_bar_baz-2845094 @ https://git.drupalcode.org/issue/foo_bar_baz-2845094.git', $tester->getDisplay());
+        $this->assertStringContainsString('! [NOTE] Setting up new remote: foo_bar_baz-2845094 @ git@git.drupal.org:issue/foo_bar_baz-2845094.git', $tester->getDisplay());
+        $this->assertStringContainsString('! [NOTE] Fetching remote: foo_bar_baz-2845094 @ git@git.drupal.org:issue/foo_bar_baz-2845094.git', $tester->getDisplay());
         $this->assertStringContainsString('! [NOTE] Checking out branch: my-cool-branch-name', $tester->getDisplay());
         $this->assertStringContainsString('[OK] Done', $tester->getDisplay());
     }

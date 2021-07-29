@@ -146,7 +146,7 @@ final class IssueMergeRequestTest extends TestCase
         $this->assertStringContainsString('[333] Merge request !333: my-cool-branch-name from comment #9', $tester->getDisplay());
         $this->assertStringContainsString('! [NOTE] Checking out merge request !333: my-cool-branch-name from comment #9 into directory /tmp/dogit-testing/fakedir', $tester->getDisplay());
         $this->assertStringContainsString('! [NOTE] Directory `/tmp/dogit-testing/fakedir` looks like an existing Git repository.', $tester->getDisplay());
-        $this->assertStringContainsString('! [NOTE] No existing HTTP remote for this merge request found.', $tester->getDisplay());
+        $this->assertStringContainsString('! [NOTE] No existing remote for this merge request found.', $tester->getDisplay());
         $this->assertStringContainsString('! [NOTE] Setting up new remote: drupal-11110003 @ git@git.drupal.org:issue/drupal-11110003.git', $tester->getDisplay());
         $this->assertStringContainsString('! [NOTE] Fetching remote: drupal-11110003 @ git@git.drupal.org:issue/drupal-11110003.git', $tester->getDisplay());
         $this->assertStringContainsString('! [NOTE] Checking out branch: my-cool-branch-name', $tester->getDisplay());

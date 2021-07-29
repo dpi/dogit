@@ -20,8 +20,8 @@ Various commands are included:
 
  - [**Convert** a Drupal.org issue with existing patches to a Git branch][wiki-GitCommand], ready to be pushed as a new merge request, as `dogit git ISSUE-ID`.
  - [Interactively **clone** a merge request of a project][wiki-CloneProjectMergeRequest], as `dogit project:clone:mr PROJECT`.
- - [Interactively **clone** a merge request of an issue][wiki-IssueMergeRequest], as `dogit issue:clone ISSUE-ID`.
- - [**Clone** a project][wiki-ProjectCloneCommand], as `dogit project:clone PROJECT`.
+ - [Interactively **clone** a merge request of an issue][wiki-IssueMergeRequest], as `dogit issue:mr ISSUE-ID`.
+ - [**Clone** a project][wiki-ProjectCloneCommand], as `dogit project:mr PROJECT`.
  - [**Show** an issue timeline][wiki-IssueTimelineCommand], as `dogit issue:timeline ISSUE-ID`.
 
 Start with the [wiki](https://github.com/dpi/dogit/wiki), or run `dogit list` or `dogit COMMAND --help`

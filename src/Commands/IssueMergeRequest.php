@@ -30,7 +30,7 @@ class IssueMergeRequest extends Command
 {
     use Traits\HttpTrait;
 
-    protected static $defaultName = 'issue:clone';
+    protected static $defaultName = 'issue:mr';
     protected Git $git;
 
     public function __construct(IRunner $runner = null)
@@ -163,6 +163,7 @@ class IssueMergeRequest extends Command
             $remoteUrls = array_merge($remoteUrls, $urls);
         }
 
+        // Check if the SSH or HTTP URL for the MR we want to check out is already a remote:
         if ($options->isHttp && isset($remoteUrls[$mergeRequestCreateEvent->getGitHttpUrl()])) {
             $gitUrl = $mergeRequestCreateEvent->getGitHttpUrl();
             $remoteName = $remoteUrls[$gitUrl];
@@ -173,7 +174,7 @@ class IssueMergeRequest extends Command
             $io->note(sprintf('Found existing SSH remote for this merge request: %s @ %s', $remoteName, $gitUrl));
         } else {
             $gitUrl = $options->isHttp ? $mergeRequestCreateEvent->getGitHttpUrl() : $mergeRequestCreateEvent->getGitUrl();
-            $io->note('No existing HTTP remote for this merge request found.');
+            $io->note('No existing remote for this merge request found.');
 
             // Generate a unique remote name.
             $remoteName = null;
@@ -191,7 +192,6 @@ class IssueMergeRequest extends Command
         $io->note(sprintf('Fetching remote: %s @ %s', $remoteName, $gitUrl));
         $gitIo->fetchRemote($remoteName);
 
-        // Check if the SSH or HTTP URL for the MR we want to check out is already a remote:
         $io->note(sprintf('Checking out branch: %s', $branch));
         $gitIo->checkoutNewTrackCustom($branch, $remoteName, $mergeRequestCreateEvent->getGitBranch());
 

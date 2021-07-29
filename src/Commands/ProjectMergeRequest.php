@@ -149,8 +149,8 @@ class ProjectMergeRequest extends Command
         $sourceProject = $gitlab->projects()->show($sourceProjectId);
 
         $gitUrl = $options->isHttp
-            ? $sourceProject['ssh_url_to_repo']
-            : $sourceProject['http_url_to_repo'];
+            ? $sourceProject['http_url_to_repo']
+            : $sourceProject['ssh_url_to_repo'];
 
         $remoteBranchName = $mergeRequest['source_branch'];
         $localBranchName = $options->branchName ?? $remoteBranchName;

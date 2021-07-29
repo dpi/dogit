@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace dogit\tests;
 
 use GuzzleHttp\Exception\InvalidArgumentException;
+use GuzzleHttp\Exception\RequestException;
 use GuzzleHttp\Promise\FulfilledPromise;
 use GuzzleHttp\Promise\PromiseInterface;
 use GuzzleHttp\Psr7\Response;
@@ -58,6 +59,11 @@ final class DogitGuzzleGitlabTestMiddleware
                         'Content-Type' => 'application/json',
                     ], TestUtilities::getFixture('gitlab/merge_requests-nomrs.json')),
                 );
+            } elseif ('/api/v4/projects/project%2Fproject-doesnt-exist' === $path) {
+                $response = new Response(404, [
+                    'Content-Type' => 'application/json',
+                ], '{"message":"404 Project Not Found"}');
+                throw RequestException::create($request, $response, null, [], null);
             }
 
             throw new InvalidArgumentException('Unhandled scenario.');

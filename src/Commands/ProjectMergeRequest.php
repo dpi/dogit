@@ -13,6 +13,7 @@ use dogit\Git\GitOperator;
 use Gitlab\Api\MergeRequests;
 use Gitlab\Client as GitlabClient;
 use Gitlab\HttpClient\Builder;
+use Http\Client\Exception\HttpException;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -73,10 +74,19 @@ class ProjectMergeRequest extends Command
         $gitlab = new GitlabClient($httpClientBuilder);
         $gitlab->setUrl('https://git.drupalcode.org');
 
-        $project = $gitlab->projects()->show(sprintf('project/%s', $options->project));
-        $projectId = $project['id'] ?? null;
-        if (!$projectId) {
-            $io->error('Invalid project or identifier.');
+        try {
+            $project = $gitlab->projects()->show(sprintf('project/%s', $options->project));
+        } catch (HttpException $e) {
+            $io->error(404 === $e->getCode()
+                ? sprintf('Project not found: %s', $options->project)
+                : sprintf('Error getting project: %s', $options->project)
+            );
+
+            return static::FAILURE;
+        }
+
+        if (null === ($projectId = $project['id'] ?? null)) {
+            $io->error('Project identifier missing.');
 
             return static::FAILURE;
         }

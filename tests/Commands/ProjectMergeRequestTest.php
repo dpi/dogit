@@ -159,6 +159,28 @@ final class ProjectMergeRequestTest extends TestCase
     /**
      * @covers ::execute
      */
+    public function testProjectNotFound(): void
+    {
+        $runner = $this->createMock(IRunner::class);
+        $command = new ProjectMergeRequest($runner);
+        $command->handlerStack()->push(new DogitGuzzleGitlabTestMiddleware());
+        $tester = new CommandTester($command);
+        $result = $tester->execute([
+            ProjectMergeRequestOptions::ARGUMENT_PROJECT => 'project-doesnt-exist',
+            ProjectMergeRequestOptions::ARGUMENT_DIRECTORY => 'testdir',
+        ]);
+        $this->assertEquals(1, $result);
+
+        $this->assertEquals(<<<OUTPUT
+
+         [ERROR] Project not found: project-doesnt-exist                                                                        \n
+
+        OUTPUT, $tester->getDisplay());
+    }
+
+    /**
+     * @covers ::execute
+     */
     public function testNoMergeRequests(): void
     {
         $runner = $this->createMock(IRunner::class);

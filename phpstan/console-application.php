@@ -1,14 +1,16 @@
 <?php
 
+declare(strict_types=1);
+
 // Application for phpstan/phpstan-symfony.
 
 require __DIR__ . '/../vendor/autoload.php';
 
-use dogit\Commands\ProjectMergeRequest;
-use dogit\Commands\IssueMergeRequest;
-use dogit\Commands\ProjectCloneCommand;
 use dogit\Commands\GitCommand;
+use dogit\Commands\IssueMergeRequest;
 use dogit\Commands\IssueTimelineCommand;
+use dogit\Commands\ProjectCloneCommand;
+use dogit\Commands\ProjectMergeRequest;
 use Symfony\Component\Console\Application;
 
 $application = new Application();

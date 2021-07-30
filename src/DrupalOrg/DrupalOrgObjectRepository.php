@@ -27,8 +27,8 @@ final class DrupalOrgObjectRepository
     public function share(DrupalOrgObject $object): DrupalOrgObject
     {
         /** @var \dogit\DrupalOrg\DrupalOrgObjectCollection<T> $collection */
-        $collection = $this->collections[$object::class] ?? (
-            $this->collections[$object::class] = new DrupalOrgObjectCollection()
+        $collection = $this->collections[get_class($object)] ?? (
+            $this->collections[get_class($object)] = new DrupalOrgObjectCollection()
         );
 
         $object = $collection->share($object);

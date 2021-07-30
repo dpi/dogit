@@ -20,12 +20,12 @@ final class StatusChangeEvent implements IssueEventInterface
      */
     protected string $to;
 
-  protected DrupalOrgComment $comment;
+    protected DrupalOrgComment $comment;
 
-  public function __construct(DrupalOrgComment $comment, string $from, string $to)
+    public function __construct(DrupalOrgComment $comment, string $from, string $to)
     {
-      $this->comment = $comment;
-      $this->from = trim($from, " \t\n\r\0\x0B»");
+        $this->comment = $comment;
+        $this->from = trim($from, " \t\n\r\0\x0B»");
         $this->to = trim($to, " \t\n\r\0\x0B»");
     }
 

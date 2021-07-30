@@ -28,19 +28,19 @@ class DrupalOrgIssueGraph
 {
     protected AbstractBrowser $browser;
 
-  protected DrupalOrgObjectRepository $repository;
+    protected DrupalOrgObjectRepository $repository;
 
-  protected string $uri;
+    protected string $uri;
 
-  public function __construct(
+    public function __construct(
         RequestFactoryInterface $httpFactory,
         HttpAsyncClient $httpClient,
         DrupalOrgObjectRepository $repository,
         string $uri
     ) {
-    $this->uri = $uri;
-    $this->repository = $repository;
-    $this->browser = new HttplugBrowser($httpFactory, $httpClient);
+        $this->uri = $uri;
+        $this->repository = $repository;
+        $this->browser = new HttplugBrowser($httpFactory, $httpClient);
     }
 
     /**
@@ -92,9 +92,16 @@ class DrupalOrgIssueGraph
                             $mrLink = $a->getAttribute('href');
                             $matches = [];
                             preg_match('/.*drupalcode\.org\/project\/(?<project>.*)\/-\/merge_requests\/(?<mr_id>\d{1,16})/', $mrLink, $matches);
-                            $mrId = (int) ($matches['mr_id'] ?? throw new \Exception('Expected MR ID in comment.'));
+                            if (!isset($matches['mr_id'])) {
+                                throw new \Exception('Expected MR ID in comment.');
+                            }
+                            $mrId = (int) $matches['mr_id'];
 
-                            $branchName = $branchMrs[$mrId] ?? throw new \Exception('No branch name found for MR');
+                            if (!isset($branchMrs[$mrId])) {
+                                throw new \Exception('No branch name found for MR');
+                            }
+
+                            $branchName = $branchMrs[$mrId];
                             yield new MergeRequestCreateEvent(
                                 $commentStub,
                                 $mrLink,
@@ -161,7 +168,11 @@ class DrupalOrgIssueGraph
             $mrLink = $element->getAttribute('href');
             $matches = [];
             preg_match('/.*drupalcode\.org\/project\/(?<project>.*)\/-\/merge_requests\/(?<mr_id>\d{1,16})/', $mrLink, $matches);
-            $mrId = (int) ($matches['mr_id'] ?? throw new \Exception('Expected MR ID in issue summary row.'));
+
+            if (!isset($matches['mr_id'])) {
+                throw new \Exception('Expected MR ID in issue summary row.');
+            }
+            $mrId = (int) $matches['mr_id'];
             $branchMrs[$mrId] = $branchName;
         }
 

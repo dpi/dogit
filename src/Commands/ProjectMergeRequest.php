@@ -62,12 +62,14 @@ class ProjectMergeRequest extends Command
         $logger = new ConsoleLogger($io);
         $options = Options::fromInput($input);
 
-        $state = match (true) {
-            $options->onlyClosed => MergeRequests::STATE_CLOSED,
-            $options->onlyMerged => MergeRequests::STATE_MERGED,
-            $options->includeAll => MergeRequests::STATE_ALL,
-            default => MergeRequests::STATE_OPENED,
-        };
+        $state = MergeRequests::STATE_OPENED;
+        if ($options->onlyClosed) {
+            $state = MergeRequests::STATE_CLOSED;
+        } elseif ($options->onlyMerged) {
+            $state = MergeRequests::STATE_MERGED;
+        } elseif ($options->includeAll) {
+            $state = MergeRequests::STATE_ALL;
+        }
 
         [$httpFactory, $httpAsyncClient] = $this->http($logger, $options->noHttpCache, []);
         $httpClientBuilder = new Builder($httpAsyncClient, $httpFactory);

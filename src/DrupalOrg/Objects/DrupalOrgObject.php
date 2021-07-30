@@ -24,7 +24,11 @@ abstract class DrupalOrgObject
 
     public function url(): string
     {
-        return !$this->isStub ? $this->data->url : throw new \DomainException('Data missing for stubs.');
+        if ($this->isStub) {
+            throw new \DomainException('Data missing for stubs.');
+        }
+
+        return $this->data->url;
     }
 
     public function isStub(): bool

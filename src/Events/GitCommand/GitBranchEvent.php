@@ -12,15 +12,30 @@ use Psr\Log\LoggerInterface;
 
 final class GitBranchEvent extends DogitEvent implements StoppableEventInterface
 {
+    public string $initalVersion;
+
+    public GitCommandOptions $options;
+
+    public DrupalOrgIssue $issue;
+
+    public LoggerInterface $logger;
+
+    public GitOperator $gitIo;
+
     private bool $failure = false;
 
     public function __construct(
-        public GitOperator $gitIo,
-        public LoggerInterface $logger,
-        public DrupalOrgIssue $issue,
-        public GitCommandOptions $options,
-        public string $initalVersion,
+        GitOperator $gitIo,
+        LoggerInterface $logger,
+        DrupalOrgIssue $issue,
+        GitCommandOptions $options,
+        string $initalVersion
     ) {
+        $this->gitIo = $gitIo;
+        $this->logger = $logger;
+        $this->issue = $issue;
+        $this->options = $options;
+        $this->initalVersion = $initalVersion;
     }
 
     /**

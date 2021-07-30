@@ -198,17 +198,26 @@ final class Utility
             $isInt = fn (string $string): bool => 1 === preg_match('/^\d{1,5}$/m', $string);
 
             // Verbatim:
-            $filters[] = match (true) {
-                $isInt($constraint) => fn (int $number) => $number === (int) $constraint,
-                str_starts_with($constraint, '<=') && $isInt(substr($constraint, 2)) => fn (int $number) => $number <= (int) substr($constraint, 2),
-                str_starts_with($constraint, '>=') && $isInt(substr($constraint, 2)) => fn (int $number) => $number >= (int) substr($constraint, 2),
-                str_starts_with($constraint, '<') && $isInt(substr($constraint, 1)) => fn (int $number) => $number < (int) substr($constraint, 1),
-                str_starts_with($constraint, '>') && $isInt(substr($constraint, 1)) => fn (int $number) => $number > (int) substr($constraint, 1),
-                str_starts_with($constraint, '!=') && $isInt(substr($constraint, 2)) => fn (int $number) => $number !== (int) substr($constraint, 2),
-                str_starts_with($constraint, '<>') && $isInt(substr($constraint, 2)) => fn (int $number) => $number !== (int) substr($constraint, 2),
-                str_starts_with($constraint, '=') && $isInt(substr($constraint, 1)) => fn (int $number) => $number === (int) substr($constraint, 1),
-                default => throw new \InvalidArgumentException(sprintf('Unable to process constraint: %s', $constraint)),
-            };
+
+            if ($isInt($constraint)) {
+                $filters[] = fn (int $number) => $number === (int) $constraint;
+            } elseif (str_starts_with($constraint, '<=') && $isInt(substr($constraint, 2))) {
+                $filters[] = fn (int $number) => $number <= (int) substr($constraint, 2);
+            } elseif (str_starts_with($constraint, '>=') && $isInt(substr($constraint, 2))) {
+                $filters[] = fn (int $number) => $number >= (int) substr($constraint, 2);
+            } elseif (str_starts_with($constraint, '<') && $isInt(substr($constraint, 1))) {
+                $filters[] = fn (int $number) => $number < (int) substr($constraint, 1);
+            } elseif (str_starts_with($constraint, '>') && $isInt(substr($constraint, 1))) {
+                $filters[] = fn (int $number) => $number > (int) substr($constraint, 1);
+            } elseif (str_starts_with($constraint, '!=') && $isInt(substr($constraint, 2))) {
+                $filters[] = fn (int $number) => $number !== (int) substr($constraint, 2);
+            } elseif (str_starts_with($constraint, '<>') && $isInt(substr($constraint, 2))) {
+                $filters[] = fn (int $number) => $number !== (int) substr($constraint, 2);
+            } elseif (str_starts_with($constraint, '=') && $isInt(substr($constraint, 1))) {
+                $filters[] = fn (int $number) => $number === (int) substr($constraint, 1);
+            } else {
+                throw new \InvalidArgumentException(sprintf('Unable to process constraint: %s', $constraint));
+            }
         }
 
         return $filters;

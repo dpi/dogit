@@ -9,16 +9,15 @@ use Psr\Log\LoggerInterface;
 
 final class VersionEvent extends DogitEvent
 {
+    public LoggerInterface $logger;
 
-  public LoggerInterface $logger;
+    public DrupalOrgObjectIterator $objectIterator;
 
-  public DrupalOrgObjectIterator $objectIterator;
+    public array $issueEvents;
 
-  public array $issueEvents;
+    public array $patches;
 
-  public array $patches;
-
-  /**
+    /**
      * @param \dogit\DrupalOrg\Objects\DrupalOrgPatch[] $patches
      * @param \dogit\DrupalOrg\IssueGraph\Events\IssueEventInterface[] $issueEvents
      */
@@ -28,9 +27,9 @@ final class VersionEvent extends DogitEvent
         DrupalOrgObjectIterator $objectIterator,
         LoggerInterface $logger
     ) {
-      $this->patches = $patches;
-      $this->issueEvents = $issueEvents;
-      $this->objectIterator = $objectIterator;
-      $this->logger = $logger;
+        $this->patches = $patches;
+        $this->issueEvents = $issueEvents;
+        $this->objectIterator = $objectIterator;
+        $this->logger = $logger;
     }
 }

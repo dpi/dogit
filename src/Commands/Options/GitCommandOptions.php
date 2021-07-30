@@ -55,12 +55,20 @@ final class GitCommandOptions
 
         $nid = $input->getArgument(static::ARGUMENT_ISSUE_ID);
 
-        $instance->nid = (1 === preg_match('/^\d{1,10}$/m', $nid)) ? (int) $nid : throw new \UnexpectedValueException('Issue ID is not valid');
+        if (1 !== preg_match('/^\d{1,10}$/m', $nid)) {
+            throw new \UnexpectedValueException('Issue ID is not valid');
+        }
+        $instance->nid = (int) $nid;
+
         $instance->noHttpCache = (bool) $input->getOption(static::OPTION_NO_CACHE);
         $instance->onlyLastPatch = $input->getOption(static::OPTION_LAST);
 
         $patchLevel = $input->getOption(static::OPTION_PATCH_LEVEL);
-        $instance->patchLevel = (1 === preg_match('/^\d$/m', (string) $patchLevel)) ? (int) $patchLevel : throw new \UnexpectedValueException('Patch level is not valid');
+        if (1 !== preg_match('/^\d$/m', (string) $patchLevel)) {
+            throw new \UnexpectedValueException('Patch level is not valid');
+        }
+        $instance->patchLevel = (int) $patchLevel;
+
         $instance->resetUnclean = (bool) $input->getOption(static::OPTION_RESET);
 
         // Check is a proper Composer constraint. e.g 8.8.x is not accepted:

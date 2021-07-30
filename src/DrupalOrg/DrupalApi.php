@@ -21,21 +21,21 @@ final class DrupalApi implements DrupalApiInterface
     private const ENDPOINT_COMMENT = 'https://www.drupal.org/api-d7/comment/%d.json';
     private const ENDPOINT_FILE = 'https://www.drupal.org/api-d7/file/%d.json';
 
-  protected DrupalOrgObjectRepository $repository;
+    private DrupalOrgObjectRepository $repository;
 
-  protected HttpAsyncClient $httpClient;
+    private HttpAsyncClient $httpClient;
 
-  protected RequestFactoryInterface $httpFactory;
+    private RequestFactoryInterface $httpFactory;
 
-  public function __construct(
+    public function __construct(
         RequestFactoryInterface $httpFactory,
         HttpAsyncClient $httpClient,
         DrupalOrgObjectRepository $repository
     ) {
-    $this->httpFactory = $httpFactory;
-    $this->httpClient = $httpClient;
-    $this->repository = $repository;
-  }
+        $this->httpFactory = $httpFactory;
+        $this->httpClient = $httpClient;
+        $this->repository = $repository;
+    }
 
     public function getIssue(int $nid): DrupalOrgIssue
     {

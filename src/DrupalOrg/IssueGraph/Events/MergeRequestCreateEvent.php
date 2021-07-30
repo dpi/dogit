@@ -10,21 +10,21 @@ final class MergeRequestCreateEvent implements IssueEventInterface
 {
     use IssueEventTrait;
 
-  protected DrupalOrgComment $comment;
+    protected DrupalOrgComment $comment;
 
-  protected string $branch;
+    protected string $branch;
 
-  protected string $repoUrlHttp;
+    protected string $repoUrlHttp;
 
-  protected string $repoUrlGit;
+    protected string $repoUrlGit;
 
-  protected int $mergeRequestId;
+    protected int $mergeRequestId;
 
-  protected string $project;
+    protected string $project;
 
-  protected string $mergeRequestUrl;
+    protected string $mergeRequestUrl;
 
-  public function __construct(
+    public function __construct(
         DrupalOrgComment $comment,
         string $mergeRequestUrl,
         string $project,
@@ -33,14 +33,14 @@ final class MergeRequestCreateEvent implements IssueEventInterface
         string $repoUrlHttp,
         string $branch
     ) {
-    $this->mergeRequestUrl = $mergeRequestUrl;
-    $this->project = $project;
-    $this->mergeRequestId = $mergeRequestId;
-    $this->repoUrlGit = $repoUrlGit;
-    $this->repoUrlHttp = $repoUrlHttp;
-    $this->branch = $branch;
-    $this->comment = $comment;
-  }
+        $this->mergeRequestUrl = $mergeRequestUrl;
+        $this->project = $project;
+        $this->mergeRequestId = $mergeRequestId;
+        $this->repoUrlGit = $repoUrlGit;
+        $this->repoUrlHttp = $repoUrlHttp;
+        $this->branch = $branch;
+        $this->comment = $comment;
+    }
 
     public function mergeRequestId(): int
     {

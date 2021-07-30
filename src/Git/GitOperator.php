@@ -10,12 +10,11 @@ use CzProject\GitPhp\GitRepository;
 
 final class GitOperator
 {
+    private GitRepository $gitRepository;
 
-  protected GitRepository $gitRepository;
-
-  public function __construct(GitRepository $gitRepository)
+    public function __construct(GitRepository $gitRepository)
     {
-      $this->gitRepository = $gitRepository;
+        $this->gitRepository = $gitRepository;
     }
 
     public function isClean(): bool

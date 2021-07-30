@@ -11,27 +11,39 @@ use Psr\Http\Message\ResponseInterface;
 
 class DrupalOrgIssue extends DrupalOrgObject
 {
+    protected int $id;
 
-  protected int $id;
-
-  public function __construct(int $id)
+    public function __construct(int $id)
     {
-      $this->id = $id;
+        $this->id = $id;
     }
 
     public function getCreated(): \DateTimeImmutable
     {
-        !$this->isStub ?: throw new \DomainException('Data missing for stubs.');
-        $timestamp = $this->data->created ?? throw new \DomainException('Missing created date');
+        if ($this->isStub) {
+            throw new \DomainException('Data missing for stubs.');
+        }
+
+        if (!isset($this->data->created)) {
+            throw new \DomainException('Missing created date');
+        }
+
+        $timestamp = $this->data->created;
 
         return new \DateTimeImmutable('@' . $timestamp);
     }
 
     public function getCurrentVersion(): string
     {
-        !$this->isStub ?: throw new \DomainException('Data missing for stubs.');
+        if ($this->isStub) {
+            throw new \DomainException('Data missing for stubs.');
+        }
 
-        return $this->data->field_issue_version ?? throw new \DomainException('Missing issue version');
+        if (!isset($this->data->field_issue_version)) {
+            throw new \DomainException('Missing issue version');
+        }
+
+        return $this->data->field_issue_version;
     }
 
     /**
@@ -52,12 +64,20 @@ class DrupalOrgIssue extends DrupalOrgObject
 
     public function getProjectName(): string
     {
-        return $this->data->field_project->machine_name ?? throw new \DomainException('Data missing for stubs.');
+        if (!isset($this->data->field_project->machine_name)) {
+            throw new \DomainException('Data missing for stubs.');
+        }
+
+        return $this->data->field_project->machine_name;
     }
 
     public function getTitle(): string
     {
-        return $this->data->title ?? throw new \DomainException('Data missing for stubs.');
+        if (!isset($this->data->title)) {
+            throw new \DomainException('Data missing for stubs.');
+        }
+
+        return $this->data->title;
     }
 
     /**
@@ -101,7 +121,11 @@ class DrupalOrgIssue extends DrupalOrgObject
 
     public static function fromStub(\stdClass $data): DrupalOrgIssue
     {
-        $id = $data->id ?? throw new \InvalidArgumentException('ID is required');
+        if (!isset($data->id)) {
+            throw new \InvalidArgumentException('ID is required');
+        }
+
+        $id = $data->id;
         $instance = new static((int) $id);
         unset($data->id);
         $instance->stubData = $data;

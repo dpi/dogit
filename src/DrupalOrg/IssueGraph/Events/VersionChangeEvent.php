@@ -10,18 +10,18 @@ final class VersionChangeEvent implements IssueEventInterface
 {
     use IssueEventTrait;
 
-  protected string $to;
+    protected string $to;
 
-  protected string $from;
+    protected string $from;
 
-  protected DrupalOrgComment $comment;
+    protected DrupalOrgComment $comment;
 
-  public function __construct(DrupalOrgComment $comment, string $from, string $to)
+    public function __construct(DrupalOrgComment $comment, string $from, string $to)
     {
-      $this->comment = $comment;
-      $this->from = $from;
-      $this->to = $to;
-      foreach ([&$this->from, &$this->to] as &$version) {
+        $this->comment = $comment;
+        $this->from = $from;
+        $this->to = $to;
+        foreach ([&$this->from, &$this->to] as &$version) {
             $version = trim($version, " \t\n\r\0\x0B»");
             if (str_ends_with($version, '-dev')) {
                 $version = substr($version, 0, -4);

@@ -33,7 +33,11 @@ final class IssueMergeRequestOptions
         $instance->isHttp = $input->getOption(static::OPTION_HTTP);
 
         $nid = $input->getArgument(static::ARGUMENT_ISSUE_ID);
-        $instance->nid = (1 === preg_match('/^\d{1,10}$/m', $nid)) ? (int) $nid : throw new \UnexpectedValueException('Issue ID is not valid');
+        if (1 !== preg_match('/^\d{1,10}$/m', $nid)) {
+            throw new \UnexpectedValueException('Issue ID is not valid');
+        }
+        $instance->nid = (int) $nid;
+
         $instance->noHttpCache = (bool) $input->getOption(static::OPTION_NO_CACHE);
         $instance->single = (bool) $input->getOption(static::OPTION_SINGLE);
 

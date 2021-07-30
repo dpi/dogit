@@ -11,16 +11,15 @@ use Psr\Log\LoggerInterface;
 
 final class ValidateLocalRepositoryEvent extends DogitEvent implements StoppableEventInterface
 {
+    public GitCommandOptions $options;
 
-  public GitCommandOptions $options;
+    public LoggerInterface $logger;
 
-  public LoggerInterface $logger;
+    public string $gitDirectory;
 
-  public string $gitDirectory;
+    public GitOperator $gitIo;
 
-  public GitOperator $gitIo;
-
-  private bool $stop = false;
+    private bool $stop = false;
 
     public function __construct(
         GitOperator $gitIo,
@@ -28,10 +27,10 @@ final class ValidateLocalRepositoryEvent extends DogitEvent implements Stoppable
         LoggerInterface $logger,
         GitCommandOptions $options
     ) {
-      $this->gitIo = $gitIo;
-      $this->gitDirectory = $gitDirectory;
-      $this->logger = $logger;
-      $this->options = $options;
+        $this->gitIo = $gitIo;
+        $this->gitDirectory = $gitDirectory;
+        $this->logger = $logger;
+        $this->options = $options;
     }
 
     /**

@@ -10,17 +10,17 @@ final class IssueEvent implements IssueEventInterface
 {
     use IssueEventTrait;
 
-  protected DrupalOrgComment $comment;
+    protected DrupalOrgComment $comment;
 
-  protected array $data;
+    protected array $data;
 
-  /**
+    /**
      * @param mixed[] $data
      */
     public function __construct(DrupalOrgComment $comment, array $data)
     {
-      $this->data = $data;
-      $this->comment = $comment;
+        $this->data = $data;
+        $this->comment = $comment;
     }
 
     /**
@@ -28,12 +28,16 @@ final class IssueEvent implements IssueEventInterface
      */
     public static function fromRaw(DrupalOrgComment $comment, string $type, array $data): IssueEventInterface
     {
-        return match ($type) {
-            'Status' => new StatusChangeEvent($comment, ...$data),
-            'Version' => new VersionChangeEvent($comment, ...$data),
-            'Assigned' => new AssignmentChangeEvent($comment, ...$data),
-            default => new static($comment, $data),
-        };
+        switch ($type) {
+            case 'Status':
+              return new StatusChangeEvent($comment, ...$data);
+            case 'Version':
+              return new VersionChangeEvent($comment, ...$data);
+            case 'Assigned':
+              return new AssignmentChangeEvent($comment, ...$data);
+        }
+
+        return new static($comment, $data);
     }
 
     /**

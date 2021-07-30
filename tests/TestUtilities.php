@@ -15,8 +15,10 @@ class TestUtilities
 
         $contents = file_get_contents($fileName);
 
-        return false !== $contents
-            ? $contents
-            : throw new \Exception(sprintf('Unknown fixture `%s`', $fileName));
+        if (false === $contents) {
+            throw new \Exception(sprintf('Unknown fixture `%s`', $fileName));
+        }
+
+        return $contents;
     }
 }

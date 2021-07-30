@@ -10,11 +10,11 @@ final class CommentEvent implements IssueEventInterface
 {
     use IssueEventTrait;
 
-  protected DrupalOrgComment $comment;
+    protected DrupalOrgComment $comment;
 
-  public function __construct(DrupalOrgComment $comment)
+    public function __construct(DrupalOrgComment $comment)
     {
-      $this->comment = $comment;
+        $this->comment = $comment;
     }
 
     public function __toString(): string

@@ -22,12 +22,11 @@ final class IssueTimelineCommandOptions
 
         /** @var string $nid */
         $nid = $input->getArgument(static::ARGUMENT_ISSUE_ID);
-      if (preg_match('/^\d{1,10}$/m', $nid)) {
-        $instance->nid = (int) $nid;
-      }
-      else {
-        throw new \UnexpectedValueException('Issue ID is not valid');
-      }
+        if (preg_match('/^\d{1,10}$/m', $nid)) {
+            $instance->nid = (int) $nid;
+        } else {
+            throw new \UnexpectedValueException('Issue ID is not valid');
+        }
         $instance->noComments = (bool) $input->getOption(static::OPTION_NO_COMMENTS);
         $instance->noEvents = (bool) $input->getOption(static::OPTION_NO_EVENTS);
 

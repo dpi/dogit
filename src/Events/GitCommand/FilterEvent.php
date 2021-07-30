@@ -9,7 +9,19 @@ use Psr\Log\LoggerInterface;
 
 final class FilterEvent extends AbstractFilterEvent
 {
-    public function __construct(public array $patches, public LoggerInterface $logger, public GitCommandOptions $options, protected bool $failure = false)
+    public GitCommandOptions $options;
+
+    public LoggerInterface $logger;
+
+    public array $patches;
+
+    protected bool $failure = false;
+
+    public function __construct(array $patches, LoggerInterface $logger, GitCommandOptions $options, bool $failure = false)
     {
+        $this->patches = $patches;
+        $this->logger = $logger;
+        $this->options = $options;
+        $this->failure = $failure;
     }
 }

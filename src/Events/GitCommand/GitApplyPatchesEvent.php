@@ -13,20 +13,41 @@ use Symfony\Component\Console\Output\ConsoleOutputInterface;
 
 final class GitApplyPatchesEvent extends DogitEvent implements StoppableEventInterface
 {
+    public bool $linearMode;
+
+    public GitCommandOptions $options;
+
+    public DrupalOrgIssue $issue;
+
+    public ConsoleOutputInterface $output;
+
+    public InputInterface $input;
+
+    public GitOperator $gitIo;
+
+    public array $patches;
+
     private bool $failure = false;
 
     /**
      * @param \dogit\DrupalOrg\Objects\DrupalOrgPatch[] $patches
      */
     public function __construct(
-        public array $patches,
-        public GitOperator $gitIo,
-        public InputInterface $input,
-        public ConsoleOutputInterface $output,
-        public DrupalOrgIssue $issue,
-        public GitCommandOptions $options,
-        public bool $linearMode
+        array $patches,
+        GitOperator $gitIo,
+        InputInterface $input,
+        ConsoleOutputInterface $output,
+        DrupalOrgIssue $issue,
+        GitCommandOptions $options,
+        bool $linearMode
     ) {
+        $this->patches = $patches;
+        $this->gitIo = $gitIo;
+        $this->input = $input;
+        $this->output = $output;
+        $this->issue = $issue;
+        $this->options = $options;
+        $this->linearMode = $linearMode;
     }
 
     /**

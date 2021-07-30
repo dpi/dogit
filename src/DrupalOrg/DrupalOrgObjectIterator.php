@@ -15,15 +15,14 @@ use Psr\Log\LoggerInterface;
 
 class DrupalOrgObjectIterator
 {
+    protected LoggerInterface $logger;
 
-  protected LoggerInterface $logger;
+    protected DrupalApiInterface $api;
 
-  protected DrupalApiInterface $api;
-
-  public function __construct(DrupalApiInterface $api, LoggerInterface $logger)
+    public function __construct(DrupalApiInterface $api, LoggerInterface $logger)
     {
-      $this->api = $api;
-      $this->logger = $logger;
+        $this->api = $api;
+        $this->logger = $logger;
     }
 
     /**

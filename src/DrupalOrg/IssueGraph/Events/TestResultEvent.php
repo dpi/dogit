@@ -10,8 +10,17 @@ final class TestResultEvent implements IssueEventInterface
 {
     use IssueEventTrait;
 
-    public function __construct(protected DrupalOrgComment $comment, protected string $version, protected string $result)
+  protected string $result;
+
+  protected string $version;
+
+  protected DrupalOrgComment $comment;
+
+  public function __construct(DrupalOrgComment $comment, string $version, string $result)
     {
+      $this->comment = $comment;
+      $this->version = $version;
+      $this->result = $result;
     }
 
     public function version(): string

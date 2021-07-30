@@ -10,11 +10,24 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 
 final class TerminateEvent extends DogitEvent
 {
-    public function __construct(
-        public SymfonyStyle $io,
-        public LoggerInterface $logger,
-        public bool $isSuccess,
-        public DrupalOrgObjectRepository $repository,
+
+  public DrupalOrgObjectRepository $repository;
+
+  public bool $isSuccess;
+
+  public LoggerInterface $logger;
+
+  public SymfonyStyle $io;
+
+  public function __construct(
+        SymfonyStyle $io,
+        LoggerInterface $logger,
+        bool $isSuccess,
+        DrupalOrgObjectRepository $repository
     ) {
-    }
+    $this->io = $io;
+    $this->logger = $logger;
+    $this->isSuccess = $isSuccess;
+    $this->repository = $repository;
+  }
 }

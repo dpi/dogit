@@ -22,7 +22,7 @@ final class Statistics
         $objectCounter = [];
         foreach ($event->repository->all() as $object) {
             assert($object instanceof DrupalOrgObject);
-            $objectCounter[$object::class] = ($objectCounter[$object::class] ?? 0) + 1;
+            $objectCounter[get_class($object)] = ($objectCounter[get_class($object)] ?? 0) + 1;
         }
         $event->io->definitionList(
             'Object statistics',

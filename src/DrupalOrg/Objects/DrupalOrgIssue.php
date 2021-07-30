@@ -11,8 +11,12 @@ use Psr\Http\Message\ResponseInterface;
 
 class DrupalOrgIssue extends DrupalOrgObject
 {
-    public function __construct(protected int $id)
+
+  protected int $id;
+
+  public function __construct(int $id)
     {
+      $this->id = $id;
     }
 
     public function getCreated(): \DateTimeImmutable
@@ -95,7 +99,7 @@ class DrupalOrgIssue extends DrupalOrgObject
         }
     }
 
-    public static function fromStub(\stdClass $data): static
+    public static function fromStub(\stdClass $data): DrupalOrgIssue
     {
         $id = $data->id ?? throw new \InvalidArgumentException('ID is required');
         $instance = new static((int) $id);
@@ -106,7 +110,7 @@ class DrupalOrgIssue extends DrupalOrgObject
         return $instance;
     }
 
-    public static function fromResponse(ResponseInterface $response, DrupalOrgObjectRepository $repository): static
+    public static function fromResponse(ResponseInterface $response, DrupalOrgObjectRepository $repository): DrupalOrgIssue
     {
         $data = json_decode((string) $response->getBody());
         $instance = new static((int) $data->nid);

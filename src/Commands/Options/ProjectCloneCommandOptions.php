@@ -18,7 +18,7 @@ final class ProjectCloneCommandOptions
     public ?string $branch;
     public bool $isHttp;
 
-    public static function fromInput(InputInterface $input): static
+    public static function fromInput(InputInterface $input): ProjectCloneCommandOptions
     {
         $instance = new static();
 

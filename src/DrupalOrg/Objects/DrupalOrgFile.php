@@ -9,8 +9,12 @@ use Psr\Http\Message\ResponseInterface;
 
 class DrupalOrgFile extends DrupalOrgObject
 {
-    public function __construct(protected int $id)
+
+  protected int $id;
+
+  public function __construct(int $id)
     {
+      $this->id = $id;
     }
 
     public ?DrupalOrgObject $parent = null;
@@ -42,14 +46,14 @@ class DrupalOrgFile extends DrupalOrgObject
         return $this->parent;
     }
 
-    public function setParent(DrupalOrgObject $object): static
+    public function setParent(DrupalOrgObject $object): DrupalOrgFile
     {
         $this->parent = $object;
 
         return $this;
     }
 
-    public static function fromStub(\stdClass $data): static
+    public static function fromStub(\stdClass $data): DrupalOrgFile
     {
         $data->id ?? throw new \InvalidArgumentException('ID is required');
         $instance = new static((int) $data->id);
@@ -59,7 +63,7 @@ class DrupalOrgFile extends DrupalOrgObject
         return $instance;
     }
 
-    public static function fromResponse(ResponseInterface $response, DrupalOrgObjectRepository $repository): static
+    public static function fromResponse(ResponseInterface $response, DrupalOrgObjectRepository $repository): DrupalOrgFile
     {
         $data = json_decode((string) $response->getBody());
         $instance = new static((int) $data->fid);

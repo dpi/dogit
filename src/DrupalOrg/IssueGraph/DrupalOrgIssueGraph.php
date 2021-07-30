@@ -28,13 +28,19 @@ class DrupalOrgIssueGraph
 {
     protected AbstractBrowser $browser;
 
-    public function __construct(
+  protected DrupalOrgObjectRepository $repository;
+
+  protected string $uri;
+
+  public function __construct(
         RequestFactoryInterface $httpFactory,
         HttpAsyncClient $httpClient,
-        protected DrupalOrgObjectRepository $repository,
-        protected string $uri,
+        DrupalOrgObjectRepository $repository,
+        string $uri
     ) {
-        $this->browser = new HttplugBrowser($httpFactory, $httpClient);
+    $this->uri = $uri;
+    $this->repository = $repository;
+    $this->browser = new HttplugBrowser($httpFactory, $httpClient);
     }
 
     /**

@@ -25,7 +25,7 @@ final class IssueMergeRequestOptions
     public bool $noHttpCache;
     public bool $single;
 
-    public static function fromInput(InputInterface $input): static
+    public static function fromInput(InputInterface $input): IssueMergeRequestOptions
     {
         $instance = new static();
         $instance->cookies = $input->getOption(static::OPTION_COOKIE);

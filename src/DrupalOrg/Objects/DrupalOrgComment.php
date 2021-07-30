@@ -16,8 +16,11 @@ class DrupalOrgComment extends DrupalOrgObject
      */
     protected array $files;
 
-    public function __construct(protected int $id)
+  protected int $id;
+
+  public function __construct(int $id)
     {
+      $this->id = $id;
     }
 
     public function getCreated(): \DateTimeImmutable
@@ -41,7 +44,7 @@ class DrupalOrgComment extends DrupalOrgObject
     /**
      * @param \dogit\DrupalOrg\Objects\DrupalOrgFile[] $files
      */
-    public function setFiles(array $files): static
+    public function setFiles(array $files): DrupalOrgComment
     {
         // Rekey by ID so result of \dogit\Utility::getFilesFromComments is
         // usable with iterator_to_array without $preserve_keys = FALSE.
@@ -77,7 +80,7 @@ class DrupalOrgComment extends DrupalOrgObject
         return $this->sequence;
     }
 
-    public function setSequence(int $sequence): static
+    public function setSequence(int $sequence): DrupalOrgComment
     {
         $this->sequence = $sequence;
 
@@ -98,7 +101,7 @@ class DrupalOrgComment extends DrupalOrgObject
         ));
     }
 
-    public static function fromStub(\stdClass $data): static
+    public static function fromStub(\stdClass $data): DrupalOrgComment
     {
         $data->id ?? throw new \InvalidArgumentException('ID is required');
         // References from issues to comments are 'id' not 'cid'.
@@ -109,7 +112,7 @@ class DrupalOrgComment extends DrupalOrgObject
         return $instance;
     }
 
-    public static function fromResponse(ResponseInterface $response, DrupalOrgObjectRepository $repository): static
+    public static function fromResponse(ResponseInterface $response, DrupalOrgObjectRepository $repository): DrupalOrgComment
     {
         $data = json_decode((string) $response->getBody());
         // ID's in responses are 'cid', not 'id' per fromStub().

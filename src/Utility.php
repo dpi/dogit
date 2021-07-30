@@ -91,12 +91,12 @@ final class Utility
         foreach ($objects as $k => $object) {
             if (in_array(
                 $object->id(),
-                $registry[$object::class] ?? [],
+                $registry[get_class($object)] ?? [],
                 true
             )) {
                 unset($objects[$k]);
             }
-            $registry[$object::class][] = $object->id();
+            $registry[get_class($object)][] = $object->id();
         }
 
         return $objects;

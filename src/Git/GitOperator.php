@@ -10,8 +10,12 @@ use CzProject\GitPhp\GitRepository;
 
 final class GitOperator
 {
-    public function __construct(protected GitRepository $gitRepository)
+
+  protected GitRepository $gitRepository;
+
+  public function __construct(GitRepository $gitRepository)
     {
+      $this->gitRepository = $gitRepository;
     }
 
     public function isClean(): bool
@@ -94,7 +98,7 @@ final class GitOperator
                 '--quiet',
                 $branchName,
             ]);
-        } catch (GitException) {
+        } catch (GitException $ex) {
             return false;
         }
 
@@ -197,7 +201,7 @@ final class GitOperator
     /**
      * @throws \CzProject\GitPhp\GitException
      */
-    public static function fromDirectory(Git $git, string $directory): static
+    public static function fromDirectory(Git $git, string $directory): GitOperator
     {
         $repo = $git->open($directory);
 

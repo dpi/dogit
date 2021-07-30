@@ -25,7 +25,7 @@ final class GitApplyPatchesEvent extends DogitEvent implements StoppableEventInt
         public ConsoleOutputInterface $output,
         public DrupalOrgIssue $issue,
         public GitCommandOptions $options,
-        public bool $linearMode,
+        public bool $linearMode
     ) {
     }
 

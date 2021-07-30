@@ -8,8 +8,15 @@ use dogit\DrupalOrg\Objects\DrupalOrgPatch;
 
 final class GitResolver
 {
-    public function __construct(public DrupalOrgPatch $patch, public GitOperator $gitIo)
+
+  public DrupalOrgPatch $patch;
+
+  public GitOperator $gitIo;
+
+  public function __construct(DrupalOrgPatch $patch, GitOperator $gitIo)
     {
+      $this->gitIo = $gitIo;
+      $this->patch = $patch;
     }
 
     public function getHash(): string

@@ -43,7 +43,7 @@ final class GitCommandOptions
     /**
      * @throws \UnexpectedValueException
      */
-    public static function fromInput(InputInterface $input): static
+    public static function fromInput(InputInterface $input): GitCommandOptions
     {
         $instance = new static();
 

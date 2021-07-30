@@ -20,9 +20,12 @@ final class AssignmentChangeEvent implements IssueEventInterface
      */
     protected string $to;
 
-    public function __construct(protected DrupalOrgComment $comment, string $from, string $to)
+  protected DrupalOrgComment $comment;
+
+  public function __construct(DrupalOrgComment $comment, string $from, string $to)
     {
-        $this->from = trim($from, " \t\n\r\0\x0B»");
+      $this->comment = $comment;
+      $this->from = trim($from, " \t\n\r\0\x0B»");
         $this->to = trim($to, " \t\n\r\0\x0B»");
     }
 

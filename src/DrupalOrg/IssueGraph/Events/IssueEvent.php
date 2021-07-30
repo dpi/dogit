@@ -10,11 +10,17 @@ final class IssueEvent implements IssueEventInterface
 {
     use IssueEventTrait;
 
-    /**
+  protected DrupalOrgComment $comment;
+
+  protected array $data;
+
+  /**
      * @param mixed[] $data
      */
-    public function __construct(protected DrupalOrgComment $comment, protected array $data)
+    public function __construct(DrupalOrgComment $comment, array $data)
     {
+      $this->data = $data;
+      $this->comment = $comment;
     }
 
     /**

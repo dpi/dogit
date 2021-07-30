@@ -2,7 +2,7 @@
     "name": "dpi/dogit",
     "type": "application",
     "require": {
-        "php": "^8",
+        "php": ">=7.4|^8",
         "ext-dom": "*",
         "ext-json": "*",
         "composer/semver": "^3.2",

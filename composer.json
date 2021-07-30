@@ -5,6 +5,7 @@
         "php": ">=7.4|^8",
         "ext-dom": "*",
         "ext-json": "*",
+        "benmorel/weakmap-polyfill": "^0.2.0",
         "composer/semver": "^3.2",
         "czproject/git-php": "^4.0",
         "guzzlehttp/guzzle": "^7.3",

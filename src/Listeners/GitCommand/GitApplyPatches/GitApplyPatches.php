@@ -140,9 +140,10 @@ final class GitApplyPatches
                     $patch->getParent()->getCreated()->format('r'),
                 ));
                 $io->block(
-                    messages: strip_tags($patch->getParent()->getComment()),
-                    style: 'fg=yellow',
-                    prefix: ' > ',
+                    strip_tags($patch->getParent()->getComment()),
+                    null,
+                    'fg=yellow',
+                    ' > ',
                 );
                 $logger->error("Patch code {exit_code}, output follows:\n{output}", [
                     'exit_code' => $code,

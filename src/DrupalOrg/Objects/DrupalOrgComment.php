@@ -16,14 +16,23 @@ class DrupalOrgComment extends DrupalOrgObject
      */
     protected array $files;
 
-    public function __construct(protected int $id)
+    protected int $id;
+
+    public function __construct(int $id)
     {
+        $this->id = $id;
     }
 
     public function getCreated(): \DateTimeImmutable
     {
-        !$this->isStub ?: throw new \DomainException('Data missing for stubs.');
-        $timestamp = $this->data->created ?? throw new \DomainException('Missing created date');
+        if ($this->isStub) {
+            throw new \DomainException('Data missing for stubs.');
+        }
+        if (!isset($this->data->created)) {
+            throw new \DomainException('Missing created date');
+        }
+
+        $timestamp = $this->data->created;
 
         return new \DateTimeImmutable('@' . $timestamp);
     }
@@ -33,7 +42,9 @@ class DrupalOrgComment extends DrupalOrgObject
      */
     public function getFiles(): array
     {
-        $this->files ?? throw new \DomainException('Data missing for stubs.');
+        if (isset($this->files)) {
+            throw new \DomainException('Data missing for stubs.');
+        }
 
         return $this->files;
     }
@@ -41,7 +52,7 @@ class DrupalOrgComment extends DrupalOrgObject
     /**
      * @param \dogit\DrupalOrg\Objects\DrupalOrgFile[] $files
      */
-    public function setFiles(array $files): static
+    public function setFiles(array $files): DrupalOrgComment
     {
         // Rekey by ID so result of \dogit\Utility::getFilesFromComments is
         // usable with iterator_to_array without $preserve_keys = FALSE.
@@ -57,17 +68,27 @@ class DrupalOrgComment extends DrupalOrgObject
 
     public function getAuthorName(): string
     {
-        return $this->data->name ?? throw new \DomainException('Data missing for stubs.');
+        if (!isset($this->data->name)) {
+            throw new \DomainException('Data missing for stubs.');
+        }
+
+        return $this->data->name;
     }
 
     public function getAuthorId(): int
     {
-        return (int) ($this->data->author->id ?? throw new \DomainException('Data missing for stubs.'));
+        if (isset($this->data->author->id)) {
+            throw new \DomainException('Data missing for stubs.');
+        }
+
+        return (int) $this->data->author->id;
     }
 
     public function getIssue(): DrupalOrgIssue
     {
-        !$this->isStub ?: throw new \DomainException('Data missing for stubs.');
+        if ($this->isStub) {
+            throw new \DomainException('Data missing for stubs.');
+        }
 
         return $this->repository->share(DrupalOrgIssue::fromStub($this->data->node));
     }
@@ -77,7 +98,7 @@ class DrupalOrgComment extends DrupalOrgObject
         return $this->sequence;
     }
 
-    public function setSequence(int $sequence): static
+    public function setSequence(int $sequence): DrupalOrgComment
     {
         $this->sequence = $sequence;
 
@@ -86,7 +107,11 @@ class DrupalOrgComment extends DrupalOrgObject
 
     public function getComment(): string
     {
-        return $this->data->comment_body->value ?? throw new \DomainException('Data missing for stubs.');
+        if (!isset($this->data->comment_body->value)) {
+            throw new \DomainException('Data missing for stubs.');
+        }
+
+        return $this->data->comment_body->value;
     }
 
     public function importResponse(ResponseInterface $response): void
@@ -98,9 +123,11 @@ class DrupalOrgComment extends DrupalOrgObject
         ));
     }
 
-    public static function fromStub(\stdClass $data): static
+    public static function fromStub(\stdClass $data): DrupalOrgComment
     {
-        $data->id ?? throw new \InvalidArgumentException('ID is required');
+        if (!isset($data->id)) {
+            throw new \InvalidArgumentException('ID is required');
+        }
         // References from issues to comments are 'id' not 'cid'.
         $instance = new static((int) $data->id);
         $instance->stubData = $data;
@@ -109,7 +136,7 @@ class DrupalOrgComment extends DrupalOrgObject
         return $instance;
     }
 
-    public static function fromResponse(ResponseInterface $response, DrupalOrgObjectRepository $repository): static
+    public static function fromResponse(ResponseInterface $response, DrupalOrgObjectRepository $repository): DrupalOrgComment
     {
         $data = json_decode((string) $response->getBody());
         // ID's in responses are 'cid', not 'id' per fromStub().

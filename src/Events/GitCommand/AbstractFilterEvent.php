@@ -9,11 +9,20 @@ use Psr\Log\LoggerInterface;
 
 abstract class AbstractFilterEvent extends DogitEvent implements StoppableEventInterface
 {
+    public LoggerInterface $logger;
+
+    protected array $patches;
+
+    protected bool $failure = false;
+
     /**
      * @param \dogit\DrupalOrg\Objects\DrupalOrgPatch[] $patches
      */
-    public function __construct(protected array $patches, public LoggerInterface $logger, protected bool $failure = false)
+    public function __construct(array $patches, LoggerInterface $logger, bool $failure = false)
     {
+        $this->failure = $failure;
+        $this->logger = $logger;
+        $this->patches = $patches;
     }
 
     /**
@@ -29,7 +38,7 @@ abstract class AbstractFilterEvent extends DogitEvent implements StoppableEventI
      *
      * @return $this
      */
-    public function setPatches(array $patches): static
+    public function setPatches(array $patches): AbstractFilterEvent
     {
         $this->patches = $patches;
 
@@ -43,7 +52,7 @@ abstract class AbstractFilterEvent extends DogitEvent implements StoppableEventI
      *
      * @return $this
      */
-    public function filter(callable $callback): static
+    public function filter(callable $callback): AbstractFilterEvent
     {
         $this->setPatches(array_filter(
             $this->getPatches(),

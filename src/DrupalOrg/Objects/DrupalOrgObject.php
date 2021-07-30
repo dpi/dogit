@@ -24,7 +24,11 @@ abstract class DrupalOrgObject
 
     public function url(): string
     {
-        return !$this->isStub ? $this->data->url : throw new \DomainException('Data missing for stubs.');
+        if ($this->isStub) {
+            throw new \DomainException('Data missing for stubs.');
+        }
+
+        return $this->data->url;
     }
 
     public function isStub(): bool
@@ -44,17 +48,17 @@ abstract class DrupalOrgObject
     /**
      * @return $this
      */
-    public function setRepository(DrupalOrgObjectRepository $repository): static
+    public function setRepository(DrupalOrgObjectRepository $repository): DrupalOrgObject
     {
         $this->repository = $repository;
 
         return $this;
     }
 
-    abstract public static function fromStub(\stdClass $data): static;
+    abstract public static function fromStub(\stdClass $data): DrupalOrgObject;
 
     /**
      * Creates a new object.
      */
-    abstract public static function fromResponse(ResponseInterface $response, DrupalOrgObjectRepository $repository): static;
+    abstract public static function fromResponse(ResponseInterface $response, DrupalOrgObjectRepository $repository): DrupalOrgObject;
 }

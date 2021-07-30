@@ -10,8 +10,17 @@ final class VersionChangeEvent implements IssueEventInterface
 {
     use IssueEventTrait;
 
-    public function __construct(protected DrupalOrgComment $comment, protected string $from, protected string $to)
+    protected string $to;
+
+    protected string $from;
+
+    protected DrupalOrgComment $comment;
+
+    public function __construct(DrupalOrgComment $comment, string $from, string $to)
     {
+        $this->comment = $comment;
+        $this->from = $from;
+        $this->to = $to;
         foreach ([&$this->from, &$this->to] as &$version) {
             $version = trim($version, " \t\n\r\0\x0B»");
             if (str_ends_with($version, '-dev')) {

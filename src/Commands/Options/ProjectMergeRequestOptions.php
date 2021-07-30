@@ -26,7 +26,7 @@ final class ProjectMergeRequestOptions
     public bool $onlyMerged;
     public bool $noHttpCache;
 
-    public static function fromInput(InputInterface $input): static
+    public static function fromInput(InputInterface $input): ProjectMergeRequestOptions
     {
         $instance = new static();
 

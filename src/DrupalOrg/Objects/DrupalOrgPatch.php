@@ -14,7 +14,7 @@ class DrupalOrgPatch extends DrupalOrgFile
         return $this->version;
     }
 
-    public function setVersion(string $version): static
+    public function setVersion(string $version): DrupalOrgPatch
     {
         $this->version = $version;
 
@@ -26,7 +26,7 @@ class DrupalOrgPatch extends DrupalOrgFile
         return $this->patchContents;
     }
 
-    public function setContents(string $data): static
+    public function setContents(string $data): DrupalOrgPatch
     {
         $this->patchContents = $data;
 
@@ -41,7 +41,7 @@ class DrupalOrgPatch extends DrupalOrgFile
         return $parent;
     }
 
-    public static function fromFile(DrupalOrgFile $file): static
+    public static function fromFile(DrupalOrgFile $file): DrupalOrgPatch
     {
         if ($file->isStub) {
             $patch = static::fromStub($file->stubData);

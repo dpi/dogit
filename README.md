@@ -18,7 +18,7 @@ composer global require dpi/dogit
 
 Various commands are included:
 
- - [**Convert** a Drupal.org issue with existing patches to a Git branch][wiki-GitCommand], ready to be pushed as a new merge request, as `dogit git ISSUE-ID`.
+ - [**Convert** a Drupal.org issue with existing patches to a Git branch][wiki-PatchToBranch], ready to be pushed as a new merge request, as `dogit git ISSUE-ID`.
  - [Interactively **clone** or **checkout** a merge request of a project][wiki-ProjectMergeRequest], as `dogit project:mr PROJECT`.
  - [Interactively **clone** or **checkout** a merge request of an issue][wiki-IssueMergeRequest], as `dogit issue:mr ISSUE-ID`.
  - [**Clone** a project][wiki-ProjectCloneCommand], as `dogit project:clone PROJECT`.
@@ -30,7 +30,7 @@ _Drupal is a registered trademark of Dries Buytaert._
 
 [ci]: https://github.com/dpi/dogit/actions
 [code-coverage]: https://app.codecov.io/gh/dpi/dogit
-[wiki-GitCommand]: https://github.com/dpi/dogit/wiki/Issue-Patches-to-Git-Branch-Command
+[wiki-PatchToBranch]: https://github.com/dpi/dogit/wiki/Issue-Patches-to-Git-Branch-Command
 [wiki-ProjectMergeRequest]: https://github.com/dpi/dogit/wiki/Project-Merge-Request-Command
 [wiki-IssueMergeRequest]: https://github.com/dpi/dogit/wiki/Issue-Merge-Request-Command
 [wiki-ProjectCloneCommand]: https://github.com/dpi/dogit/wiki/Clone-Project-Command

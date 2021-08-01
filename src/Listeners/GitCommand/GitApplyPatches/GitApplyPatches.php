@@ -178,7 +178,7 @@ final class GitApplyPatches
                 ['--message', sprintf(
                     "Patch #%s on %s\n\nPatch URL: %s\nComment URL: %s\nIssue URL: %s\nPatch uploaded by %s\nCommit built with dogit.dev",
                     $patch->getParent()->getSequence(),
-                    $patch->getVersion(),
+                    $patch->getGitReference(),
                     $patch->getUrl(),
                     $patch->getParent()->url(),
                     $issue->url(),

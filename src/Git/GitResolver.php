@@ -21,7 +21,7 @@ final class GitResolver
             '-1',
             sprintf('--before="%s"', $created->getTimestamp()),
             // e.g 'remotes/origin/9.1.x'.
-            sprintf('remotes/origin/%s', $this->patch->getVersion()),
+            sprintf('remotes/origin/%s', $this->patch->getGitReference()),
         ]);
 
         if (!$return) {

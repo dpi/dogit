@@ -11,6 +11,7 @@ use GuzzleHttp\Cookie\SetCookie;
 use GuzzleHttp\HandlerStack;
 use GuzzleHttp\MessageFormatter;
 use GuzzleHttp\Middleware;
+use GuzzleHttp\RequestOptions;
 use Http\Adapter\Guzzle7\Client;
 use Http\Discovery\Psr17FactoryDiscovery;
 use Kevinrob\GuzzleCache\CacheMiddleware;
@@ -32,7 +33,7 @@ trait HttpTrait
     {
         $this->handlerStack()->push(Middleware::log(
             $logger,
-            new MessageFormatter('{method} {code} <href={uri}>{uri}</>'),
+            new MessageFormatter('{method} {code} <href={uri}>{uri}</> [Cache {res_header_' . strtolower(CacheMiddleware::HEADER_CACHE_INFO) . '}]'),
             LogLevel::DEBUG,
         ));
 
@@ -49,10 +50,12 @@ trait HttpTrait
         $httpFactory = Psr17FactoryDiscovery::findRequestFactory();
         $httpAsyncClient = new Client(new GuzzleClient([
             'handler' => $this->handlerStack(),
-            'cookies' => $cookieJar,
-            'headers' => [
+            RequestOptions::COOKIES => $cookieJar,
+            RequestOptions::HEADERS => [
                 'User-Agent' => 'Dogit www.dogit.dev',
+                'max-stale' => 3600,
             ],
+            RequestOptions::DELAY => 5000,
         ]));
 
         return [$httpFactory, $httpAsyncClient];

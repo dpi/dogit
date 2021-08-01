@@ -115,12 +115,17 @@ final class GitCommand extends Command
         $io->writeln('Computing versions of patches');
         $event = new VersionEvent($patches, $issueEvents, $objectIterator, $logger);
         $dispatcher->dispatch($event, 'version');
+        if ($event->isPropagationStopped()) {
+            $io->error('Version computation failed.');
+
+            return static::FAILURE;
+        }
 
         $io->writeln('Filtering patches');
-        $event = new FilterEvent($patches, $logger, $options);
+        $event = new FilterEvent($patches, $issueEvents, $logger, $options);
         $dispatcher->dispatch($event, 'filter');
         if ($event->isPropagationStopped()) {
-            $io->error('Patch fitlering failed.');
+            $io->error('Patch filtering failed.');
 
             return static::FAILURE;
         }
@@ -128,7 +133,17 @@ final class GitCommand extends Command
         $trunk = $event->getPatches();
 
         $io->writeln('Downloading patch files');
-        $objectIterator->downloadPatchFiles($trunk);
+        try {
+            $objectIterator->downloadPatchFiles($trunk);
+        } catch (\Exception $e) {
+            if ($e instanceof \Http\Client\Exception\HttpException) {
+                $io->error(sprintf('Failed to download patch files: Got %s requesting %s', $e->getResponse()->getStatusCode(), (string) $e->getRequest()->getUri()));
+            } else {
+                $io->error(sprintf('Failed to download patch files: %s', $e->getMessage()));
+            }
+
+            return static::FAILURE;
+        }
 
         $io->writeln('Filtering patches by response');
         $event = new FilterByResponseEvent($trunk, $logger);
@@ -162,8 +177,8 @@ final class GitCommand extends Command
         }
 
         $io->writeln('Creating local branch');
-        $initalVersion = reset($trunk)->getVersion();
-        $event = new GitBranchEvent($gitIo, $logger, $issue, $options, $initalVersion);
+        $initialGitReference = reset($trunk)->getGitReference();
+        $event = new GitBranchEvent($gitIo, $logger, $issue, $options, $initialGitReference);
         $dispatcher->dispatch($event, 'git_branch_create');
         if ($event->isPropagationStopped()) {
             $io->error('Failed to create local branch.');

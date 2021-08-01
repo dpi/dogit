@@ -13,7 +13,7 @@ final class GitBranch
         $branchName = $event->options->branchName;
 
         if (empty($branchName)) {
-            $branchName = 'dogit-' . $event->issue->id() . '-' . $event->initalVersion;
+            $branchName = 'dogit-' . $event->issue->id() . '-' . $event->initialGitReference;
         }
 
         $deleteBranchName = null;
@@ -34,9 +34,9 @@ final class GitBranch
             }
         }
 
-        $event->logger->info(sprintf('Starting branch at %s', $event->initalVersion));
+        $event->logger->info(sprintf('Starting branch at %s', $event->initialGitReference));
         $event->gitIo->clean();
-        $event->gitIo->checkoutNew($branchName, 'origin/' . $event->initalVersion);
+        $event->gitIo->checkoutNew($branchName, 'origin/' . $event->initialGitReference);
         $event->logger->info('Checked out branch: ' . $branchName);
 
         if ($deleteBranchName) {

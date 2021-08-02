@@ -21,7 +21,7 @@
         "phpspec/prophecy": "^1.13",
         "phpspec/prophecy-phpunit": "^2.0",
         "psr/http-client": "^1.0",
-        "psr/log": "^1.1",
+        "psr/log": "^2.0",
         "symfony/browser-kit": "^5.3",
         "symfony/console": "^5.3",
         "symfony/css-selector": "^5.3",

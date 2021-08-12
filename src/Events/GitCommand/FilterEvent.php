@@ -13,7 +13,7 @@ final class FilterEvent extends AbstractFilterEvent
      * @param \dogit\DrupalOrg\Objects\DrupalOrgPatch[] $patches
      * @param \dogit\DrupalOrg\IssueGraph\Events\IssueEventInterface[] $issueEvents
      */
-    public function __construct(public array $patches, public array $issueEvents, public LoggerInterface $logger, public GitCommandOptions $options, protected bool $failure = false)
+    public function __construct(public array $patches, public array $issueEvents, public LoggerInterface $logger, public GitCommandOptions $options)
     {
     }
 }

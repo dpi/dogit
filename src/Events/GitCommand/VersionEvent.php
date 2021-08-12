@@ -10,6 +10,8 @@ use Psr\Log\LoggerInterface;
 
 final class VersionEvent extends DogitEvent implements StoppableEventInterface
 {
+    protected bool $failure = false;
+
     /**
      * @param \dogit\DrupalOrg\Objects\DrupalOrgPatch[] $patches
      * @param \dogit\DrupalOrg\IssueGraph\Events\IssueEventInterface[] $issueEvents
@@ -19,7 +21,6 @@ final class VersionEvent extends DogitEvent implements StoppableEventInterface
         public array $issueEvents,
         public DrupalOrgObjectIterator $objectIterator,
         public LoggerInterface $logger,
-        protected bool $failure = false,
     ) {
     }
 

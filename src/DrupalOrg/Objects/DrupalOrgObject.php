@@ -34,11 +34,15 @@ abstract class DrupalOrgObject
 
     /**
      * Imports data into this instance.
+     *
+     * @return $this
      */
-    public function importResponse(ResponseInterface $response): void
+    public function importResponse(ResponseInterface $response): static
     {
         $this->data = \json_decode((string) $response->getBody());
         $this->isStub = false;
+
+        return $this;
     }
 
     /**

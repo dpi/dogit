@@ -346,4 +346,23 @@ class UtilityTest extends TestCase
             'invalid constraint 19' => ['=', 100, null],
         ];
     }
+
+    /**
+     * @covers ::normalizeGitReferenceVersion
+     */
+    public function testNormalizeGitReferenceVersion(): void
+    {
+        $this->assertEquals('8.0.x', Utility::normalizeGitReferenceVersion('8.x'));
+        $this->assertEquals('8.1.x', Utility::normalizeGitReferenceVersion('8.1.x'));
+    }
+
+    /**
+     * @covers ::normalizeSemverVersion
+     */
+    public function testNormalizeSemverVersion(): void
+    {
+        $this->assertEquals('8.0.x', Utility::normalizeSemverVersion('8.x'));
+        $this->assertEquals('1.x', Utility::normalizeSemverVersion('8.x-1.x'));
+        $this->assertEquals('2.x', Utility::normalizeSemverVersion('2.x'));
+    }
 }

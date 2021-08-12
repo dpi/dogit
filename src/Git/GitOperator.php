@@ -16,7 +16,7 @@ final class GitOperator
 
     public function isClean(): bool
     {
-        return !empty($this->gitRepository->execute('status', '--porcelain'));
+        return empty($this->gitRepository->execute('status', '--porcelain'));
     }
 
     public function resetHard(?string $treeIsh = null): bool

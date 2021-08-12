@@ -89,13 +89,15 @@ class DrupalOrgComment extends DrupalOrgObject
         return $this->data->comment_body->value ?? throw new \DomainException('Data missing for stubs.');
     }
 
-    public function importResponse(ResponseInterface $response): void
+    public function importResponse(ResponseInterface $response): static
     {
         parent::importResponse($response);
         $this->setFiles(array_map(
             fn (\stdClass $file): DrupalOrgFile => $this->repository->share(DrupalOrgFile::fromStub($file)),
             $this->data->comment_files ?? [],
         ));
+
+        return $this;
     }
 
     public static function fromStub(\stdClass $data): static

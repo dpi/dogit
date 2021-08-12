@@ -9,14 +9,12 @@ use Psr\Log\LoggerInterface;
 
 abstract class AbstractFilterEvent extends DogitEvent implements StoppableEventInterface
 {
-    protected bool $failure = false;
-
     /**
-     * @param \dogit\DrupalOrg\Objects\DrupalOrgPatch[] $patches
+     * @var \dogit\DrupalOrg\Objects\DrupalOrgPatch[]
      */
-    public function __construct(protected array $patches, public LoggerInterface $logger)
-    {
-    }
+    protected array $patches = [];
+    public LoggerInterface $logger;
+    protected bool $failure = false;
 
     /**
      * @return \dogit\DrupalOrg\Objects\DrupalOrgPatch[]

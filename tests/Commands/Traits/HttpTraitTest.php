@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace dogit\tests\Commands;
+namespace dogit\tests\Commands\Traits;
 
 use dogit\Commands\Traits\HttpTrait;
 use GuzzleHttp\Promise\FulfilledPromise;

@@ -35,7 +35,7 @@ trait HttpTrait
             $logger,
             new MessageFormatter('{method} {code} <href={uri}>{uri}</> [Cache {res_header_' . strtolower(CacheMiddleware::HEADER_CACHE_INFO) . '}]'),
             LogLevel::DEBUG,
-        ));
+        ), 'logger');
 
         if (!$noHttpCache) {
             $dir = '/tmp/dogit/http_cache/';

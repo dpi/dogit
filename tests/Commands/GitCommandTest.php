@@ -33,7 +33,10 @@ final class GitCommandTest extends TestCase
     }
 
     /**
+     * @covers ::__construct
      * @covers ::execute
+     * @covers ::getIssueEvents
+     * @covers ::setupListeners
      */
     public function testCommand(): void
     {

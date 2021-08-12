@@ -8,6 +8,11 @@ use dogit\Events\GitCommand\GitBranchEvent;
 
 final class GitBranch
 {
+    /**
+     * @var callable|null
+     */
+    public $branchToDeleteSuffixGenerator = null;
+
     public function __invoke(GitBranchEvent $event): void
     {
         $branchName = $event->options->branchName;
@@ -49,6 +54,8 @@ final class GitBranch
 
     private function branchToDeleteSuffix(string $branchName): string
     {
-        return $branchName . '-to-delete-' . (string) time();
+        return $this->branchToDeleteSuffixGenerator
+            ? ($this->branchToDeleteSuffixGenerator)($branchName)
+            : $branchName . '-to-delete-' . (string) time();
     }
 }

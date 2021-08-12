@@ -10,6 +10,8 @@ use dogit\DrupalOrg\Objects\DrupalOrgObject;
 use dogit\DrupalOrg\Objects\DrupalOrgPatch;
 use dogit\Utility;
 use GuzzleHttp\Promise\EachPromise;
+use GuzzleHttp\Promise\Promise as GuzzlePromise;
+use Http\Client\Exception\HttpException;
 use Http\Promise\Promise;
 use Psr\Log\LoggerInterface;
 
@@ -93,6 +95,8 @@ class DrupalOrgObjectIterator
      * @return \dogit\DrupalOrg\Objects\DrupalOrgPatch[]
      *   It's not necessary to use return value, can re-use $patches. Though return
      *   value will have its objects de-duplicated.
+     *
+     * @throws \Exception
      */
     public function downloadPatchFiles(array $patches): array
     {
@@ -124,6 +128,8 @@ class DrupalOrgObjectIterator
      * @param \Http\Promise\Promise[]|iterable $promises
      *
      * @return \GuzzleHttp\Psr7\Response[]
+     *
+     * @throws \GuzzleHttp\Promise\RejectionException
      */
     protected function unwrap(iterable $promises)
     {
@@ -132,6 +138,9 @@ class DrupalOrgObjectIterator
             'concurrency' => 4,
             'fulfilled' => function ($response, $key) use (&$responses) {
                 $responses[$key] = $response;
+            },
+            'rejected' => function (HttpException $reason, int $key, GuzzlePromise $aggregate) {
+                $aggregate->reject('A request failed: ' . $reason->getMessage());
             },
         ]))->promise()->wait();
 

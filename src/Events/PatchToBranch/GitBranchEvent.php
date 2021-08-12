@@ -19,7 +19,7 @@ final class GitBranchEvent extends DogitEvent implements StoppableEventInterface
         public LoggerInterface $logger,
         public DrupalOrgIssue $issue,
         public PatchToBranchOptions $options,
-        public string $initalVersion,
+        public string $initialGitReference,
     ) {
     }
 

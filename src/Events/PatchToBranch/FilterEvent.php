@@ -9,7 +9,11 @@ use Psr\Log\LoggerInterface;
 
 final class FilterEvent extends AbstractFilterEvent
 {
-    public function __construct(public array $patches, public LoggerInterface $logger, public PatchToBranchOptions $options, protected bool $failure = false)
+    /**
+     * @param \dogit\DrupalOrg\Objects\DrupalOrgPatch[] $patches
+     * @param \dogit\DrupalOrg\IssueGraph\Events\IssueEventInterface[] $issueEvents
+     */
+    public function __construct(public array $patches, public array $issueEvents, public LoggerInterface $logger, public PatchToBranchOptions $options)
     {
     }
 }

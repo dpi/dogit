@@ -7,7 +7,8 @@ namespace dogit\DrupalOrg\Objects;
 class DrupalOrgPatch extends DrupalOrgFile
 {
     protected string $version;
-    protected ?string $patchContents;
+    protected string $gitReference;
+    protected ?string $patchContents = null;
 
     public function getVersion(): string
     {
@@ -21,9 +22,25 @@ class DrupalOrgPatch extends DrupalOrgFile
         return $this;
     }
 
+    public function getGitReference(): string
+    {
+        return $this->gitReference;
+    }
+
+    public function setGitReference(string $gitReference): static
+    {
+        $this->gitReference = $gitReference;
+
+        return $this;
+    }
+
+    /**
+     * @throws \LogicException
+     *   Throws a logic exception as we expect code to know whether patch has contents set or not
+     */
     public function getContents(): ?string
     {
-        return $this->patchContents;
+        return $this->patchContents ?? throw new \LogicException('Missing patch contents');
     }
 
     public function setContents(string $data): static

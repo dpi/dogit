@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace dogit\tests;
 
 use GuzzleHttp\Exception\InvalidArgumentException;
+use GuzzleHttp\Exception\RequestException;
 use GuzzleHttp\Promise\FulfilledPromise;
 use GuzzleHttp\Promise\PromiseInterface;
 use GuzzleHttp\Psr7\Response;
@@ -47,7 +48,12 @@ final class DogitGuzzleTestMiddleware
                 );
             }
 
-            if (str_contains($path, '/api-d7/file/')) {
+            if (str_contains($path, '/api-d7/file/22220999.json')) {
+                $response = new Response(404, [
+                    'Content-Type' => 'text/html',
+                ], 'NOT FOUND!!!!!!!');
+                throw RequestException::create($request, $response, null, [], null);
+            } elseif (str_contains($path, '/api-d7/file/')) {
                 preg_match('/\/api-d7\/file\/(?<fid>\d+)\.json/', $path, $matches);
                 ['fid' => $fid] = $matches;
 

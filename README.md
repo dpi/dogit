@@ -18,7 +18,7 @@ composer global require dpi/dogit
 
 Various commands are included:
 
- - [**Convert** a Drupal.org issue with existing patches to a Git branch][wiki-PatchToBranch], ready to be pushed as a new merge request, as `dogit git ISSUE-ID`.
+ - [**Convert** a Drupal.org issue with existing patches to a Git branch][wiki-PatchToBranch], ready to be pushed as a new merge request, as `dogit convert ISSUE-ID`.
  - [Interactively **clone** or **checkout** a merge request of a project][wiki-ProjectMergeRequest], as `dogit project:mr PROJECT`.
  - [Interactively **clone** or **checkout** a merge request of an issue][wiki-IssueMergeRequest], as `dogit issue:mr ISSUE-ID`.
  - [**Clone** a project][wiki-ProjectCloneCommand], as `dogit project:clone PROJECT`.

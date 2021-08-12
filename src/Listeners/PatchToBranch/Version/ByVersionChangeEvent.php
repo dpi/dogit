@@ -21,7 +21,10 @@ final class ByVersionChangeEvent
         foreach ($event->patches as $patch) {
             // Version for patch at this point is the estimated version from the graph, which is in turn
             // based off issue version changes.
-            $patch->setVersion(Utility::versionAt($event->objectIterator, $patch->getParent()->getCreated(), $versionChangeEvents));
+            $version = Utility::versionAt($event->objectIterator, $patch->getParent()->getCreated(), $versionChangeEvents);
+            $patch
+                ->setVersion(Utility::normalizeSemverVersion($version))
+                ->setGitReference(Utility::normalizeGitReferenceVersion($version));
         }
     }
 }

@@ -213,4 +213,25 @@ final class Utility
 
         return $filters;
     }
+
+    public static function normalizeGitReferenceVersion(string $version): string
+    {
+        // Handles when issue version for old Drupal core versions are like '8.x-dev'.
+        if ('8.x' === $version) {
+            return '8.0.x';
+        }
+
+        return $version;
+    }
+
+    public static function normalizeSemverVersion(string $version): string
+    {
+        if ('8.x' === $version) {
+            return '8.0.x';
+        } elseif (str_starts_with($version, '8.x-')) {
+            return substr($version, 4);
+        }
+
+        return $version;
+    }
 }

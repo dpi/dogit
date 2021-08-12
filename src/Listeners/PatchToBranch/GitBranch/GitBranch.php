@@ -8,12 +8,17 @@ use dogit\Events\PatchToBranch\GitBranchEvent;
 
 final class GitBranch
 {
+    /**
+     * @var callable|null
+     */
+    public $branchToDeleteSuffixGenerator = null;
+
     public function __invoke(GitBranchEvent $event): void
     {
         $branchName = $event->options->branchName;
 
         if (empty($branchName)) {
-            $branchName = 'dogit-' . $event->issue->id() . '-' . $event->initalVersion;
+            $branchName = 'dogit-' . $event->issue->id() . '-' . $event->initialGitReference;
         }
 
         $deleteBranchName = null;
@@ -34,9 +39,9 @@ final class GitBranch
             }
         }
 
-        $event->logger->info(sprintf('Starting branch at %s', $event->initalVersion));
+        $event->logger->info(sprintf('Starting branch at %s', $event->initialGitReference));
         $event->gitIo->clean();
-        $event->gitIo->checkoutNew($branchName, 'origin/' . $event->initalVersion);
+        $event->gitIo->checkoutNew($branchName, 'origin/' . $event->initialGitReference);
         $event->logger->info('Checked out branch: ' . $branchName);
 
         if ($deleteBranchName) {
@@ -49,6 +54,8 @@ final class GitBranch
 
     private function branchToDeleteSuffix(string $branchName): string
     {
-        return $branchName . '-to-delete-' . (string) time();
+        return $this->branchToDeleteSuffixGenerator
+            ? ($this->branchToDeleteSuffixGenerator)($branchName)
+            : $branchName . '-to-delete-' . (string) time();
     }
 }

@@ -34,6 +34,7 @@ final class PatchToBranchTest extends TestCase
 
     /**
      * @covers ::__construct
+     * @covers ::configure
      * @covers ::execute
      * @covers ::getIssueEvents
      * @covers ::setupListeners

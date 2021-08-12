@@ -214,7 +214,7 @@ final class Utility
         return $filters;
     }
 
-    public static function normalizeSemverVersion(string $version)
+    public static function normalizeSemverVersion(string $version): string
     {
         if ('8.x' === $version) {
             return '8.0.x';
@@ -225,7 +225,7 @@ final class Utility
         return $version;
     }
 
-    public static function normalizeGitReferenceVersion(string $version)
+    public static function normalizeGitReferenceVersion(string $version): string
     {
         // Handles when issue version for old Drupal core versions are like '8.x-dev'.
         if ('8.x' === $version) {

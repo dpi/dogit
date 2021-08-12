@@ -8,6 +8,7 @@ use Composer\Semver\Semver;
 use dogit\DrupalOrg\IssueGraph\Events\IssueEventInterface;
 use dogit\DrupalOrg\IssueGraph\Events\TestResultEvent;
 use dogit\Events\GitCommand\VersionEvent;
+use dogit\Utility;
 
 final class ByTestResultsEvent
 {
@@ -35,9 +36,7 @@ final class ByTestResultsEvent
                     $satisfied = count(array_filter(
                         $testResults,
                         fn (TestResultEvent $testResult) => Semver::satisfies(
-//                            $testResult->version() . '-dev',
-                            \dogit\Utility::normalizeSemverVersion($testResult->version()) . '-dev',
-//                            $patch->getVersion() . '-dev'),
+                            Utility::normalizeSemverVersion($testResult->version()) . '-dev',
                             $patch->getVersion() . '-dev',
                         ),
                     )) > 0;

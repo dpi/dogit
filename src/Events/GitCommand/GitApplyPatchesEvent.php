@@ -7,6 +7,7 @@ namespace dogit\Events\GitCommand;
 use dogit\Commands\Options\GitCommandOptions;
 use dogit\DrupalOrg\Objects\DrupalOrgIssue;
 use dogit\Git\GitOperator;
+use dogit\ProcessFactory;
 use Psr\EventDispatcher\StoppableEventInterface;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\ConsoleOutputInterface;
@@ -26,6 +27,7 @@ final class GitApplyPatchesEvent extends DogitEvent implements StoppableEventInt
         public DrupalOrgIssue $issue,
         public GitCommandOptions $options,
         public bool $linearMode,
+        public ProcessFactory $processFactory,
     ) {
     }
 

@@ -36,6 +36,7 @@ use dogit\Listeners\GitCommand\ValidateLocalRepository\IsClean;
 use dogit\Listeners\GitCommand\ValidateLocalRepository\IsGit;
 use dogit\Listeners\GitCommand\Version\ByTestResultsEvent;
 use dogit\Listeners\GitCommand\Version\ByVersionChangeEvent;
+use dogit\ProcessFactory;
 use dogit\Utility;
 use Http\Client\HttpAsyncClient;
 use Psr\Http\Message\RequestFactoryInterface;
@@ -48,15 +49,28 @@ use Symfony\Component\Console\Output\ConsoleOutputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Component\EventDispatcher\EventDispatcher;
+use Symfony\Component\Finder\Exception\DirectoryNotFoundException;
+use Symfony\Component\Finder\Finder;
 
 /**
  * Converts patches in an issue to a Git branch.
  */
-final class GitCommand extends Command
+class GitCommand extends Command
 {
     use Traits\HttpTrait;
 
     protected static $defaultName = 'git';
+    protected Git $git;
+    protected Finder $finder;
+    protected ProcessFactory $processFactory;
+
+    public function __construct(IRunner $runner = null, Finder $finder = null, ProcessFactory $processFactory = null)
+    {
+        parent::__construct();
+        $this->git = $this->git($runner ?? new CliRunner());
+        $this->finder = $finder ?? new Finder();
+        $this->processFactory = $processFactory ?? new ProcessFactory();
+    }
 
     protected function configure(): void
     {
@@ -157,15 +171,16 @@ final class GitCommand extends Command
         }
 
         // Git.
-        if (!is_dir($options->gitDirectory)) {
+        try {
+            $this->finder->directories()->in($options->gitDirectory);
+        } catch (DirectoryNotFoundException) {
             $io->error(sprintf('Directory %s does not exist', $options->gitDirectory));
 
             return static::FAILURE;
         }
         $logger->debug('Using directory {working_directory} for git repository.', ['working_directory' => $options->gitDirectory]);
 
-        $git = $this->git(new CliRunner());
-        $gitIo = GitOperator::fromDirectory($git, $options->gitDirectory);
+        $gitIo = GitOperator::fromDirectory($this->git, $options->gitDirectory);
 
         $io->writeln('Validating local repository.');
         $event = new ValidateLocalRepositoryEvent($gitIo, $options->gitDirectory, $logger, $options);
@@ -187,7 +202,7 @@ final class GitCommand extends Command
         }
 
         $io->writeln('Applying patches to local repository');
-        $event = new GitApplyPatchesEvent($trunk, $gitIo, $input, $output, $issue, $options, false);
+        $event = new GitApplyPatchesEvent($trunk, $gitIo, $input, $output, $issue, $options, false, $this->processFactory);
         $dispatcher->dispatch($event, 'git_apply_patches');
         if ($event->isPropagationStopped()) {
             $io->error('Failed to apply patches to local repository.');

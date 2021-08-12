@@ -7,12 +7,12 @@ namespace dogit\Listeners\GitCommand\GitApplyPatches;
 use dogit\DrupalOrg\Objects\DrupalOrgPatch;
 use dogit\Events\GitCommand\GitApplyPatchesEvent;
 use dogit\Git\GitResolver;
+use dogit\ProcessFactory;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Logger\ConsoleLogger;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Component\Process\InputStream;
-use Symfony\Component\Process\Process;
 
 final class GitApplyPatches
 {
@@ -109,7 +109,7 @@ final class GitApplyPatches
                 }
 
                 // Remove files added by patch commits to fully restore the state of $hash.
-                $this->deleteFiles($filesAdded, $gitDirectory);
+                $this->deleteFiles($filesAdded, $gitDirectory, $event->processFactory);
             }
 
             $logger->info(sprintf('Applying patch for %s', $contextString), $contextArgs);
@@ -118,6 +118,7 @@ final class GitApplyPatches
                 $patchContents,
                 $gitDirectory,
                 $patchLevel,
+                $event->processFactory,
             );
 
             if (Command::SUCCESS !== $code) {
@@ -200,10 +201,10 @@ final class GitApplyPatches
     /**
      * @param string[] $files
      */
-    private function deleteFiles(array $files, string $workingDirectory): void
+    private function deleteFiles(array $files, string $workingDirectory, ProcessFactory $processFactory): void
     {
         foreach ($files as $file) {
-            $process = new Process(['rm', $file], $workingDirectory);
+            $process = $processFactory->createProcess(['rm', $file], $workingDirectory);
             $process->run();
         }
     }
@@ -211,9 +212,9 @@ final class GitApplyPatches
     /**
      * @return array{int, string}
      */
-    private function applyPatch(string $data, string $workingDirectory, int $patchLevel): array
+    private function applyPatch(string $data, string $workingDirectory, int $patchLevel, ProcessFactory $processFactory): array
     {
-        $process = new Process([
+        $process = $processFactory->createProcess([
             'patch',
             sprintf('-p%d', $patchLevel),
         ], $workingDirectory);

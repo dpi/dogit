@@ -16,6 +16,7 @@ use GuzzleHttp\Client as GuzzleClient;
 use GuzzleHttp\HandlerStack;
 use GuzzleHttp\Psr7\Response;
 use Http\Adapter\Guzzle7\Client;
+use Http\Client\Exception\HttpException;
 use Http\Discovery\Psr17FactoryDiscovery;
 use PHPUnit\Framework\TestCase;
 use Prophecy\PhpUnit\ProphecyTrait;
@@ -133,5 +134,25 @@ class DrupalOrgObjectIteratorTest extends TestCase
         $this->assertEquals('This is a sample patch file.', $result[0]->getContents());
         $this->assertEquals(22220002, $result[1]->id());
         $this->assertEquals('This is a sample patch file.', $result[1]->getContents());
+    }
+
+    /**
+     * @covers ::unwrap
+     */
+    public function testRequestFailure(): void
+    {
+        $api = new DrupalApi($this->httpFactory, $this->httpAsyncClient, $this->repository);
+
+        $objectIterator = new DrupalOrgObjectIterator($api, $this->createMock(LoggerInterface::class));
+
+        $files = [];
+        $file = DrupalOrgFile::fromStub((object) ['id' => '22220999']);
+        $file->setRepository($this->repository);
+        $files[] = $file;
+
+        $this->expectException(HttpException::class);
+        $this->expectExceptionMessage('Client error: `GET https://www.drupal.org/api-d7/file/22220999.json` resulted in a `404 Not Found` response:
+NOT FOUND!!!!!!!');
+        $objectIterator->unstubFiles($files);
     }
 }

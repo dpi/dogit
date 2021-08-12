@@ -36,6 +36,7 @@ use dogit\Listeners\GitCommand\ValidateLocalRepository\IsClean;
 use dogit\Listeners\GitCommand\ValidateLocalRepository\IsGit;
 use dogit\Listeners\GitCommand\Version\ByTestResultsEvent;
 use dogit\Listeners\GitCommand\Version\ByVersionChangeEvent;
+use dogit\ProcessFactory;
 use dogit\Utility;
 use Http\Client\HttpAsyncClient;
 use Psr\Http\Message\RequestFactoryInterface;
@@ -48,15 +49,28 @@ use Symfony\Component\Console\Output\ConsoleOutputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Component\EventDispatcher\EventDispatcher;
+use Symfony\Component\Finder\Exception\DirectoryNotFoundException;
+use Symfony\Component\Finder\Finder;
 
 /**
  * Converts patches in an issue to a Git branch.
  */
-final class GitCommand extends Command
+class GitCommand extends Command
 {
     use Traits\HttpTrait;
 
     protected static $defaultName = 'git';
+    protected Git $git;
+    protected Finder $finder;
+    protected ProcessFactory $processFactory;
+
+    public function __construct(IRunner $runner = null, Finder $finder = null, ProcessFactory $processFactory = null)
+    {
+        parent::__construct();
+        $this->git = $this->git($runner ?? new CliRunner());
+        $this->finder = $finder ?? new Finder();
+        $this->processFactory = $processFactory ?? new ProcessFactory();
+    }
 
     protected function configure(): void
     {
@@ -115,12 +129,17 @@ final class GitCommand extends Command
         $io->writeln('Computing versions of patches');
         $event = new VersionEvent($patches, $issueEvents, $objectIterator, $logger);
         $dispatcher->dispatch($event, 'version');
+        if ($event->isPropagationStopped()) {
+            $io->error('Version computation failed.');
+
+            return static::FAILURE;
+        }
 
         $io->writeln('Filtering patches');
-        $event = new FilterEvent($patches, $logger, $options);
+        $event = new FilterEvent($patches, $issueEvents, $logger, $options);
         $dispatcher->dispatch($event, 'filter');
         if ($event->isPropagationStopped()) {
-            $io->error('Patch fitlering failed.');
+            $io->error('Patch filtering failed.');
 
             return static::FAILURE;
         }
@@ -128,7 +147,17 @@ final class GitCommand extends Command
         $trunk = $event->getPatches();
 
         $io->writeln('Downloading patch files');
-        $objectIterator->downloadPatchFiles($trunk);
+        try {
+            $objectIterator->downloadPatchFiles($trunk);
+        } catch (\Exception $e) {
+            if ($e instanceof \Http\Client\Exception\HttpException) {
+                $io->error(sprintf('Failed to download patch files: Got %s requesting %s', $e->getResponse()->getStatusCode(), (string) $e->getRequest()->getUri()));
+            } else {
+                $io->error(sprintf('Failed to download patch files: %s', $e->getMessage()));
+            }
+
+            return static::FAILURE;
+        }
 
         $io->writeln('Filtering patches by response');
         $event = new FilterByResponseEvent($trunk, $logger);
@@ -142,15 +171,16 @@ final class GitCommand extends Command
         }
 
         // Git.
-        if (!is_dir($options->gitDirectory)) {
+        try {
+            $this->finder->directories()->in($options->gitDirectory);
+        } catch (DirectoryNotFoundException) {
             $io->error(sprintf('Directory %s does not exist', $options->gitDirectory));
 
             return static::FAILURE;
         }
         $logger->debug('Using directory {working_directory} for git repository.', ['working_directory' => $options->gitDirectory]);
 
-        $git = $this->git(new CliRunner());
-        $gitIo = GitOperator::fromDirectory($git, $options->gitDirectory);
+        $gitIo = GitOperator::fromDirectory($this->git, $options->gitDirectory);
 
         $io->writeln('Validating local repository.');
         $event = new ValidateLocalRepositoryEvent($gitIo, $options->gitDirectory, $logger, $options);
@@ -162,8 +192,8 @@ final class GitCommand extends Command
         }
 
         $io->writeln('Creating local branch');
-        $initalVersion = reset($trunk)->getVersion();
-        $event = new GitBranchEvent($gitIo, $logger, $issue, $options, $initalVersion);
+        $initialGitReference = reset($trunk)->getGitReference();
+        $event = new GitBranchEvent($gitIo, $logger, $issue, $options, $initialGitReference);
         $dispatcher->dispatch($event, 'git_branch_create');
         if ($event->isPropagationStopped()) {
             $io->error('Failed to create local branch.');
@@ -172,7 +202,7 @@ final class GitCommand extends Command
         }
 
         $io->writeln('Applying patches to local repository');
-        $event = new GitApplyPatchesEvent($trunk, $gitIo, $input, $output, $issue, $options, false);
+        $event = new GitApplyPatchesEvent($trunk, $gitIo, $input, $output, $issue, $options, false, $this->processFactory);
         $dispatcher->dispatch($event, 'git_apply_patches');
         if ($event->isPropagationStopped()) {
             $io->error('Failed to apply patches to local repository.');

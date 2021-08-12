@@ -28,4 +28,5 @@ return (new PhpCsFixer\Config('DOGIT'))
         'function_declaration' => [
             'closure_function_spacing' => 'one',
         ],
+        'increment_style' => false,
     ]);

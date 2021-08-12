@@ -28,6 +28,17 @@ class DrupalOrgPatchTest extends DrupalOrgFileTest
     }
 
     /**
+     * @covers ::getGitReference
+     * @covers ::setGitReference
+     */
+    public function testGitReference(): void
+    {
+        $patch = $this->createFile();
+        $patch->setGitReference('8.x-1.0');
+        $this->assertEquals('8.x-1.0', $patch->getGitReference());
+    }
+
+    /**
      * @covers ::getContents
      * @covers ::setContents
      */

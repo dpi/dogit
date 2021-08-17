@@ -21,6 +21,8 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Logger\ConsoleLogger;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
+use Symfony\Component\Finder\Exception\DirectoryNotFoundException;
+use Symfony\Component\Finder\Finder;
 
 /**
  * Clones a merge request for a project.
@@ -35,11 +37,13 @@ class ProjectMergeRequest extends Command
 
     protected static $defaultName = 'project:mr';
     protected Git $git;
+    protected Finder $finder;
 
-    public function __construct(IRunner $runner = null)
+    public function __construct(IRunner $runner = null, ?Finder $finder = null)
     {
         parent::__construct();
         $this->git = $this->git($runner ?? new CliRunner());
+        $this->finder = $finder ?? new Finder();
     }
 
     protected function configure(): void
@@ -47,7 +51,7 @@ class ProjectMergeRequest extends Command
         $this
             ->setDescription('Interactively check out a MR for a project.')
             ->addArgument(Options::ARGUMENT_PROJECT, InputArgument::REQUIRED)
-            ->addArgument(Options::ARGUMENT_DIRECTORY, InputArgument::REQUIRED)
+            ->addArgument(Options::ARGUMENT_DIRECTORY, InputArgument::OPTIONAL, 'The repository directory.', '.')
             ->addOption(Options::OPTION_ALL, 'a', InputOption::VALUE_NONE, 'Whether to show merge requests regardless of state.')
             ->addOption(Options::OPTION_BRANCH, 'b', InputOption::VALUE_OPTIONAL, 'Specify a custom branch name.')
             ->addOption(Options::OPTION_HTTP, null, InputOption::VALUE_NONE, 'Use HTTP instead of SSH.')
@@ -157,7 +161,7 @@ class ProjectMergeRequest extends Command
 
         // If this is an existing repo.
         try {
-            $gitIo = GitOperator::fromDirectory($this->git, $options->directory);
+            $gitIo = GitOperator::fromDirectory($this->git, $options->directory, $this->finder);
             $io->note('Directory `' . $options->directory . '` looks like an existing Git repository.');
         } catch (GitException) {
             $io->note('Interpreting directory `' . $options->directory . '` as not a Git repository, cloning...');
@@ -171,6 +175,10 @@ class ProjectMergeRequest extends Command
             );
 
             $io->success('Done');
+
+            return Command::SUCCESS;
+        } catch (DirectoryNotFoundException) {
+            $io->error('Directory `' . $options->directory . '` does not exist.');
 
             return Command::SUCCESS;
         }

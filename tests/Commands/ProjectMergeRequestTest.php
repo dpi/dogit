@@ -14,6 +14,7 @@ use dogit\Commands\ProjectMergeRequest;
 use dogit\tests\DogitGuzzleGitlabTestMiddleware;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Console\Tester\CommandTester;
+use Symfony\Component\Finder\Finder;
 
 /**
  * @coversDefaultClass \dogit\Commands\ProjectMergeRequest
@@ -55,7 +56,31 @@ final class ProjectMergeRequestTest extends TestCase
         $command->expects($this->once())
             ->method('git')
             ->willReturn($git);
-        $command->__construct($runner);
+
+        $finder = $this->createMock(Finder::class);
+        $finder->expects($this->once())
+            ->method('directories')
+            ->willReturnSelf();
+        $finder->expects($this->once())
+            ->method('ignoreVCS')
+            ->willReturnSelf();
+        $finder->expects($this->once())
+            ->method('depth')
+            ->willReturnSelf();
+        $finder->expects($this->once())
+            ->method('ignoreDotFiles')
+            ->willReturnSelf();
+        $finder->expects($this->once())
+            ->method('name')
+            ->willReturnSelf();
+        $finder->expects($this->once())
+            ->method('count')
+            ->willReturn(1);
+        $finder->expects($this->once())
+            ->method('in')
+            ->with($testRepoDir)
+            ->willReturnSelf();
+        $command->__construct($runner, $finder);
 
         $command->handlerStack()->push(new DogitGuzzleGitlabTestMiddleware());
         $tester = new CommandTester($command);
@@ -105,7 +130,31 @@ final class ProjectMergeRequestTest extends TestCase
         $command->expects($this->once())
             ->method('git')
             ->willReturn($git);
-        $command->__construct($runner);
+
+        $finder = $this->createMock(Finder::class);
+        $finder->expects($this->once())
+            ->method('directories')
+            ->willReturnSelf();
+        $finder->expects($this->once())
+            ->method('ignoreVCS')
+            ->willReturnSelf();
+        $finder->expects($this->once())
+            ->method('depth')
+            ->willReturnSelf();
+        $finder->expects($this->once())
+            ->method('ignoreDotFiles')
+            ->willReturnSelf();
+        $finder->expects($this->once())
+            ->method('name')
+            ->willReturnSelf();
+        $finder->expects($this->once())
+            ->method('count')
+            ->willReturn(1);
+        $finder->expects($this->once())
+            ->method('in')
+            ->with($testRepoDir)
+            ->willReturnSelf();
+        $command->__construct($runner, $finder);
 
         $command->handlerStack()->push(new DogitGuzzleGitlabTestMiddleware());
         $tester = new CommandTester($command);
@@ -177,7 +226,31 @@ final class ProjectMergeRequestTest extends TestCase
         $command->expects($this->once())
             ->method('git')
             ->willReturn($git);
-        $command->__construct($runner);
+
+        $finder = $this->createMock(Finder::class);
+        $finder->expects($this->once())
+            ->method('directories')
+            ->willReturnSelf();
+        $finder->expects($this->once())
+            ->method('ignoreVCS')
+            ->willReturnSelf();
+        $finder->expects($this->once())
+            ->method('depth')
+            ->willReturnSelf();
+        $finder->expects($this->once())
+            ->method('ignoreDotFiles')
+            ->willReturnSelf();
+        $finder->expects($this->once())
+            ->method('name')
+            ->willReturnSelf();
+        $finder->expects($this->once())
+            ->method('count')
+            ->willReturn(1);
+        $finder->expects($this->once())
+            ->method('in')
+            ->with($testRepoDir)
+            ->willReturnSelf();
+        $command->__construct($runner, $finder);
 
         $command->handlerStack()->push(new DogitGuzzleGitlabTestMiddleware());
         $tester = new CommandTester($command);

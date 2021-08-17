@@ -7,6 +7,7 @@ namespace dogit\Git;
 use CzProject\GitPhp\Git;
 use CzProject\GitPhp\GitException;
 use CzProject\GitPhp\GitRepository;
+use Symfony\Component\Finder\Finder;
 
 final class GitOperator
 {
@@ -196,9 +197,15 @@ final class GitOperator
 
     /**
      * @throws \CzProject\GitPhp\GitException
+     *   On error, of if directory is not a Git repository
      */
-    public static function fromDirectory(Git $git, string $directory): static
+    public static function fromDirectory(Git $git, string $directory, Finder $finder): static
     {
+        $gitFinder = $finder->directories()->in($directory);
+        if (1 !== $gitFinder->ignoreVCS(false)->ignoreDotFiles(false)->depth(0)->name(['.git'])->count()) {
+            throw new GitException('Directory is not the root of a Git repository.');
+        }
+
         $repo = $git->open($directory);
 
         return new static($repo);

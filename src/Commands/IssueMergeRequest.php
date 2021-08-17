@@ -22,6 +22,8 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Logger\ConsoleLogger;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
+use Symfony\Component\Finder\Exception\DirectoryNotFoundException;
+use Symfony\Component\Finder\Finder;
 
 /**
  * Clones or checks out an existing Merge request for an issue.
@@ -32,11 +34,13 @@ class IssueMergeRequest extends Command
 
     protected static $defaultName = 'issue:mr';
     protected Git $git;
+    protected Finder $finder;
 
-    public function __construct(IRunner $runner = null)
+    public function __construct(IRunner $runner = null, ?Finder $finder = null)
     {
         parent::__construct();
         $this->git = $this->git($runner ?? new CliRunner());
+        $this->finder = $finder ?? new Finder();
     }
 
     protected function configure(): void
@@ -129,7 +133,7 @@ class IssueMergeRequest extends Command
 
         // If this is an existing repo.
         try {
-            $gitIo = GitOperator::fromDirectory($this->git, $options->directory);
+            $gitIo = GitOperator::fromDirectory($this->git, $options->directory, $this->finder);
             $io->note('Directory `' . $options->directory . '` looks like an existing Git repository.');
         } catch (GitException) {
             $io->note('Interpreting directory `' . $options->directory . '` as not a Git repository, cloning...');
@@ -143,6 +147,10 @@ class IssueMergeRequest extends Command
             );
 
             $io->success('Done');
+
+            return Command::SUCCESS;
+        } catch (DirectoryNotFoundException) {
+            $io->error('Directory `' . $options->directory . '` does not exist.');
 
             return Command::SUCCESS;
         }

@@ -32,6 +32,7 @@ final class IssueMergeRequestTest extends TestCase
     /**
      * @covers ::execute
      * @covers ::__construct
+     * @covers ::createFinder
      */
     public function testCommand(): void
     {

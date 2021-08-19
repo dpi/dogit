@@ -38,6 +38,7 @@ final class PatchToBranchTest extends TestCase
      * @covers ::execute
      * @covers ::getIssueEvents
      * @covers ::setupListeners
+     * @covers ::createFinder
      */
     public function testCommand(): void
     {

@@ -10,6 +10,7 @@ use CzProject\GitPhp\IRunner;
 use dogit\Commands\Options\ProjectMergeRequestOptions as Options;
 use dogit\Git\CliRunner;
 use dogit\Git\GitOperator;
+use dogit\Utility;
 use Gitlab\Api\MergeRequests;
 use Gitlab\Client as GitlabClient;
 use Gitlab\HttpClient\Builder;
@@ -23,7 +24,6 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Component\Finder\Exception\DirectoryNotFoundException;
 use Symfony\Component\Finder\Finder;
-use function PHPUnit\Framework\stringStartsWith;
 
 /**
  * Clones a merge request for a project.
@@ -70,9 +70,8 @@ class ProjectMergeRequest extends Command
         // When project argument is not provided, try to detect the project name from a composer.json.
         if (null === $options->project) {
             try {
-                $options->project = $this->getProjectFromComposerJson($options->directory, $this->finder);
-            }
-            catch (\InvalidArgumentException $e) {
+                $options->project = Utility::drupalProjectNameFromComposerJson($options->directory, $this->finder);
+            } catch (\InvalidArgumentException $e) {
                 $io->error($e->getMessage());
 
                 return static::FAILURE;
@@ -245,34 +244,5 @@ class ProjectMergeRequest extends Command
     protected function git(IRunner $runner): Git
     {
         return new Git($runner);
-    }
-
-    /**
-     * @throws \InvalidArgumentException when there is an issue with composer.json, such as not found or malformed.
-     */
-    private function getProjectFromComposerJson(string $directory, Finder $finder): string
-    {
-        foreach ($this->finder->files()->in([$directory])->depth(0)->name(['composer.json']) as $file) {
-            assert($file instanceof \SplFileInfo);
-            try {
-                $composer = \json_decode($file->getContents(), true, flags: \JSON_THROW_ON_ERROR);
-            }
-            catch (\JsonException $e) {
-                throw new \InvalidArgumentException(sprintf('Failed to parse %s: %s', $file->getBasename(), $e->getMessage()), previous: $e);
-            }
-
-            $composerName = $composer['name'] ?? null;
-            if (!$composerName) {
-                throw new \InvalidArgumentException('Missing Composer project name');
-            }
-
-            if (!str_starts_with($composerName, 'drupal/')) {
-                throw new \InvalidArgumentException('Project is not in the Drupal namespace.');
-            }
-
-            return substr($composerName, 7);
-        }
-
-        throw new \InvalidArgumentException('No composer.json file found.');
     }
 }

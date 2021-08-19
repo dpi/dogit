@@ -8,6 +8,7 @@ use dogit\DrupalOrg\DrupalOrgObjectIterator;
 use dogit\DrupalOrg\IssueGraph\Events\VersionChangeEvent;
 use dogit\DrupalOrg\Objects\DrupalOrgFile;
 use dogit\DrupalOrg\Objects\DrupalOrgIssue;
+use Symfony\Component\Finder\Finder;
 
 /**
  * @internal
@@ -233,5 +234,33 @@ final class Utility
         }
 
         return $version;
+    }
+
+    /**
+     * @throws \InvalidArgumentException when there is an issue with composer.json, such as not found or malformed.
+     */
+    public static function drupalProjectNameFromComposerJson(string $directory, Finder $finder): string
+    {
+        foreach ($finder->files()->in([$directory])->depth(0)->name(['composer.json']) as $file) {
+            assert($file instanceof \SplFileInfo);
+            try {
+                $composer = \json_decode($file->getContents(), true, flags: \JSON_THROW_ON_ERROR);
+            } catch (\JsonException $e) {
+                throw new \InvalidArgumentException(sprintf('Failed to parse %s: %s', $file->getBasename(), $e->getMessage()), previous: $e);
+            }
+
+            $composerName = $composer['name'] ?? null;
+            if (!$composerName) {
+                throw new \InvalidArgumentException('Missing Composer project name');
+            }
+
+            if (!str_starts_with($composerName, 'drupal/')) {
+                throw new \InvalidArgumentException('Project is not in the Drupal namespace');
+            }
+
+            return substr($composerName, 7);
+        }
+
+        throw new \InvalidArgumentException('No composer.json file found');
     }
 }

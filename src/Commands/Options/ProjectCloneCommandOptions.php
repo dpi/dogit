@@ -13,7 +13,7 @@ final class ProjectCloneCommandOptions
     public const OPTION_BRANCH = 'branch';
     public const OPTION_HTTP = 'http';
 
-    public string $directory;
+    public ?string $directory;
     public string $project;
     public ?string $branch;
     public bool $isHttp;

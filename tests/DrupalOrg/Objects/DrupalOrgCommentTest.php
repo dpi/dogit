@@ -142,6 +142,18 @@ final class DrupalOrgCommentTest extends TestCase
     }
 
     /**
+     * @covers ::getComment
+     */
+    public function testGetCommentNoData(): void
+    {
+        $this->assertEquals('', $this->createComment('13370010')->getComment());
+
+        $this->expectException(\DomainException::class);
+        $this->expectExceptionMessage('Data missing for stubs.');
+        (DrupalOrgComment::fromStub((object) ['id' => 1]))->getComment();
+    }
+
+    /**
      * @covers ::importResponse
      */
     public function testImportResponse(): void

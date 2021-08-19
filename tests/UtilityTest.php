@@ -375,9 +375,9 @@ class UtilityTest extends TestCase
     {
         $finder = new Finder();
         vfsStream::setup('test', structure: [
-            'composer.json' => file_get_contents(__DIR__ . '/fixtures/composerFiles/composer.json'),
+            'composer.json' => file_get_contents(__DIR__ . '/fixtures/composerFiles/valid/composer.json'),
         ]);
-        $this->assertEquals('foo', Utility::drupalProjectNameFromComposerJson('vfs://test/', $finder));
+        $this->assertEquals('foo_bar_baz', Utility::drupalProjectNameFromComposerJson('vfs://test/', $finder));
     }
 
     /**
@@ -387,7 +387,7 @@ class UtilityTest extends TestCase
     {
         $finder = new Finder();
         vfsStream::setup('test', structure: [
-            'composer.json' => file_get_contents(__DIR__ . '/fixtures/composerFiles/composerMalformed.json'),
+            'composer.json' => file_get_contents(__DIR__ . '/fixtures/composerFiles/malformed/composer.json'),
         ]);
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage('Failed to parse composer.json: Syntax error');
@@ -401,7 +401,7 @@ class UtilityTest extends TestCase
     {
         $finder = new Finder();
         vfsStream::setup('test', structure: [
-            'composer.json' => file_get_contents(__DIR__ . '/fixtures/composerFiles/composerMissingName.json'),
+            'composer.json' => file_get_contents(__DIR__ . '/fixtures/composerFiles/missingName/composer.json'),
         ]);
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage('Missing Composer project name');
@@ -415,10 +415,22 @@ class UtilityTest extends TestCase
     {
         $finder = new Finder();
         vfsStream::setup('test', structure: [
-            'composer.json' => file_get_contents(__DIR__ . '/fixtures/composerFiles/composerNotDrupal.json'),
+            'composer.json' => file_get_contents(__DIR__ . '/fixtures/composerFiles/notDrupal/composer.json'),
         ]);
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage('Project is not in the Drupal namespace');
+        Utility::drupalProjectNameFromComposerJson('vfs://test/', $finder);
+    }
+
+    /**
+     * @covers ::drupalProjectNameFromComposerJson
+     */
+    public function testProjectNameComposerJsonNoComposerFile(): void
+    {
+        $finder = new Finder();
+        vfsStream::setup('test', structure: []);
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage('No composer.json file found');
         Utility::drupalProjectNameFromComposerJson('vfs://test/', $finder);
     }
 }

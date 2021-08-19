@@ -71,6 +71,7 @@ class ProjectMergeRequest extends Command
         if (null === $options->project) {
             try {
                 $options->project = Utility::drupalProjectNameFromComposerJson($options->directory, $this->finder);
+                $io->text(sprintf('Detected project name %s from composer.json file.', $options->project));
             } catch (\InvalidArgumentException $e) {
                 $io->error($e->getMessage());
 

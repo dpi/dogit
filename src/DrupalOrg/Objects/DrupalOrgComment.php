@@ -86,7 +86,9 @@ class DrupalOrgComment extends DrupalOrgObject
 
     public function getComment(): string
     {
-        return $this->data->comment_body->value ?? throw new \DomainException('Data missing for stubs.');
+        $commentBody = $this->data->comment_body ?? throw new \DomainException('Data missing for stubs.');
+
+        return !empty($commentBody->value) ? $commentBody->value : '';
     }
 
     public function importResponse(ResponseInterface $response): static

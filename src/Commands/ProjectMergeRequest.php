@@ -176,7 +176,7 @@ class ProjectMergeRequest extends Command
         try {
             $gitIo = GitOperator::fromDirectory($this->git, $options->directory, $this->createFinder());
             $io->note('Directory `' . $options->directory . '` looks like an existing Git repository.');
-        } catch (GitException $e) {
+        } catch (GitException) {
             $io->note('Interpreting directory `' . $options->directory . '` as not a Git repository, cloning...');
 
             $this->git->cloneRepository(

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace dogit\tests\Commands;
 
 use CzProject\GitPhp\Git;
+use CzProject\GitPhp\GitException;
 use CzProject\GitPhp\IRunner;
 use dogit\Commands\Options\ProjectCloneCommandOptions;
 use dogit\Commands\ProjectCloneCommand;
@@ -52,7 +53,6 @@ final class ProjectCloneCommandTest extends TestCase
             ProjectCloneCommandOptions::ARGUMENT_DIRECTORY => $testRepoDir,
         ]);
         $this->assertEquals(0, $result);
-
         $this->assertStringContainsString('[OK] Done', $tester->getDisplay());
     }
 
@@ -84,7 +84,41 @@ final class ProjectCloneCommandTest extends TestCase
             ProjectCloneCommandOptions::ARGUMENT_PROJECT => 'foo_bar_baz',
         ]);
         $this->assertEquals(0, $result);
-
         $this->assertStringContainsString('[OK] Done', $tester->getDisplay());
+    }
+
+    public function testDirectoryAlreadyExists(): void
+    {
+        $testRepoDir = '/tmp/dogit-testing/fakedir';
+
+        $git = $this->getMockBuilder(Git::class)
+            ->getMock();
+        $git->expects($this->once())
+            ->method('cloneRepository')
+            ->with('git@git.drupal.org:project/foo_bar_baz.git', $testRepoDir, [])
+            ->willThrowException(new GitException('Repo already exists in foo_bar_baz.'));
+
+        $runner = $this->getMockBuilder(IRunner::class)->getMock();
+
+        $command = $this->getMockBuilder(ProjectCloneCommand::class)
+            ->onlyMethods(['git'])
+            ->disableOriginalConstructor()
+            ->getMock();
+        $command->expects($this->once())
+            ->method('git')
+            ->willReturn($git);
+        $finder = $this->createMock(Finder::class);
+        $command->__construct($runner, $finder);
+
+        $command->handlerStack()->push(new DogitGuzzleTestMiddleware());
+        $tester = new CommandTester($command);
+
+        $result = $tester->execute([
+            ProjectCloneCommandOptions::ARGUMENT_PROJECT => 'foo_bar_baz',
+            ProjectCloneCommandOptions::ARGUMENT_DIRECTORY => $testRepoDir,
+        ]);
+        $this->assertEquals(01, $result);
+        $this->assertStringContainsString('Unable to clone repository: Repo already exists in foo_bar_baz.', $tester->getDisplay());
+        $this->assertStringNotContainsString('[OK] Done', $tester->getDisplay());
     }
 }

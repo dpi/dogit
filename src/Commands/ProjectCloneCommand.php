@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace dogit\Commands;
 
 use CzProject\GitPhp\Git;
+use CzProject\GitPhp\GitException;
 use CzProject\GitPhp\IRunner;
 use dogit\Commands\Options\ProjectCloneCommandOptions;
 use Symfony\Component\Console\Command\Command;
@@ -60,11 +61,17 @@ class ProjectCloneCommand extends Command
             $directory = $options->project;
         }
 
-        $this->git->cloneRepository(
-            $url,
-            $directory,
-            $params,
-        );
+        try {
+            $this->git->cloneRepository(
+                $url,
+                $directory,
+                $params,
+            );
+        } catch (GitException $e) {
+            $io->error(sprintf('Unable to clone repository: %s', $e->getMessage()));
+
+            return static::FAILURE;
+        }
 
         $io->success('Done');
 

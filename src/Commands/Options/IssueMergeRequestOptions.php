@@ -29,7 +29,9 @@ final class IssueMergeRequestOptions
     {
         $instance = new static();
         $instance->cookies = $input->getOption(static::OPTION_COOKIE);
-        $instance->directory = (string) ($input->getArgument(static::ARGUMENT_DIRECTORY) ?? \getcwd());
+        $directory = (string) $input->getArgument(static::ARGUMENT_DIRECTORY);
+        $cwd = \getcwd();
+        $instance->directory = ('.' === $directory && $cwd) ? $cwd : $directory;
         $instance->isHttp = $input->getOption(static::OPTION_HTTP);
 
         $nid = $input->getArgument(static::ARGUMENT_ISSUE_ID);

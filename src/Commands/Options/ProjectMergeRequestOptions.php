@@ -31,7 +31,9 @@ final class ProjectMergeRequestOptions
         $instance = new static();
 
         $instance->branchName = $input->getOption(static::OPTION_BRANCH);
-        $instance->directory = (string) ($input->getArgument(static::ARGUMENT_DIRECTORY) ?? \getcwd());
+        $directory = (string) $input->getArgument(static::ARGUMENT_DIRECTORY);
+        $cwd = \getcwd();
+        $instance->directory = ('.' === $directory && $cwd) ? $cwd : $directory;
         $instance->project = $input->getArgument(static::ARGUMENT_PROJECT);
         $instance->isHttp = $input->getOption(static::OPTION_HTTP);
         $instance->includeAll = (bool) $input->getOption(static::OPTION_ALL);

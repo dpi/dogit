@@ -224,10 +224,25 @@ final class PatchToBranchTest extends TestCase
         $runner = $this->getMockBuilder(IRunner::class)
             ->getMock();
         $finder = $this->createMock(Finder::class);
-        $finder->expects($this->once())
+        $finder->expects($this->exactly(2))
             ->method('directories')
             ->willReturnSelf();
         $finder->expects($this->once())
+            ->method('ignoreVCS')
+            ->willReturnSelf();
+        $finder->expects($this->once())
+            ->method('depth')
+            ->willReturnSelf();
+        $finder->expects($this->once())
+            ->method('ignoreDotFiles')
+            ->willReturnSelf();
+        $finder->expects($this->once())
+            ->method('name')
+            ->willReturnSelf();
+        $finder->expects($this->once())
+            ->method('count')
+            ->willReturn(1);
+        $finder->expects($this->exactly(2))
             ->method('in')
             ->with($testRepoDir)
             ->willReturnSelf();

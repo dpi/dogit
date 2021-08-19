@@ -180,7 +180,7 @@ class PatchToBranch extends Command
         }
         $logger->debug('Using directory {working_directory} for git repository.', ['working_directory' => $options->gitDirectory]);
 
-        $gitIo = GitOperator::fromDirectory($this->git, $options->gitDirectory);
+        $gitIo = GitOperator::fromDirectory($this->git, $options->gitDirectory, $this->finder);
 
         $io->writeln('Validating local repository.');
         $event = new ValidateLocalRepositoryEvent($gitIo, $options->gitDirectory, $logger, $options);

@@ -172,7 +172,7 @@ class PatchToBranch extends Command
 
         // Git.
         try {
-            $this->finder->directories()->in($options->gitDirectory);
+            $this->createFinder()->directories()->in($options->gitDirectory);
         } catch (DirectoryNotFoundException) {
             $io->error(sprintf('Directory %s does not exist', $options->gitDirectory));
 
@@ -180,7 +180,7 @@ class PatchToBranch extends Command
         }
         $logger->debug('Using directory {working_directory} for git repository.', ['working_directory' => $options->gitDirectory]);
 
-        $gitIo = GitOperator::fromDirectory($this->git, $options->gitDirectory, $this->finder);
+        $gitIo = GitOperator::fromDirectory($this->git, $options->gitDirectory, $this->createFinder());
 
         $io->writeln('Validating local repository.');
         $event = new ValidateLocalRepositoryEvent($gitIo, $options->gitDirectory, $logger, $options);
@@ -260,5 +260,13 @@ class PatchToBranch extends Command
     protected function git(IRunner $runner): Git
     {
         return new Git($runner);
+    }
+
+    /**
+     * A small factory that creates finders.
+     */
+    private function createFinder(): Finder
+    {
+        return clone $this->finder;
     }
 }

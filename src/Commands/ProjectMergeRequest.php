@@ -180,7 +180,7 @@ class ProjectMergeRequest extends Command
         } catch (DirectoryNotFoundException) {
             $io->error('Directory `' . $options->directory . '` does not exist.');
 
-            return Command::SUCCESS;
+            return Command::FAILURE;
         }
 
         // Check branch name.

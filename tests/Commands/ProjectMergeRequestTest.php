@@ -13,7 +13,9 @@ use dogit\Commands\Options\ProjectMergeRequestOptions;
 use dogit\Commands\ProjectMergeRequest;
 use dogit\tests\DogitGuzzleGitlabTestMiddleware;
 use PHPUnit\Framework\TestCase;
+use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Tester\CommandTester;
+use Symfony\Component\Finder\Exception\DirectoryNotFoundException;
 use Symfony\Component\Finder\Finder;
 
 /**
@@ -30,6 +32,7 @@ final class ProjectMergeRequestTest extends TestCase
 
     /**
      * @covers ::execute
+     * @covers ::__construct
      */
     public function testCommandClone(): void
     {
@@ -37,10 +40,6 @@ final class ProjectMergeRequestTest extends TestCase
 
         $git = $this->getMockBuilder(Git::class)
             ->getMock();
-        $git->expects($this->once())
-            ->method('open')
-            ->with($testRepoDir)
-            ->willThrowException(new GitException("Repository 'Blurgh' not found."));
         $git->expects($this->once())
             ->method('cloneRepository')
             // Expect SSH endpoint:
@@ -75,7 +74,8 @@ final class ProjectMergeRequestTest extends TestCase
             ->willReturnSelf();
         $finder->expects($this->once())
             ->method('count')
-            ->willReturn(1);
+            // No Git repo.
+            ->willReturn(0);
         $finder->expects($this->once())
             ->method('in')
             ->with($testRepoDir)
@@ -275,6 +275,48 @@ final class ProjectMergeRequestTest extends TestCase
         $this->assertStringContainsString('[OK] Done', $tester->getDisplay());
     }
 
+    public function testDirectoryNotExists(): void
+    {
+        $testRepoDir = '/tmp/dogit-testing/fakedir';
+
+        $git = $this->getMockBuilder(Git::class)
+            ->getMock();
+
+        $runner = $this->getMockBuilder(IRunner::class)
+            ->getMock();
+
+        $command = $this->getMockBuilder(ProjectMergeRequest::class)
+            ->onlyMethods(['git'])
+            ->disableOriginalConstructor()
+            ->getMock();
+        $command->expects($this->once())
+            ->method('git')
+            ->willReturn($git);
+
+        $finder = $this->createMock(Finder::class);
+        $finder->expects($this->once())
+            ->method('directories')
+            ->willReturnSelf();
+        $finder->expects($this->once())
+            ->method('in')
+            ->with($testRepoDir)
+            ->willThrowException(new DirectoryNotFoundException());
+        $command->__construct($runner, $finder);
+
+        $command->handlerStack()->push(new DogitGuzzleGitlabTestMiddleware());
+        $tester = new CommandTester($command);
+        $tester->setInputs([
+            '8',
+        ]);
+        $result = $tester->execute([
+            ProjectMergeRequestOptions::ARGUMENT_PROJECT => 'foo_bar_baz',
+            ProjectMergeRequestOptions::ARGUMENT_DIRECTORY => $testRepoDir,
+        ]);
+
+        $this->assertEquals(1, $result);
+        $this->assertStringContainsString('[ERROR] Directory `/tmp/dogit-testing/fakedir` does not exist.', $tester->getDisplay());
+    }
+
     /**
      * @covers ::execute
      */
@@ -320,5 +362,35 @@ final class ProjectMergeRequestTest extends TestCase
 
 
         OUTPUT, $tester->getDisplay());
+    }
+
+    /**
+     * @covers \dogit\Commands\Options\ProjectMergeRequestOptions
+     */
+    public function testOptions(): void
+    {
+        $runner = $this->createMock(IRunner::class);
+        $command = new ProjectMergeRequest($runner);
+
+        $input = new ArrayInput([
+            ProjectMergeRequestOptions::ARGUMENT_DIRECTORY => '/tmp/blah',
+            ProjectMergeRequestOptions::ARGUMENT_PROJECT => 'a_project',
+            '--' . ProjectMergeRequestOptions::OPTION_ALL => true,
+            '--' . ProjectMergeRequestOptions::OPTION_BRANCH => 'the-branch',
+            '--' . ProjectMergeRequestOptions::OPTION_HTTP => true,
+            '--' . ProjectMergeRequestOptions::OPTION_ONLY_CLOSED => true,
+            '--' . ProjectMergeRequestOptions::OPTION_ONLY_MERGED => true,
+            '--' . ProjectMergeRequestOptions::OPTION_NO_CACHE => true,
+        ], $command->getDefinition());
+        $options = ProjectMergeRequestOptions::fromInput($input);
+
+        $this->assertEquals('/tmp/blah', $options->directory);
+        $this->assertEquals('a_project', $options->project);
+        $this->assertTrue($options->includeAll);
+        $this->assertEquals('the-branch', $options->branchName);
+        $this->assertTrue($options->isHttp);
+        $this->assertTrue($options->onlyMerged);
+        $this->assertTrue($options->onlyClosed);
+        $this->assertTrue($options->noHttpCache);
     }
 }

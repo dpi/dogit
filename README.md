@@ -10,6 +10,8 @@ _[Drupal.org](https://www.drupal.org/) + Git CLI application._
 
 [doGit](https://dogit.dev) assists in making the transition to merge requests, and general Git operations, easier for [Drupal](https://www.drupal.org/) developers. 
 
+[![Animated Demo Image](demo/demo.gif)][asciicinema-demo]
+
 doGit is typically required globally with [Composer](https://getcomposer.org/).
 
 ```shell
@@ -30,6 +32,7 @@ _Drupal is a registered trademark of Dries Buytaert._
 
 [ci]: https://github.com/dpi/dogit/actions
 [code-coverage]: https://app.codecov.io/gh/dpi/dogit
+[asciicinema-demo]: https://asciinema.org/a/431178
 [wiki-PatchToBranch]: https://github.com/dpi/dogit/wiki/Issue-Patches-to-Git-Branch-Command
 [wiki-ProjectMergeRequest]: https://github.com/dpi/dogit/wiki/Project-Merge-Request-Command
 [wiki-IssueMergeRequest]: https://github.com/dpi/dogit/wiki/Issue-Merge-Request-Command

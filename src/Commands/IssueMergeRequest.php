@@ -133,7 +133,7 @@ class IssueMergeRequest extends Command
 
         // If this is an existing repo.
         try {
-            $gitIo = GitOperator::fromDirectory($this->git, $options->directory, $this->finder);
+            $gitIo = GitOperator::fromDirectory($this->git, $options->directory, $this->createFinder());
             $io->note('Directory `' . $options->directory . '` looks like an existing Git repository.');
         } catch (GitException) {
             $io->note('Interpreting directory `' . $options->directory . '` as not a Git repository, cloning...');
@@ -211,5 +211,13 @@ class IssueMergeRequest extends Command
     protected function git(IRunner $runner): Git
     {
         return new Git($runner);
+    }
+
+    /**
+     * A small factory that creates finders.
+     */
+    private function createFinder(): Finder
+    {
+        return clone $this->finder;
     }
 }

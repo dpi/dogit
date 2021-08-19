@@ -365,6 +365,56 @@ final class ProjectMergeRequestTest extends TestCase
     }
 
     /**
+     * @covers ::execute
+     */
+    public function testProjectFromComposerJson(): void
+    {
+        $runner = $this->createMock(IRunner::class);
+
+        $command = $this->getMockBuilder(ProjectMergeRequest::class)
+            ->onlyMethods(['git'])
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $command->__construct($runner);
+
+        $command->handlerStack()->push(new DogitGuzzleGitlabTestMiddleware());
+        $tester = new CommandTester($command);
+        $tester->setInputs([
+            '8',
+        ]);
+        chdir(__DIR__ . '/../fixtures/composerFiles/valid/');
+        $result = $tester->execute([]);
+        $this->assertEquals(0, $result);
+        $this->assertStringContainsString('Detected project name foo_bar_baz from composer.json file.', $tester->getDisplay());
+    }
+
+    /**
+     * @covers ::execute
+     */
+    public function testProjectFromComposerJsonError(): void
+    {
+        $runner = $this->createMock(IRunner::class);
+
+        $command = $this->getMockBuilder(ProjectMergeRequest::class)
+            ->onlyMethods(['git'])
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $command->__construct($runner);
+
+        $command->handlerStack()->push(new DogitGuzzleGitlabTestMiddleware());
+        $tester = new CommandTester($command);
+        $tester->setInputs([
+            '8',
+        ]);
+        chdir(__DIR__ . '/../fixtures/composerFiles/malformed/');
+        $result = $tester->execute([]);
+        $this->assertEquals(1, $result);
+        $this->assertStringContainsString('[ERROR] Failed to parse composer.json: Syntax error', $tester->getDisplay());
+    }
+
+    /**
      * @covers \dogit\Commands\Options\ProjectMergeRequestOptions
      */
     public function testOptions(): void

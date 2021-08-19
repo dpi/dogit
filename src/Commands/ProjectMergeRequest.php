@@ -10,6 +10,7 @@ use CzProject\GitPhp\IRunner;
 use dogit\Commands\Options\ProjectMergeRequestOptions as Options;
 use dogit\Git\CliRunner;
 use dogit\Git\GitOperator;
+use dogit\Utility;
 use Gitlab\Api\MergeRequests;
 use Gitlab\Client as GitlabClient;
 use Gitlab\HttpClient\Builder;
@@ -50,7 +51,7 @@ class ProjectMergeRequest extends Command
     {
         $this
             ->setDescription('Interactively check out a MR for a project.')
-            ->addArgument(Options::ARGUMENT_PROJECT, InputArgument::REQUIRED)
+            ->addArgument(Options::ARGUMENT_PROJECT, InputArgument::OPTIONAL, 'The project name.')
             ->addArgument(Options::ARGUMENT_DIRECTORY, InputArgument::OPTIONAL, 'The repository directory.', '.')
             ->addOption(Options::OPTION_ALL, 'a', InputOption::VALUE_NONE, 'Whether to show merge requests regardless of state.')
             ->addOption(Options::OPTION_BRANCH, 'b', InputOption::VALUE_OPTIONAL, 'Specify a custom branch name.')
@@ -65,6 +66,18 @@ class ProjectMergeRequest extends Command
         $io = new SymfonyStyle($input, $output);
         $logger = new ConsoleLogger($io);
         $options = Options::fromInput($input);
+
+        // When project argument is not provided, try to detect the project name from a composer.json.
+        if (null === $options->project) {
+            try {
+                $options->project = Utility::drupalProjectNameFromComposerJson($options->directory, $this->finder);
+                $io->text(sprintf('Detected project name %s from composer.json file.', $options->project));
+            } catch (\InvalidArgumentException $e) {
+                $io->error($e->getMessage());
+
+                return static::FAILURE;
+            }
+        }
 
         $state = match (true) {
             $options->onlyClosed => MergeRequests::STATE_CLOSED,

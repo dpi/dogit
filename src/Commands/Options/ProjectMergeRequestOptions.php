@@ -18,7 +18,7 @@ final class ProjectMergeRequestOptions
     public const OPTION_NO_CACHE = 'no-cache';
 
     public string $directory;
-    public string $project;
+    public ?string $project;
     public ?string $branchName;
     public bool $includeAll;
     public bool $isHttp;

@@ -81,7 +81,7 @@ final class DrupalOrgIssueGraphEventsTest extends TestCase
     }
 
     /**
-     * @return array<string, array{string, array, class-string, string}>
+     * @return array<string, array{string, array{0: string, 1: string}, class-string, string}>
      */
     public function issueEventFromRawProvider(): array
     {

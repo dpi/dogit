@@ -245,6 +245,7 @@ final class Utility
             assert($file instanceof \SplFileInfo);
             try {
                 $composer = \json_decode($file->getContents(), true, flags: \JSON_THROW_ON_ERROR);
+                // @phpstan-ignore-next-line
             } catch (\JsonException $e) {
                 throw new \InvalidArgumentException(sprintf('Failed to parse %s: %s', $file->getBasename(), $e->getMessage()), previous: $e);
             }

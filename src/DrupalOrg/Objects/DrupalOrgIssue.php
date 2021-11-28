@@ -74,7 +74,11 @@ class DrupalOrgIssue extends DrupalOrgObject
     public function getFiles(): array
     {
         return array_unique(array_filter(array_map(
-            fn (\stdClass $file) => (int) $file->file->id ?? null,
+            function (\stdClass $file) {
+                $id = $file->file->id;
+
+                return isset($id) ? (int) $id : null;
+            },
             $this->data->field_issue_files,
         )));
     }

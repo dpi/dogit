@@ -8,9 +8,9 @@ use CzProject\GitPhp\CommitId;
 use CzProject\GitPhp\Git;
 use CzProject\GitPhp\GitException;
 use CzProject\GitPhp\GitRepository;
-use CzProject\GitPhp\IRunner;
 use dogit\Commands\Options\PatchToBranchOptions;
 use dogit\Commands\PatchToBranch;
+use dogit\Git\CliRunnerInterface;
 use dogit\ProcessFactory;
 use dogit\tests\DogitGuzzleTestMiddleware;
 use PHPUnit\Framework\TestCase;
@@ -222,7 +222,7 @@ final class PatchToBranchTest extends TestCase
             ->with($testRepoDir)
             ->willReturn($repo);
 
-        $runner = $this->getMockBuilder(IRunner::class)
+        $runner = $this->getMockBuilder(CliRunnerInterface::class)
             ->getMock();
         $finder = $this->createMock(Finder::class);
         $finder->expects($this->exactly(2))

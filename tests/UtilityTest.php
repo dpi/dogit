@@ -302,7 +302,7 @@ class UtilityTest extends TestCase
     }
 
     /**
-     * @return array<string, array>
+     * @return array<string, array<mixed>>
      */
     public function provider_numericConstraintRuleBuilder(): array
     {

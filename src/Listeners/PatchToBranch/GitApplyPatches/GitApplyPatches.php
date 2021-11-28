@@ -130,7 +130,7 @@ final class GitApplyPatches
                     'This may be caused by a bad patch, reroll, or a fault in the command. Check the comment on Drupal.org and consider omitting patches from this comment with --exclude (%s) flag. The rejected patch can be found in the Git working directory. It may not be possible to resolve this problem. Check the patch command output and look in the Git working directory for .rej files.',
                     implode(' ', array_map(
                         fn (string $excludeComment): string => '-e ' . $excludeComment,
-                        array_merge($excludeComments, [$patch->getParent()->getSequence()]),
+                        array_merge($excludeComments, [(string) $patch->getParent()->getSequence()]),
                     ))
                 ));
                 $io->text(sprintf(

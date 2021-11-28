@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace dogit\Commands;
 
 use CzProject\GitPhp\Git;
-use CzProject\GitPhp\IRunner;
 use dogit\Commands\Options\PatchToBranchOptions;
 use dogit\DrupalOrg\DrupalApi;
 use dogit\DrupalOrg\DrupalOrgObjectIterator;
@@ -21,6 +20,7 @@ use dogit\Events\PatchToBranch\TerminateEvent;
 use dogit\Events\PatchToBranch\ValidateLocalRepositoryEvent;
 use dogit\Events\PatchToBranch\VersionEvent;
 use dogit\Git\CliRunner;
+use dogit\Git\CliRunnerInterface;
 use dogit\Git\GitOperator;
 use dogit\Listeners\PatchToBranch\Filter\ByConstraintOption;
 use dogit\Listeners\PatchToBranch\Filter\ByExcludedCommentOption;
@@ -61,13 +61,15 @@ class PatchToBranch extends Command
 
     protected static $defaultName = 'convert';
     protected Git $git;
+    protected CliRunnerInterface $gitRunner;
     protected Finder $finder;
     protected ProcessFactory $processFactory;
 
-    public function __construct(IRunner $runner = null, Finder $finder = null, ProcessFactory $processFactory = null)
+    public function __construct(CliRunnerInterface $runner = null, Finder $finder = null, ProcessFactory $processFactory = null)
     {
         parent::__construct();
-        $this->git = $this->git($runner ?? new CliRunner());
+        $this->gitRunner = $runner ?? new CliRunner();
+        $this->git = $this->git($this->gitRunner);
         $this->finder = $finder ?? new Finder();
         $this->processFactory = $processFactory ?? new ProcessFactory();
     }
@@ -93,6 +95,7 @@ class PatchToBranch extends Command
         assert($output instanceof ConsoleOutputInterface);
         $io = new SymfonyStyle($input, $output);
         $logger = new ConsoleLogger($io);
+        $this->gitRunner->setLogger($logger);
 
         try {
             $options = PatchToBranchOptions::fromInput($input);
@@ -257,7 +260,7 @@ class PatchToBranch extends Command
         return Utility::ensureInitialVersionChange($issueEvents, $issue);
     }
 
-    protected function git(IRunner $runner): Git
+    protected function git(CliRunnerInterface $runner): Git
     {
         return new Git($runner);
     }

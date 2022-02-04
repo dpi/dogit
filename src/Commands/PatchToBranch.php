@@ -87,7 +87,8 @@ class PatchToBranch extends Command
             ->addOption(PatchToBranchOptions::OPTION_PATCH_LEVEL, 'p', InputOption::VALUE_OPTIONAL, 'Number of leading components from file names to strip.', '1')
             ->addOption(PatchToBranchOptions::OPTION_NO_CACHE, null, InputOption::VALUE_NONE, 'Whether to not use a HTTP cache.')
             ->addOption(PatchToBranchOptions::OPTION_RESET, 'r', InputOption::VALUE_NONE, 'Whether to hard reset working directory if its not clean.')
-            ->addOption(PatchToBranchOptions::OPTION_LAST, null, InputOption::VALUE_NONE, 'Whether to only include the last patch.');
+            ->addOption(PatchToBranchOptions::OPTION_LAST, null, InputOption::VALUE_NONE, 'Whether to only include the last patch.')
+            ->setAliases(['cv']);
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int

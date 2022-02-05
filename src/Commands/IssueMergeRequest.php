@@ -52,7 +52,8 @@ class IssueMergeRequest extends Command
             ->addOption(IssueMergeRequestOptions::OPTION_COOKIE, null, InputOption::VALUE_OPTIONAL | InputOption::VALUE_IS_ARRAY, 'Add cookies to HTTP requests.', [])
             ->addOption(IssueMergeRequestOptions::OPTION_HTTP, null, InputOption::VALUE_NONE, 'Use HTTP instead of SSH.')
             ->addOption(IssueMergeRequestOptions::OPTION_SINGLE, 's', InputOption::VALUE_NONE, '(no interaction) If there is only one merge request then check it out without prompting. If multiple merge requests are found then the command will quit.')
-            ->addOption(IssueMergeRequestOptions::OPTION_NO_CACHE, null, InputOption::VALUE_NONE, 'Whether to not use a HTTP cache.');
+            ->addOption(IssueMergeRequestOptions::OPTION_NO_CACHE, null, InputOption::VALUE_NONE, 'Whether to not use a HTTP cache.')
+            ->setAliases(['imr']);
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int

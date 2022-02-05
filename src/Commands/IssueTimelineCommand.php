@@ -31,7 +31,8 @@ final class IssueTimelineCommand extends Command
         $this
             ->addArgument(IssueTimelineCommandOptions::ARGUMENT_ISSUE_ID, InputArgument::REQUIRED)
             ->addOption(IssueTimelineCommandOptions::OPTION_NO_COMMENTS, 'c', InputOption::VALUE_NONE)
-            ->addOption(IssueTimelineCommandOptions::OPTION_NO_EVENTS, 'e', InputOption::VALUE_NONE);
+            ->addOption(IssueTimelineCommandOptions::OPTION_NO_EVENTS, 'e', InputOption::VALUE_NONE)
+            ->setAliases(['itl']);
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int

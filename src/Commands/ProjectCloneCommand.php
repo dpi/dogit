@@ -40,7 +40,8 @@ class ProjectCloneCommand extends Command
             ->addArgument(ProjectCloneCommandOptions::ARGUMENT_PROJECT, InputArgument::REQUIRED)
             ->addArgument(ProjectCloneCommandOptions::ARGUMENT_DIRECTORY, InputArgument::OPTIONAL)
             ->addOption(ProjectCloneCommandOptions::OPTION_HTTP, null, InputOption::VALUE_NONE, 'Use HTTP instead of SSH.')
-            ->addOption(ProjectCloneCommandOptions::OPTION_BRANCH, 'b', InputOption::VALUE_REQUIRED, 'Clone a specific branch. Omit to clone default branch.');
+            ->addOption(ProjectCloneCommandOptions::OPTION_BRANCH, 'b', InputOption::VALUE_REQUIRED, 'Clone a specific branch. Omit to clone default branch.')
+            ->setAliases(['pc']);
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int

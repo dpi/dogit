@@ -3,11 +3,14 @@ on: [push]
 jobs:
   code-style:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        php-versions: ['8.0', '8.1']
     steps:
       - uses: actions/checkout@v2
       - uses: "shivammathur/setup-php@v2"
         with:
-          php-version: "8.0"
+          php-version: ${{ matrix.php-versions }}
         env:
           COMPOSER_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: "Install dependencies"
@@ -18,11 +21,14 @@ jobs:
 
   static-analysis:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        php-versions: ['8.0', '8.1']
     steps:
       - uses: actions/checkout@v2
       - uses: "shivammathur/setup-php@v2"
         with:
-          php-version: "8.0"
+          php-version: ${{ matrix.php-versions }}
         env:
           COMPOSER_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: "Install dependencies"
@@ -35,7 +41,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        php-versions: ['8.0']
+        php-versions: ['8.0', '8.1']
         dependency-versions: ['highest', 'lowest']
     steps:
       - uses: actions/checkout@v2

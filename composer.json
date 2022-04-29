@@ -37,7 +37,7 @@
         "jangregor/phpstan-prophecy": "^1",
         "mikey179/vfsstream": "^1.6.10",
         "phpstan/extension-installer": "^1.1",
-        "phpstan/phpstan": "1.6.1",
+        "phpstan/phpstan": "1.6.3",
         "phpstan/phpstan-symfony": "^1",
         "phpunit/phpunit": "^9.5.20"
     },

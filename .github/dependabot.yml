@@ -2,5 +2,7 @@ version: 2
 updates:
   - package-ecosystem: "composer"
     directory: "/"
-    schedule:
-      interval: "daily"
+      interval: "weekly"
+      day: "thursday"
+      timezone: "Asia/Singapore"
+      time: "09:00"

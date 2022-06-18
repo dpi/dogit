@@ -74,7 +74,7 @@ class DrupalOrgIssueGraph
             yield new CommentEvent($commentStub);
 
             // Detect merge requests.
-            if (count($branchMrs) > 0 && $repoUrlGit && $repoUrlHttp) {
+            if (count($branchMrs) > 0 && null !== $repoUrlGit && null !== $repoUrlHttp) {
                 $fieldItems = $commentCrawler->filter('.field-items > *');
                 foreach ($fieldItems as $fieldItem) {
                     if (str_contains($fieldItem->textContent, 'opened merge request !')) {
@@ -172,7 +172,7 @@ class DrupalOrgIssueGraph
         foreach ($crawler->filter('#content .comments > .comment') as $commentElement) {
             assert($commentElement instanceof \DOMElement);
             $id = $commentElement->getAttribute('id');
-            if (empty($id)) {
+            if (0 === strlen($id)) {
                 throw new \LogicException('All comments are expected to have an ID.');
             }
 

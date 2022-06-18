@@ -6,3 +6,5 @@ parameters:
 		- ./tests
 	symfony:
 		console_application_loader: phpstan/console-application.php
+	ignoreErrors:
+		- '#Dynamic call to static method PHPUnit\\Framework\\.*#'

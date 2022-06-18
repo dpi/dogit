@@ -26,7 +26,7 @@ final class ByTestResultsEvent
             // Get tests results for this comment.
             $testResults = array_filter(
                 $event->issueEvents,
-                fn (IssueEventInterface $event): bool => $event instanceof TestResultEvent && ($event->getComment()->id() == $patch->getParent()->id()) && !empty($event->version()),
+                fn (IssueEventInterface $event): bool => $event instanceof TestResultEvent && ($event->getComment()->id() == $patch->getParent()->id()) && strlen($event->version()) > 0,
             );
 
             $message = '[Untested]';
@@ -68,7 +68,7 @@ final class ByTestResultsEvent
                 'patch_url' => $patch->getUrl(),
                 'version' => $patch->getVersion(),
                 'git_reference' => $patch->getGitReference(),
-                'message' => !empty($message) ? ": $message" : '',
+                'message' => (strlen($message) > 0) ? ": $message" : '',
             ]);
         }
 

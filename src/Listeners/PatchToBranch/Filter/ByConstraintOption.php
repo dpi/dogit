@@ -18,7 +18,7 @@ final class ByConstraintOption
         $event->logger->info('Filtering patches by constraint argument.');
 
         $versionConstraints = $event->options->versionConstraints;
-        if (!empty($versionConstraints)) {
+        if (strlen($versionConstraints) > 0) {
             $event->filter(fn (DrupalOrgPatch $patch): bool => Semver::satisfies(
                 str_replace('.x', '.9999', $patch->getVersion()),
                 $versionConstraints,

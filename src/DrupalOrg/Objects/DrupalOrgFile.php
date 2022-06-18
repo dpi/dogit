@@ -17,14 +17,18 @@ class DrupalOrgFile extends DrupalOrgObject
 
     public function getMime(): string
     {
-        !$this->isStub ?: throw new \DomainException('Data missing for stubs.');
+        if ($this->isStub) {
+            throw new \DomainException('Data missing for stubs.');
+        }
 
         return $this->data->mime ?? throw new \DomainException('Missing mime type');
     }
 
     public function getCreated(): \DateTimeImmutable
     {
-        !$this->isStub ?: throw new \DomainException('Data missing for stubs.');
+        if ($this->isStub) {
+            throw new \DomainException('Data missing for stubs.');
+        }
         $timestamp = $this->data->timestamp ?? throw new \DomainException('Missing created date');
 
         return new \DateTimeImmutable('@' . $timestamp);
@@ -32,7 +36,9 @@ class DrupalOrgFile extends DrupalOrgObject
 
     public function getUrl(): string
     {
-        !$this->isStub ?: throw new \DomainException('Data missing for stubs.');
+        if ($this->isStub) {
+            throw new \DomainException('Data missing for stubs.');
+        }
 
         return $this->data->url ?? throw new \DomainException('Missing URL');
     }

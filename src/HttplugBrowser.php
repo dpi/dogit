@@ -6,7 +6,9 @@ namespace dogit;
 
 use Http\Client\HttpAsyncClient;
 use Psr\Http\Message\RequestFactoryInterface;
+use Psr\Http\Message\RequestInterface;
 use Symfony\Component\BrowserKit\AbstractBrowser;
+use Symfony\Component\BrowserKit\Request;
 use Symfony\Component\BrowserKit\Response;
 
 final class HttplugBrowser extends AbstractBrowser
@@ -21,11 +23,10 @@ final class HttplugBrowser extends AbstractBrowser
         $this->httpClient = $httpClient;
     }
 
-    /**
-     * @param \Psr\Http\Message\RequestInterface|\Symfony\Component\BrowserKit\Request $request
-     */
-    protected function doRequest($request): Response
+    protected function doRequest(object $request): Response
     {
+        assert($request instanceof RequestInterface || $request instanceof Request);
+
         $response = $this->httpClient->sendAsyncRequest(
             $this->httpFactory->createRequest($request->getMethod(), $request->getUri())
         )->wait();

@@ -24,7 +24,7 @@ final class GitResolver
             sprintf('remotes/origin/%s', $this->patch->getGitReference()),
         ]);
 
-        if (!$return) {
+        if (0 === count($return)) {
             throw new \Exception('Failed to get hash.');
         }
 

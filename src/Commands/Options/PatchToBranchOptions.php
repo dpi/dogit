@@ -65,7 +65,7 @@ final class PatchToBranchOptions
 
         // Check is a proper Composer constraint. e.g 8.8.x is not accepted:
         $constraint = (string) $input->getArgument(static::ARGUMENT_VERSION_CONSTRAINTS);
-        if (!empty($constraint)) {
+        if (strlen($constraint) > 0) {
             try {
                 (new VersionParser())->parseConstraints($constraint);
             } catch (\UnexpectedValueException $e) {

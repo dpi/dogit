@@ -7,7 +7,6 @@ namespace dogit\Listeners\PatchToBranch\Terminate;
 use dogit\DrupalOrg\Objects\DrupalOrgComment;
 use dogit\DrupalOrg\Objects\DrupalOrgFile;
 use dogit\DrupalOrg\Objects\DrupalOrgIssue;
-use dogit\DrupalOrg\Objects\DrupalOrgObject;
 use dogit\DrupalOrg\Objects\DrupalOrgPatch;
 use dogit\Events\PatchToBranch\TerminateEvent;
 
@@ -21,7 +20,6 @@ final class Statistics
 
         $objectCounter = [];
         foreach ($event->repository->all() as $object) {
-            assert($object instanceof DrupalOrgObject);
             $objectCounter[$object::class] = ($objectCounter[$object::class] ?? 0) + 1;
         }
         $event->io->definitionList(

@@ -17,7 +17,7 @@ final class GitBranch
     {
         $branchName = $event->options->branchName;
 
-        if (empty($branchName)) {
+        if (null === $branchName || 0 === strlen($branchName)) {
             $branchName = 'dogit-' . $event->issue->id() . '-' . $event->initialGitReference;
         }
 
@@ -44,7 +44,7 @@ final class GitBranch
         $event->gitIo->checkoutNew($branchName, 'origin/' . $event->initialGitReference);
         $event->logger->info('Checked out branch: ' . $branchName);
 
-        if ($deleteBranchName) {
+        if (null !== $deleteBranchName && strlen($deleteBranchName) > 0) {
             $event->logger->info('Deleting old branch {branch_name}', [
                 'branch_name' => $deleteBranchName,
             ]);
@@ -54,7 +54,7 @@ final class GitBranch
 
     private function branchToDeleteSuffix(string $branchName): string
     {
-        return $this->branchToDeleteSuffixGenerator
+        return null !== $this->branchToDeleteSuffixGenerator
             ? ($this->branchToDeleteSuffixGenerator)($branchName)
             : $branchName . '-to-delete-' . (string) time();
     }

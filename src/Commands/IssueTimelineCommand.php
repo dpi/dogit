@@ -78,16 +78,16 @@ final class IssueTimelineCommand extends Command
             $comments[$event->getComment()->id()][] = $event;
         }
 
-        foreach ($comments as $events) {
-            $firstComment = reset($events)->getComment();
+        foreach ($comments as $commentEvents) {
+            $firstComment = reset($commentEvents)->getComment();
             $io->title(sprintf('<href=%s>Comment #%s (%d) at %s</>',
                 $firstComment->url(),
                 $firstComment->id(),
                 $firstComment->getSequence(),
                 $firstComment->getCreated()->format('r'),
             ));
-            foreach ($events as $event) {
-                $io->text((string) $event);
+            foreach ($commentEvents as $commentEvent) {
+                $io->text((string) $commentEvent);
             }
         }
 

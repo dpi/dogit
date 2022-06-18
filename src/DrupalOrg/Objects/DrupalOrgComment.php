@@ -22,7 +22,9 @@ class DrupalOrgComment extends DrupalOrgObject
 
     public function getCreated(): \DateTimeImmutable
     {
-        !$this->isStub ?: throw new \DomainException('Data missing for stubs.');
+        if ($this->isStub) {
+            throw new \DomainException('Data missing for stubs.');
+        }
         $timestamp = $this->data->created ?? throw new \DomainException('Missing created date');
 
         return new \DateTimeImmutable('@' . $timestamp);
@@ -67,7 +69,9 @@ class DrupalOrgComment extends DrupalOrgObject
 
     public function getIssue(): DrupalOrgIssue
     {
-        !$this->isStub ?: throw new \DomainException('Data missing for stubs.');
+        if ($this->isStub) {
+            throw new \DomainException('Data missing for stubs.');
+        }
 
         return $this->repository->share(DrupalOrgIssue::fromStub($this->data->node));
     }
@@ -88,7 +92,7 @@ class DrupalOrgComment extends DrupalOrgObject
     {
         $commentBody = $this->data->comment_body ?? throw new \DomainException('Data missing for stubs.');
 
-        return !empty($commentBody->value) ? $commentBody->value : '';
+        return isset($commentBody->value) && strlen($commentBody->value) > 0 ? $commentBody->value : '';
     }
 
     public function importResponse(ResponseInterface $response): static

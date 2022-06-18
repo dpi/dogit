@@ -185,6 +185,7 @@ class UtilityTest extends TestCase
      */
     public function testVersionAt(): void
     {
+        $events = [];
         $events[] = new VersionChangeEvent(DrupalOrgComment::fromResponse(new Response(200, [], (string) \json_encode([
             'cid' => '10',
             'created' => (new \DateTimeImmutable('1 June 1996'))->getTimestamp(),
@@ -210,6 +211,7 @@ class UtilityTest extends TestCase
      */
     public function testVersionAtBeforeFirstComment(): void
     {
+        $events = [];
         $events[] = new VersionChangeEvent(DrupalOrgComment::fromResponse(new Response(200, [], (string) \json_encode([
             'cid' => '10',
             'created' => (new \DateTimeImmutable('1 June 1996'))->getTimestamp(),
@@ -227,6 +229,7 @@ class UtilityTest extends TestCase
      */
     public function testVersionAtBeforeVersionChangeEvent(): void
     {
+        $events = [];
         $comment1 = DrupalOrgComment::fromResponse(new Response(200, [], (string) \json_encode([
             'cid' => '1',
             'created' => (new \DateTimeImmutable('1 May 1996'))->getTimestamp(),
@@ -259,6 +262,7 @@ class UtilityTest extends TestCase
      */
     public function testVersionAtNoVersionChangeEvents(): void
     {
+        $events = [];
         $comment1 = DrupalOrgComment::fromResponse(new Response(200, [], (string) \json_encode([
             'cid' => '1',
             'created' => (new \DateTimeImmutable('1 May 1996'))->getTimestamp(),

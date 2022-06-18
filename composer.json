@@ -38,6 +38,7 @@
         "mikey179/vfsstream": "^1.6.10",
         "phpstan/extension-installer": "^1.1",
         "phpstan/phpstan": "1.7.14",
+        "phpstan/phpstan-strict-rules": "^1.2",
         "phpstan/phpstan-symfony": "^1",
         "phpunit/phpunit": "^9.5.20"
     },

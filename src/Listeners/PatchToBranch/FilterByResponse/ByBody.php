@@ -26,7 +26,7 @@ final class ByBody
                 throw new \LogicException(sprintf('Missing patch contents for patch #%s %s', $patch->getParent()->getSequence(), $patch->getUrl()), 0, $e);
             }
 
-            if (empty($contents)) {
+            if (null === $contents || 0 === strlen($contents)) {
                 $logger->debug('Removed empty patch #{comment_id} {patch_url}.', [
                     'comment_id' => $patch->getParent()->getSequence(),
                     'patch_url' => $patch->getUrl(),

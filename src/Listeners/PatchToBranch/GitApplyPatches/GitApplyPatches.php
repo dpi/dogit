@@ -28,18 +28,19 @@ final class GitApplyPatches
         $patchLevel = $event->options->patchLevel;
         $linearMode = $event->linearMode;
 
-        if (0 === count($patches)) {
+        // Resolve hashes.
+        /** @var array<array{\dogit\DrupalOrg\Objects\DrupalOrgPatch, string}> $hashes */
+        $hashes = array_map(fn (DrupalOrgPatch $patch): array => [
+            $patch,
+            (new GitResolver($patch, $gitIo))->getHash(),
+        ], $patches);
+
+        if (0 === count($hashes)) {
             $output->writeln('No patches found.');
             $event->setFailure();
 
             return;
         }
-
-        // Resolve hashes.
-        $hashes = array_map(fn (DrupalOrgPatch $patch): array => [
-            $patch,
-            (new GitResolver($patch, $gitIo))->getHash(),
-        ], $patches);
 
         $firstHash = reset($hashes)[1];
         $gitIo->resetHard($firstHash);
@@ -58,9 +59,8 @@ final class GitApplyPatches
 
         $patchAllProgressBar->start();
         foreach ($hashes as [$patch, $hash]) {
-            assert($patch instanceof DrupalOrgPatch);
             $patchContents = $patch->getContents();
-            if (!$patchContents) {
+            if (null === $patchContents || 0 === strlen($patchContents)) {
                 // This should have been filtered by \dogit\Listeners\PatchToBranch\FilterByResponse\ByBody.
                 $io->warning(sprintf('Patch for comment %s is empty. Skipping.', $patch->getParent()->getSequence()));
 
@@ -79,7 +79,7 @@ final class GitApplyPatches
             ];
 
             // Merge and reset state to without the changes from last patch.
-            if ($patchCommitHash) {
+            if (null !== $patchCommitHash && strlen($patchCommitHash) > 0) {
                 if (!$linearMode) {
                     $patchSingleProgressBar->setProgress(10);
                     $logger->info(sprintf('Merging into commit #%s before patch', substr($patchCommitHash, 0, 8)), $contextArgs);
@@ -93,7 +93,7 @@ final class GitApplyPatches
                         $gitIo->commit([
                             '--amend',
                             '--allow-empty',
-                            ['--reuse-message', (string) $gitIo->getLastCommitId()],
+                            ['--reuse-message', $gitIo->getLastCommitId()],
                             ['--date', $patch->getCreated()->getTimestamp()],
                             ['--author', 'dogit <dogit@dogit.dev>'],
                         ]);

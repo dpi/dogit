@@ -51,14 +51,14 @@ class ProjectCloneCommand extends Command
 
         $url = sprintf($options->isHttp ? 'https://git.drupalcode.org/project/%s.git' : 'git@git.drupal.org:project/%s.git', $options->project);
         $params = [];
-        if (!empty($options->branch)) {
+        if (null !== $options->branch && strlen($options->branch) > 0) {
             $params['-b'] = $options->branch;
         }
 
         // When directory isnt provided then use a directory with the same name as the project, if the directory
         // doesn't exist.
         $directory = $options->directory;
-        if (!$directory) {
+        if (null === $directory) {
             $directory = $options->project;
         }
 

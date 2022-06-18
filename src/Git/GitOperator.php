@@ -17,17 +17,17 @@ final class GitOperator
 
     public function isClean(): bool
     {
-        return empty($this->gitRepository->execute('status', '--porcelain'));
+        return 0 === count($this->gitRepository->execute('status', '--porcelain'));
     }
 
     public function resetHard(?string $treeIsh = null): bool
     {
         $args = ['reset', '--hard', '--quiet'];
-        if ($treeIsh) {
+        if (null !== $treeIsh) {
             $args[] = $treeIsh;
         }
 
-        return empty($this->gitRepository->execute(...$args));
+        return 0 === count($this->gitRepository->execute(...$args));
     }
 
     public function clean(): void
@@ -114,7 +114,7 @@ final class GitOperator
     public function renameBranch(string $newBranchName, string $oldBranchName = null): void
     {
         $args = ['branch', '-M'];
-        if ($oldBranchName) {
+        if (null !== $oldBranchName) {
             $args[] = $oldBranchName;
         }
         $args[] = $newBranchName;

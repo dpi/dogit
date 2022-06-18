@@ -168,11 +168,11 @@ final class Utility
         }
 
         $firstComment = reset($allComments);
-        if ($firstVersionChange && $firstComment->id() !== $firstVersionChange->getComment()->id()) {
+        if (null !== $firstVersionChange && $firstComment->id() !== $firstVersionChange->getComment()->id()) {
             // Create a status for the first comment based on the *from* of the
             // first status.
             array_unshift($events, new VersionChangeEvent($firstComment, '', $firstVersionChange->from()));
-        } elseif (!$firstVersionChange) {
+        } elseif (null === $firstVersionChange) {
             // Otherwise if there are no status change events on the issue yet,
             // then create one for the first comment with the current issue status.
             array_unshift($events, new VersionChangeEvent($firstComment, '', $issue->getCurrentVersion()));
@@ -242,7 +242,6 @@ final class Utility
     public static function drupalProjectNameFromComposerJson(string $directory, Finder $finder): string
     {
         foreach ($finder->files()->in([$directory])->depth(0)->name(['composer.json']) as $file) {
-            assert($file instanceof \SplFileInfo);
             try {
                 $composer = \json_decode($file->getContents(), true, flags: \JSON_THROW_ON_ERROR);
             } catch (\JsonException $e) {
@@ -250,7 +249,7 @@ final class Utility
             }
 
             $composerName = $composer['name'] ?? null;
-            if (!$composerName) {
+            if (null === $composerName || 0 === strlen($composerName)) {
                 throw new \InvalidArgumentException('Missing Composer project name');
             }
 

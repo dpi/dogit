@@ -27,7 +27,7 @@ final class PrimaryTrunk
         $versionHwm = null;
         $event->filter(function (DrupalOrgPatch $patch) use (&$versionHwm, &$secondaries): bool {
             $patchVersion = $patch->getVersion();
-            if ($versionHwm && Comparator::lessThan($patchVersion, $versionHwm)) {
+            if (null !== $versionHwm && strlen($versionHwm) > 0 && Comparator::lessThan($patchVersion, $versionHwm)) {
                 // Skip this one.
                 $secondaries[] = $patch;
 

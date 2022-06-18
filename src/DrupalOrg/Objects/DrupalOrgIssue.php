@@ -17,7 +17,9 @@ class DrupalOrgIssue extends DrupalOrgObject
 
     public function getCreated(): \DateTimeImmutable
     {
-        !$this->isStub ?: throw new \DomainException('Data missing for stubs.');
+        if ($this->isStub) {
+            throw new \DomainException('Data missing for stubs.');
+        }
         $timestamp = $this->data->created ?? throw new \DomainException('Missing created date');
 
         return new \DateTimeImmutable('@' . $timestamp);
@@ -25,7 +27,9 @@ class DrupalOrgIssue extends DrupalOrgObject
 
     public function getCurrentVersion(): string
     {
-        !$this->isStub ?: throw new \DomainException('Data missing for stubs.');
+        if ($this->isStub) {
+            throw new \DomainException('Data missing for stubs.');
+        }
 
         return $this->data->field_issue_version ?? throw new \DomainException('Missing issue version');
     }

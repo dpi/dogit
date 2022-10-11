@@ -286,6 +286,7 @@ class UtilityTest extends TestCase
 
     /**
      * @covers ::numericConstraintRuleBuilder
+     *
      * @dataProvider provider_numericConstraintRuleBuilder
      */
     public function testNumericConstraintRuleBuilder(string $constraint, int $number, ?bool $assertMatches): void

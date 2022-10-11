@@ -34,7 +34,7 @@ class DrupalOrgIssueTest extends TestCase
 
         $this->expectException(\DomainException::class);
         $this->expectExceptionMessage('Data missing for stubs.');
-        (DrupalOrgIssue::fromStub((object) ['id' => 1]))->getCreated();
+        DrupalOrgIssue::fromStub((object) ['id' => 1])->getCreated();
     }
 
     /**
@@ -46,7 +46,7 @@ class DrupalOrgIssueTest extends TestCase
 
         $this->expectException(\DomainException::class);
         $this->expectExceptionMessage('Data missing for stubs.');
-        (DrupalOrgIssue::fromStub((object) ['id' => 1]))->getCurrentVersion();
+        DrupalOrgIssue::fromStub((object) ['id' => 1])->getCurrentVersion();
     }
 
     /**
@@ -71,7 +71,7 @@ class DrupalOrgIssueTest extends TestCase
 
         $this->expectException(\DomainException::class);
         $this->expectExceptionMessage('Data missing for stubs.');
-        (DrupalOrgIssue::fromStub((object) ['id' => 1]))->getProjectName();
+        DrupalOrgIssue::fromStub((object) ['id' => 1])->getProjectName();
     }
 
     /**
@@ -83,7 +83,7 @@ class DrupalOrgIssueTest extends TestCase
 
         $this->expectException(\DomainException::class);
         $this->expectExceptionMessage('Data missing for stubs.');
-        (DrupalOrgIssue::fromStub((object) ['id' => 1]))->getTitle();
+        DrupalOrgIssue::fromStub((object) ['id' => 1])->getTitle();
     }
 
     /**

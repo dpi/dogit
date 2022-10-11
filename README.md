@@ -8,14 +8,14 @@
 
 _[Drupal.org](https://www.drupal.org/) + Git CLI application._
 
-[doGit](https://dogit.dev) assists in making the transition to merge requests, and general Git operations, easier for [Drupal](https://www.drupal.org/) developers. 
+[doGit](https://dogit.dev) assists in making the transition to merge requests, and general Git operations, easier for [Drupal](https://www.drupal.org/) developers.
 
 [![Animated Demo Image](demo/demo.gif)][asciicinema-demo]
 
 doGit is typically required globally with [Composer](https://getcomposer.org/).
 
 ```shell
-composer global require dpi/dogit 
+composer global require dpi/dogit
 ```
 
 Various commands are included:
@@ -27,7 +27,7 @@ Various commands are included:
  - [**Show** an issue timeline][wiki-IssueTimelineCommand], as `dogit issue:timeline ISSUE-ID`.
 
 Start with the [wiki](https://github.com/dpi/dogit/wiki), or run `dogit list` or `dogit COMMAND --help`
- 
+
 _Drupal is a registered trademark of Dries Buytaert._
 
 [ci]: https://github.com/dpi/dogit/actions

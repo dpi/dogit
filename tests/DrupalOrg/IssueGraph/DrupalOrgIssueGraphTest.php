@@ -50,7 +50,7 @@ final class DrupalOrgIssueGraphTest extends TestCase
             $url,
         ))->graph());
 
-        $this->assertCount(17, $events);
+        $this->assertCount(19, $events);
         $this->assertInstanceOf(CommentEvent::class, $events[0]);
         $this->assertInstanceOf(StatusChangeEvent::class, $events[1]);
         $this->assertInstanceOf(TestResultEvent::class, $events[2]);
@@ -68,6 +68,8 @@ final class DrupalOrgIssueGraphTest extends TestCase
         $this->assertInstanceOf(VersionChangeEvent::class, $events[14]);
         $this->assertInstanceOf(CommentEvent::class, $events[15]);
         $this->assertInstanceOf(MergeRequestCreateEvent::class, $events[16]);
+        $this->assertInstanceOf(CommentEvent::class, $events[17]);
+        $this->assertInstanceOf(MergeRequestCreateEvent::class, $events[18]);
 
         // Unstub comments so events can stringify.
         $api = new DrupalApi($httpFactory, $httpAsyncClient, $repository);

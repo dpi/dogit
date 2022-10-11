@@ -137,7 +137,7 @@ class DrupalOrgIssueGraph
     {
         $branchMrs = [];
 
-        foreach ($crawler->filter('#drupalorg-issue-forks .branches > li') as $branchRow) {
+        foreach ($crawler->filter('#drupalorg-issue-forks .branches > li, #drupalorg-issue-forks .branches > details > li') as $branchRow) {
             assert($branchRow instanceof \DOMElement);
 
             $branchName = $branchRow->getAttribute('data-branch');

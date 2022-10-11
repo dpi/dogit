@@ -80,7 +80,7 @@ final class PatchToBranchTest extends TestCase
                         '--message',
                         <<<MESSAGE
                         Patch #1 on 8.2.x
-                        
+
                         Patch URL: https://www.drupal.org/files/issues/alpha.patch
                         Comment URL: https://www.drupal.org/project/drupal/issues/2350939#comment-13370001
                         Issue URL: https://www.drupal.org/project/drupal/issues/2350939
@@ -117,7 +117,7 @@ final class PatchToBranchTest extends TestCase
                       '--message',
                       <<<MESSAGE
                             Patch #5 on 8.3.x
-                            
+
                             Patch URL: https://www.drupal.org/files/issues/bravo.patch
                             Comment URL: https://www.drupal.org/project/drupal/issues/2350939#comment-13370005
                             Issue URL: https://www.drupal.org/project/drupal/issues/2350939
@@ -146,7 +146,7 @@ final class PatchToBranchTest extends TestCase
                         '--message',
                         <<<MESSAGE
                             Patch #7 on 8.3.x
-                            
+
                             Patch URL: https://www.drupal.org/files/issues/charlie.patch
                             Comment URL: https://www.drupal.org/project/drupal/issues/2350939#comment-13370005
                             Issue URL: https://www.drupal.org/project/drupal/issues/2350939
@@ -305,7 +305,7 @@ final class PatchToBranchTest extends TestCase
         $this->assertStringContainsString(' Applying patch for comment #7 patch URL https://www.drupal.org/files/issues/charlie.patch', $output);
         $this->assertStringContainsString('Object statistics', $output);
         $this->assertStringContainsString('Issues      1', $output);
-        $this->assertStringContainsString('Comments    9', $output);
+        $this->assertStringContainsString('Comments    10', $output);
         $this->assertStringContainsString('Files       4', $output);
         $this->assertStringContainsString('Patches     3', $output);
         $this->assertStringContainsString('[OK] Done', $output);

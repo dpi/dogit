@@ -27,7 +27,7 @@ final class DrupalOrgCommentTest extends TestCase
 
         $this->expectException(\DomainException::class);
         $this->expectExceptionMessage('Data missing for stubs.');
-        (DrupalOrgComment::fromStub((object) ['id' => 1]))->getCreated();
+        DrupalOrgComment::fromStub((object) ['id' => 1])->getCreated();
     }
 
     /**
@@ -42,7 +42,7 @@ final class DrupalOrgCommentTest extends TestCase
 
         $this->expectException(\DomainException::class);
         $this->expectExceptionMessage('Data missing for stubs.');
-        (DrupalOrgComment::fromStub((object) ['id' => 1]))->getFiles();
+        DrupalOrgComment::fromStub((object) ['id' => 1])->getFiles();
     }
 
     /**
@@ -69,7 +69,7 @@ final class DrupalOrgCommentTest extends TestCase
 
         $this->expectException(\DomainException::class);
         $this->expectExceptionMessage('Data missing for stubs.');
-        (DrupalOrgComment::fromStub((object) ['id' => 1]))->isBot();
+        DrupalOrgComment::fromStub((object) ['id' => 1])->isBot();
     }
 
     /**
@@ -82,7 +82,7 @@ final class DrupalOrgCommentTest extends TestCase
 
         $this->expectException(\DomainException::class);
         $this->expectExceptionMessage('Data missing for stubs.');
-        (DrupalOrgComment::fromStub((object) ['id' => 1]))->getAuthorName();
+        DrupalOrgComment::fromStub((object) ['id' => 1])->getAuthorName();
     }
 
     /**
@@ -95,7 +95,7 @@ final class DrupalOrgCommentTest extends TestCase
 
         $this->expectException(\DomainException::class);
         $this->expectExceptionMessage('Data missing for stubs.');
-        (DrupalOrgComment::fromStub((object) ['id' => 1]))->getAuthorId();
+        DrupalOrgComment::fromStub((object) ['id' => 1])->getAuthorId();
     }
 
     /**
@@ -110,7 +110,7 @@ final class DrupalOrgCommentTest extends TestCase
 
         $this->expectException(\DomainException::class);
         $this->expectExceptionMessage('Data missing for stubs.');
-        (DrupalOrgComment::fromStub((object) ['id' => 1]))->getIssue();
+        DrupalOrgComment::fromStub((object) ['id' => 1])->getIssue();
     }
 
     /**
@@ -138,7 +138,7 @@ final class DrupalOrgCommentTest extends TestCase
 
         $this->expectException(\DomainException::class);
         $this->expectExceptionMessage('Data missing for stubs.');
-        (DrupalOrgComment::fromStub((object) ['id' => 1]))->getComment();
+        DrupalOrgComment::fromStub((object) ['id' => 1])->getComment();
     }
 
     /**
@@ -150,7 +150,7 @@ final class DrupalOrgCommentTest extends TestCase
 
         $this->expectException(\DomainException::class);
         $this->expectExceptionMessage('Data missing for stubs.');
-        (DrupalOrgComment::fromStub((object) ['id' => 1]))->getComment();
+        DrupalOrgComment::fromStub((object) ['id' => 1])->getComment();
     }
 
     /**

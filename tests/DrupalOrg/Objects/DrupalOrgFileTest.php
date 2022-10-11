@@ -28,7 +28,7 @@ class DrupalOrgFileTest extends TestCase
 
         $this->expectException(\DomainException::class);
         $this->expectExceptionMessage('Data missing for stubs.');
-        (DrupalOrgFile::fromStub((object) ['id' => 1]))->getMime();
+        DrupalOrgFile::fromStub((object) ['id' => 1])->getMime();
     }
 
     /**
@@ -43,7 +43,7 @@ class DrupalOrgFileTest extends TestCase
 
         $this->expectException(\DomainException::class);
         $this->expectExceptionMessage('Data missing for stubs.');
-        (DrupalOrgFile::fromStub((object) ['id' => 1]))->getCreated();
+        DrupalOrgFile::fromStub((object) ['id' => 1])->getCreated();
     }
 
     /**
@@ -58,7 +58,7 @@ class DrupalOrgFileTest extends TestCase
 
         $this->expectException(\DomainException::class);
         $this->expectExceptionMessage('Data missing for stubs.');
-        (DrupalOrgFile::fromStub((object) ['id' => 1]))->getUrl();
+        DrupalOrgFile::fromStub((object) ['id' => 1])->getUrl();
     }
 
     /**

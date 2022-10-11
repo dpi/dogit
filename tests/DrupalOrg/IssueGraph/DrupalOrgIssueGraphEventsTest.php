@@ -69,7 +69,9 @@ final class DrupalOrgIssueGraphEventsTest extends TestCase
     /**
      * @param mixed[] $data
      * @param class-string $expectedClass
+     *
      * @covers \dogit\DrupalOrg\IssueGraph\Events\IssueEvent::fromRaw
+     *
      * @dataProvider issueEventFromRawProvider
      */
     public function testIssueEventFromRaw(string $type, array $data, string $expectedClass, string $expectedString): void
@@ -184,7 +186,7 @@ final class DrupalOrgIssueGraphEventsTest extends TestCase
     {
         $comment = DrupalOrgComment::fromStub((object) ['id' => 1]);
         $event = new MergeRequestCreateEvent(
-        $comment,
+            $comment,
             'http://merge.request.url',
             'myproject',
             33,

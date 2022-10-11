@@ -50,7 +50,7 @@ final class ByMetadata
                 ]);
             }
 
-            if ((str_contains($patch->getUrl(), 'test-only')) || str_contains($patch->getUrl(), 'testonly')) {
+            if (str_contains($patch->getUrl(), 'test-only') || str_contains($patch->getUrl(), 'testonly')) {
                 $keep = false;
                 $logger->debug('Comment #{comment_id}: {patch_url} looks like a test only patch', [
                     'comment_id' => $patch->getParent()->getSequence(),

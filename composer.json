@@ -23,7 +23,7 @@
         "psr/http-client": "^1.0",
         "psr/log": "^2.0",
         "symfony/browser-kit": "^5.3.1",
-        "symfony/console": "^5.3",
+        "symfony/console": "^6.0",
         "symfony/css-selector": "^5.3",
         "symfony/dom-crawler": "^5.4",
         "symfony/event-dispatcher": "^6.0",

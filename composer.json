@@ -46,6 +46,9 @@
         "sort-packages": true,
         "allow-plugins": {
             "phpstan/extension-installer": true
+        },
+        "platform": {
+            "php": "8.0.99999999"
         }
     },
     "authors": [

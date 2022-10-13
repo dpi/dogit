@@ -28,7 +28,7 @@
         "symfony/dom-crawler": "^5.4",
         "symfony/event-dispatcher": "^6.0",
         "symfony/filesystem": "^5.3",
-        "symfony/finder": "^5.4",
+        "symfony/finder": "^6.0",
         "symfony/process": "^6.0",
         "symfony/options-resolver": "^6.0"
     },

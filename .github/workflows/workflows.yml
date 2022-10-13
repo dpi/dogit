@@ -54,8 +54,6 @@ jobs:
         run: echo "::add-matcher::${{ runner.tool_cache }}/php.json"
       - name: Setup problem matchers for PHPUnit
         run: echo "::add-matcher::${{ runner.tool_cache }}/phpunit.json"
-      - name: Update platform config
-        run: composer config platform.php ${{ matrix.php-versions }}
       - name: "Install dependencies"
         uses: "ramsey/composer-install@v2"
         with:

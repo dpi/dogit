@@ -26,7 +26,7 @@
         "symfony/console": "^5.3",
         "symfony/css-selector": "^5.3",
         "symfony/dom-crawler": "^5.4",
-        "symfony/event-dispatcher": "^5.3",
+        "symfony/event-dispatcher": "^6.0",
         "symfony/filesystem": "^5.3",
         "symfony/finder": "^5.4",
         "symfony/process": "^5.4",

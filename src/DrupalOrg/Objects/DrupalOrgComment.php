@@ -95,6 +95,9 @@ class DrupalOrgComment extends DrupalOrgObject
         return isset($commentBody->value) && strlen($commentBody->value) > 0 ? $commentBody->value : '';
     }
 
+    /**
+     * @return $this
+     */
     public function importResponse(ResponseInterface $response): static
     {
         parent::importResponse($response);

@@ -5,7 +5,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        php-versions: ['8.0', '8.1']
+        php-versions: ['8.0', '8.1'] # Add 8.2 when PHP-CS-FIXER adds support.
     steps:
       - uses: actions/checkout@v2
       - uses: "shivammathur/setup-php@v2"
@@ -23,7 +23,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        php-versions: ['8.0', '8.1']
+        php-versions: ['8.0', '8.1', '8.2']
     steps:
       - uses: actions/checkout@v2
       - uses: "shivammathur/setup-php@v2"
@@ -41,7 +41,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        php-versions: ['8.0', '8.1']
+        php-versions: ['8.0', '8.1', '8.2']
         dependency-versions: ['highest', 'lowest']
     steps:
       - uses: actions/checkout@v2

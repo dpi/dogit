@@ -1429,38 +1429,44 @@
         },
         {
             "name": "php-http/discovery",
-            "version": "1.14.3",
+            "version": "1.15.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/php-http/discovery.git",
-                "reference": "31d8ee46d0215108df16a8527c7438e96a4d7735"
+                "reference": "5cc428320191ac1d0b6520034c2dc0698628ced5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/php-http/discovery/zipball/31d8ee46d0215108df16a8527c7438e96a4d7735",
-                "reference": "31d8ee46d0215108df16a8527c7438e96a4d7735",
+                "url": "https://api.github.com/repos/php-http/discovery/zipball/5cc428320191ac1d0b6520034c2dc0698628ced5",
+                "reference": "5cc428320191ac1d0b6520034c2dc0698628ced5",
                 "shasum": ""
             },
             "require": {
+                "composer-plugin-api": "^1.0|^2.0",
                 "php": "^7.1 || ^8.0"
             },
             "conflict": {
                 "nyholm/psr7": "<1.0"
             },
+            "provide": {
+                "php-http/async-client-implementation": "*",
+                "php-http/client-implementation": "*",
+                "psr/http-client-implementation": "*",
+                "psr/http-factory-implementation": "*",
+                "psr/http-message-implementation": "*"
+            },
             "require-dev": {
+                "composer/composer": "^1.0.2|^2.0",
                 "graham-campbell/phpspec-skip-example-extension": "^5.0",
                 "php-http/httplug": "^1.0 || ^2.0",
                 "php-http/message-factory": "^1.0",
-                "phpspec/phpspec": "^5.1 || ^6.1"
+                "phpspec/phpspec": "^5.1 || ^6.1 || ^7.3",
+                "symfony/phpunit-bridge": "^6.2"
             },
-            "suggest": {
-                "php-http/message": "Allow to use Guzzle, Diactoros or Slim Framework factories"
-            },
-            "type": "library",
+            "type": "composer-plugin",
             "extra": {
-                "branch-alias": {
-                    "dev-master": "1.9-dev"
-                }
+                "class": "Http\\Discovery\\Composer\\Plugin",
+                "plugin-optional": true
             },
             "autoload": {
                 "psr-4": {
@@ -1477,7 +1483,7 @@
                     "email": "mark.sagikazar@gmail.com"
                 }
             ],
-            "description": "Finds installed HTTPlug implementations and PSR-7 message factories",
+            "description": "Finds and installs PSR-7, PSR-17, PSR-18 and HTTPlug implementations",
             "homepage": "http://php-http.org",
             "keywords": [
                 "adapter",
@@ -1486,13 +1492,14 @@
                 "factory",
                 "http",
                 "message",
+                "psr17",
                 "psr7"
             ],
             "support": {
                 "issues": "https://github.com/php-http/discovery/issues",
-                "source": "https://github.com/php-http/discovery/tree/1.14.3"
+                "source": "https://github.com/php-http/discovery/tree/1.15.2"
             },
-            "time": "2022-07-11T14:04:40+00:00"
+            "time": "2023-02-11T08:28:41+00:00"
         },
         {
             "name": "php-http/guzzle7-adapter",
@@ -1620,16 +1627,16 @@
         },
         {
             "name": "php-http/httplug-bundle",
-            "version": "1.27.0",
+            "version": "1.27.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/php-http/HttplugBundle.git",
-                "reference": "dda96d44338b68a1db4ee0b06fa596583a0e75c4"
+                "reference": "1b2356133cfda31805f83fb20806b92bc1f80fb8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/php-http/HttplugBundle/zipball/dda96d44338b68a1db4ee0b06fa596583a0e75c4",
-                "reference": "dda96d44338b68a1db4ee0b06fa596583a0e75c4",
+                "url": "https://api.github.com/repos/php-http/HttplugBundle/zipball/1b2356133cfda31805f83fb20806b92bc1f80fb8",
+                "reference": "1b2356133cfda31805f83fb20806b92bc1f80fb8",
                 "shasum": ""
             },
             "require": {
@@ -1651,7 +1658,8 @@
             },
             "conflict": {
                 "php-http/curl-client": "<2.0",
-                "php-http/guzzle6-adapter": "<1.1"
+                "php-http/guzzle6-adapter": "<1.1",
+                "php-http/socket-client": "<2.0"
             },
             "require-dev": {
                 "guzzlehttp/psr7": "^1.7",
@@ -1678,11 +1686,6 @@
                 "twig/twig": "Add this to your require-dev section when using the WebProfilerBundle"
             },
             "type": "symfony-bundle",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "1.x-dev"
-                }
-            },
             "autoload": {
                 "psr-4": {
                     "Http\\HttplugBundle\\": "src/"
@@ -1719,9 +1722,9 @@
             ],
             "support": {
                 "issues": "https://github.com/php-http/HttplugBundle/issues",
-                "source": "https://github.com/php-http/HttplugBundle/tree/1.27.0"
+                "source": "https://github.com/php-http/HttplugBundle/tree/1.27.1"
             },
-            "time": "2022-07-25T14:18:05+00:00"
+            "time": "2023-03-03T09:02:26+00:00"
         },
         {
             "name": "php-http/logger-plugin",
@@ -4235,16 +4238,16 @@
         },
         {
             "name": "symfony/config",
-            "version": "v6.0.11",
+            "version": "v6.0.19",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/config.git",
-                "reference": "956d4ec5df274dda91a4cedfccc2bfd063f6f649"
+                "reference": "db4fc45c24e0c3e2198e68ada9d7f90daa1f97e3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/config/zipball/956d4ec5df274dda91a4cedfccc2bfd063f6f649",
-                "reference": "956d4ec5df274dda91a4cedfccc2bfd063f6f649",
+                "url": "https://api.github.com/repos/symfony/config/zipball/db4fc45c24e0c3e2198e68ada9d7f90daa1f97e3",
+                "reference": "db4fc45c24e0c3e2198e68ada9d7f90daa1f97e3",
                 "shasum": ""
             },
             "require": {
@@ -4293,7 +4296,7 @@
             "description": "Helps you find, load, combine, autofill and validate configuration values of any kind",
             "homepage": "https://symfony.com",
             "support": {
-                "source": "https://github.com/symfony/config/tree/v6.0.11"
+                "source": "https://github.com/symfony/config/tree/v6.0.19"
             },
             "funding": [
                 {
@@ -4309,7 +4312,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2022-06-27T17:10:44+00:00"
+            "time": "2023-01-09T04:36:00+00:00"
         },
         {
             "name": "symfony/console",
@@ -4473,16 +4476,16 @@
         },
         {
             "name": "symfony/dependency-injection",
-            "version": "v6.0.13",
+            "version": "v6.0.20",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/dependency-injection.git",
-                "reference": "6339881a2970b9f6bf6f4d2b07a540b4e3740f98"
+                "reference": "359806e1adebd1c43e18e5ea22acd14bef7fcf8c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/dependency-injection/zipball/6339881a2970b9f6bf6f4d2b07a540b4e3740f98",
-                "reference": "6339881a2970b9f6bf6f4d2b07a540b4e3740f98",
+                "url": "https://api.github.com/repos/symfony/dependency-injection/zipball/359806e1adebd1c43e18e5ea22acd14bef7fcf8c",
+                "reference": "359806e1adebd1c43e18e5ea22acd14bef7fcf8c",
                 "shasum": ""
             },
             "require": {
@@ -4541,7 +4544,7 @@
             "description": "Allows you to standardize and centralize the way objects are constructed in your application",
             "homepage": "https://symfony.com",
             "support": {
-                "source": "https://github.com/symfony/dependency-injection/tree/v6.0.13"
+                "source": "https://github.com/symfony/dependency-injection/tree/v6.0.20"
             },
             "funding": [
                 {
@@ -4557,7 +4560,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2022-09-28T16:00:20+00:00"
+            "time": "2023-01-30T15:41:07+00:00"
         },
         {
             "name": "symfony/deprecation-contracts",
@@ -4934,16 +4937,16 @@
         },
         {
             "name": "symfony/filesystem",
-            "version": "v5.4.19",
+            "version": "v5.4.21",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/filesystem.git",
-                "reference": "648bfaca6a494f3e22378123bcee2894045dc9d8"
+                "reference": "e75960b1bbfd2b8c9e483e0d74811d555ca3de9f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/filesystem/zipball/648bfaca6a494f3e22378123bcee2894045dc9d8",
-                "reference": "648bfaca6a494f3e22378123bcee2894045dc9d8",
+                "url": "https://api.github.com/repos/symfony/filesystem/zipball/e75960b1bbfd2b8c9e483e0d74811d555ca3de9f",
+                "reference": "e75960b1bbfd2b8c9e483e0d74811d555ca3de9f",
                 "shasum": ""
             },
             "require": {
@@ -4978,7 +4981,7 @@
             "description": "Provides basic utilities for the filesystem",
             "homepage": "https://symfony.com",
             "support": {
-                "source": "https://github.com/symfony/filesystem/tree/v5.4.19"
+                "source": "https://github.com/symfony/filesystem/tree/v5.4.21"
             },
             "funding": [
                 {
@@ -4994,7 +4997,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2023-01-14T19:14:44+00:00"
+            "time": "2023-02-14T08:03:56+00:00"
         },
         {
             "name": "symfony/finder",

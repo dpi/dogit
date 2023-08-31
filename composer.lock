@@ -1456,16 +1456,16 @@
         },
         {
             "name": "php-http/curl-client",
-            "version": "2.2.1",
+            "version": "2.3.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/php-http/curl-client.git",
-                "reference": "2ed4245a817d859dd0c1d51c7078cdb343cf5233"
+                "reference": "f7352c0796549949900d28fe991e19c90572386a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/php-http/curl-client/zipball/2ed4245a817d859dd0c1d51c7078cdb343cf5233",
-                "reference": "2ed4245a817d859dd0c1d51c7078cdb343cf5233",
+                "url": "https://api.github.com/repos/php-http/curl-client/zipball/f7352c0796549949900d28fe991e19c90572386a",
+                "reference": "f7352c0796549949900d28fe991e19c90572386a",
                 "shasum": ""
             },
             "require": {
@@ -1475,7 +1475,7 @@
                 "php-http/httplug": "^2.0",
                 "php-http/message": "^1.2",
                 "psr/http-client": "^1.0",
-                "psr/http-factory": "^1.0",
+                "psr/http-factory-implementation": "^1.0",
                 "symfony/options-resolver": "^3.4 || ^4.0 || ^5.0 || ^6.0"
             },
             "provide": {
@@ -1490,11 +1490,6 @@
                 "phpunit/phpunit": "^7.5 || ^9.4"
             },
             "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "2.x-dev"
-                }
-            },
             "autoload": {
                 "psr-4": {
                     "Http\\Client\\Curl\\": "src/"
@@ -1519,22 +1514,22 @@
             ],
             "support": {
                 "issues": "https://github.com/php-http/curl-client/issues",
-                "source": "https://github.com/php-http/curl-client/tree/2.2.1"
+                "source": "https://github.com/php-http/curl-client/tree/2.3.0"
             },
-            "time": "2021-12-10T18:02:07+00:00"
+            "time": "2023-04-28T14:56:41+00:00"
         },
         {
             "name": "php-http/discovery",
-            "version": "1.15.3",
+            "version": "1.19.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/php-http/discovery.git",
-                "reference": "3ccd28dd9fb34b52db946abea1b538568e34eae8"
+                "reference": "57f3de01d32085fea20865f9b16fb0e69347c39e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/php-http/discovery/zipball/3ccd28dd9fb34b52db946abea1b538568e34eae8",
-                "reference": "3ccd28dd9fb34b52db946abea1b538568e34eae8",
+                "url": "https://api.github.com/repos/php-http/discovery/zipball/57f3de01d32085fea20865f9b16fb0e69347c39e",
+                "reference": "57f3de01d32085fea20865f9b16fb0e69347c39e",
                 "shasum": ""
             },
             "require": {
@@ -1542,7 +1537,8 @@
                 "php": "^7.1 || ^8.0"
             },
             "conflict": {
-                "nyholm/psr7": "<1.0"
+                "nyholm/psr7": "<1.0",
+                "zendframework/zend-diactoros": "*"
             },
             "provide": {
                 "php-http/async-client-implementation": "*",
@@ -1567,7 +1563,10 @@
             "autoload": {
                 "psr-4": {
                     "Http\\Discovery\\": "src/"
-                }
+                },
+                "exclude-from-classmap": [
+                    "src/Composer/Plugin.php"
+                ]
             },
             "notification-url": "https://packagist.org/downloads/",
             "license": [
@@ -1593,9 +1592,9 @@
             ],
             "support": {
                 "issues": "https://github.com/php-http/discovery/issues",
-                "source": "https://github.com/php-http/discovery/tree/1.15.3"
+                "source": "https://github.com/php-http/discovery/tree/1.19.1"
             },
-            "time": "2023-03-31T14:40:37+00:00"
+            "time": "2023-07-11T07:02:26+00:00"
         },
         {
             "name": "php-http/guzzle7-adapter",

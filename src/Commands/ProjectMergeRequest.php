@@ -40,7 +40,7 @@ class ProjectMergeRequest extends Command
     protected Git $git;
     protected Finder $finder;
 
-    public function __construct(IRunner $runner = null, ?Finder $finder = null)
+    public function __construct(?IRunner $runner = null, ?Finder $finder = null)
     {
         parent::__construct();
         $this->git = $this->git($runner ?? new CliRunner());

@@ -108,14 +108,14 @@ final class PatchToBranchTest extends TestCase
                 [
                     'commit',
                     [
-                      '--date',
-                      '1428704703',
+                        '--date',
+                        '1428704703',
                     ],
                     '--author=larowlan <395439@larowlan.no-reply.drupal.org>',
                     '--allow-empty',
                     [
-                      '--message',
-                      <<<MESSAGE
+                        '--message',
+                        <<<MESSAGE
                             Patch #5 on 8.3.x
 
                             Patch URL: https://www.drupal.org/files/issues/bravo.patch
@@ -124,14 +124,14 @@ final class PatchToBranchTest extends TestCase
                             Patch uploaded by larowlan
                             Commit built with dogit.dev
                             MESSAGE
-                  ],
+                    ],
                 ],
                 [[
-                  'show',
-                  'eeeeeeeeee000000000000000000000000000001',
-                  '--name-only',
-                  '--diff-filter=AR',
-                  '--no-commit-id',
+                    'show',
+                    'eeeeeeeeee000000000000000000000000000001',
+                    '--name-only',
+                    '--diff-filter=AR',
+                    '--no-commit-id',
                 ]],
                 [['checkout', 'abcdef0000000000000000000000000000000003', '--', '.']],
                 [

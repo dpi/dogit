@@ -25,9 +25,6 @@ final class Flysystem2Storage implements CacheStorageInterface
         $this->filesystem = new Filesystem($adapter);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function fetch($key)
     {
         if ($this->filesystem->fileExists($key)) {
@@ -44,9 +41,6 @@ final class Flysystem2Storage implements CacheStorageInterface
         return null;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function save($key, CacheEntry $data)
     {
         $this->filesystem->write($key, serialize($data));
@@ -54,9 +48,6 @@ final class Flysystem2Storage implements CacheStorageInterface
         return true;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function delete($key)
     {
         try {

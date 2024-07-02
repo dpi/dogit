@@ -11,7 +11,7 @@ final class GitBranch
     /**
      * @var callable|null
      */
-    public $branchToDeleteSuffixGenerator = null;
+    public $branchToDeleteSuffixGenerator;
 
     public function __invoke(GitBranchEvent $event): void
     {

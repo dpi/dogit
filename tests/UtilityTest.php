@@ -36,7 +36,7 @@ class UtilityTest extends TestCase
      */
     public function testFilterCommentsWithPatches(): void
     {
-        /** @var \Prophecy\Prophecy\ObjectProphecy|\dogit\DrupalOrg\DrupalApiInterface $api */
+        /** @var \Prophecy\Prophecy\ObjectProphecy|DrupalApiInterface $api */
         $api = $this->prophesize(DrupalApiInterface::class);
         $api->getCommentAsync(new AnyValuesToken())
             ->willReturn($this->prophesize(Promise::class)->reveal());

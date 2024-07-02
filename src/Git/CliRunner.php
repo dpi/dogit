@@ -23,7 +23,7 @@ final class CliRunner extends CzCliRunner implements CliRunnerInterface
         $this->commandProcessor = $commandProcessor ?? new CommandProcessor();
     }
 
-    public function run($cwd, array $args, array $env = null)
+    public function run($cwd, array $args, ?array $env = null)
     {
         foreach ($args as $arg) {
             if (!is_array($arg) || 2 !== count($arg)) {

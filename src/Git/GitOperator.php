@@ -175,7 +175,7 @@ final class GitOperator
     /**
      * @return string[]
      */
-    public function execute(...$args): array
+    public function execute(mixed ...$args): array
     {
         return $this->gitRepository->execute(...$args);
     }

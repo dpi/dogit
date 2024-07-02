@@ -6,13 +6,12 @@ namespace dogit\tests\Git;
 
 use CzProject\GitPhp\GitRepository;
 use dogit\Git\GitOperator;
-use PHPUnit\Framework\TestCase;
 use Prophecy\PhpUnit\ProphecyTrait;
 
 /**
  * @coversDefaultClass \dogit\Git\GitOperator
  */
-final class GitOperatorTest extends TestCase
+final class GitOperatorTest extends \dogit\tests\DogitTestBase
 {
     use ProphecyTrait;
 

@@ -11,14 +11,13 @@ use dogit\DrupalOrg\Objects\DrupalOrgFile;
 use dogit\DrupalOrg\Objects\DrupalOrgIssue;
 use dogit\tests\TestUtilities;
 use GuzzleHttp\Psr7\Response;
-use PHPUnit\Framework\TestCase;
 use Prophecy\Argument\Token\AnyValuesToken;
 use Prophecy\PhpUnit\ProphecyTrait;
 
 /**
  * @coversDefaultClass \dogit\DrupalOrg\Objects\DrupalOrgIssue
  */
-class DrupalOrgIssueTest extends TestCase
+class DrupalOrgIssueTest extends \dogit\tests\DogitTestBase
 {
     use ProphecyTrait;
 
@@ -56,7 +55,6 @@ class DrupalOrgIssueTest extends TestCase
     {
         $comments = $this->createIssue()->commentsWithFiles();
         $this->assertCount(3, $comments);
-        assert(3 === count($comments));
         $this->assertEquals(13370001, $comments[0]->id());
         $this->assertEquals(13370005, $comments[1]->id());
         $this->assertEquals(13370007, $comments[2]->id());
@@ -93,7 +91,6 @@ class DrupalOrgIssueTest extends TestCase
     {
         $comments = $this->createIssue()->getComments();
         $this->assertCount(8, $comments);
-        assert(8 === count($comments));
         $this->assertEquals(13370001, $comments[0]->id());
         $this->assertEquals(13370002, $comments[1]->id());
         $this->assertEquals(13370003, $comments[2]->id());

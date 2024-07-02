@@ -9,12 +9,11 @@ use dogit\DrupalOrg\Objects\DrupalOrgComment;
 use dogit\DrupalOrg\Objects\DrupalOrgFile;
 use dogit\tests\TestUtilities;
 use GuzzleHttp\Psr7\Response;
-use PHPUnit\Framework\TestCase;
 
 /**
  * @coversDefaultClass \dogit\DrupalOrg\Objects\DrupalOrgFile
  */
-class DrupalOrgFileTest extends TestCase
+class DrupalOrgFileTest extends \dogit\tests\DogitTestBase
 {
     /**
      * @covers ::getMime

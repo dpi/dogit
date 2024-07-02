@@ -11,15 +11,15 @@ use dogit\DrupalOrg\Objects\DrupalOrgComment;
 use dogit\DrupalOrg\Objects\DrupalOrgPatch;
 use dogit\Events\PatchToBranch\FilterEvent;
 use dogit\Listeners\PatchToBranch\Filter\ByMetadata;
+use dogit\tests\DogitTestBase;
 use GuzzleHttp\Psr7\Response;
-use PHPUnit\Framework\TestCase;
 use Prophecy\PhpUnit\ProphecyTrait;
 use Psr\Log\LoggerInterface;
 
 /**
  * @coversDefaultClass \dogit\Listeners\PatchToBranch\Filter\ByMetadata
  */
-final class ByMetadataTest extends TestCase
+final class ByMetadataTest extends DogitTestBase
 {
     use ProphecyTrait;
 
@@ -65,23 +65,20 @@ final class ByMetadataTest extends TestCase
         $issueEvents[] = new TestResultEvent($comment3, '1.1.x', 'Unable to apply patch blah-blah.patch. Unable to apply patch. See the log in the details link for more information.');
         $issueEvents[] = new TestResultEvent($comment4, '1.2.x', 'PHP 5.5 & MySQL 5.5 14,068 pass, 7 fail');
 
-        $logger = $this->createMock(LoggerInterface::class);
-        $logger->expects($this->exactly(3))
-            ->method('debug')
-            ->withConsecutive(
-                ['Comment #{comment_id}: {patch_url} looks like an interdiff', [
-                    'comment_id' => 2,
-                    'patch_url' => 'http://example.com/patch2-interdiff.txt',
-                ]],
-                ['Comment #{comment_id}: {patch_url} failed to apply during test run.', [
-                    'comment_id' => 3,
-                    'patch_url' => 'http://example.com/patch3.patch',
-                ]],
-                ['Comment #{comment_id}: {patch_url} looks like a test only patch', [
-                    'comment_id' => 4,
-                    'patch_url' => 'http://example.com/test-only-patch4.patch',
-                ]],
-            );
+        $logger = \Mockery::mock(LoggerInterface::class);
+        $logger->expects('debug')->with('Comment #{comment_id}: {patch_url} looks like an interdiff', [
+            'comment_id' => 2,
+            'patch_url' => 'http://example.com/patch2-interdiff.txt',
+        ]);
+        $logger->expects('debug')->with('Comment #{comment_id}: {patch_url} failed to apply during test run.', [
+            'comment_id' => 3,
+            'patch_url' => 'http://example.com/patch3.patch',
+        ]);
+        $logger->expects('debug')->with('Comment #{comment_id}: {patch_url} looks like a test only patch', [
+            'comment_id' => 4,
+            'patch_url' => 'http://example.com/test-only-patch4.patch',
+        ]);
+        $logger->expects('info')->with('Filtering patches by patch metadata.');
 
         $options = new PatchToBranchOptions();
 

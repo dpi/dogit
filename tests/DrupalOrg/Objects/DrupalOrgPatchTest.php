@@ -60,7 +60,6 @@ class DrupalOrgPatchTest extends DrupalOrgFileTest
         $file->setRepository(new DrupalOrgObjectRepository());
 
         $patch = DrupalOrgPatch::fromFile($file);
-        $this->assertInstanceOf(DrupalOrgPatch::class, $patch);
         $this->assertEquals(33, $patch->id());
     }
 

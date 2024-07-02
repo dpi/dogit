@@ -5,18 +5,15 @@ declare(strict_types=1);
 namespace dogit\tests\Commands\Traits;
 
 use dogit\Commands\Traits\HttpTrait;
+use dogit\tests\DogitTestBase;
 use GuzzleHttp\Promise\FulfilledPromise;
 use GuzzleHttp\Psr7\Response;
-use Http\Client\HttpAsyncClient;
-use Http\Client\HttpClient;
-use PHPUnit\Framework\TestCase;
-use Psr\Http\Message\RequestFactoryInterface;
 use Psr\Log\LoggerInterface;
 
 /**
  * @coversDefaultClass \dogit\Commands\Traits\HttpTrait
  */
-final class HttpTraitTest extends TestCase
+final class HttpTraitTest extends DogitTestBase
 {
     public function testLogs(): void
     {
@@ -36,19 +33,13 @@ final class HttpTraitTest extends TestCase
             }
         };
 
-        $logger = $this->createMock(LoggerInterface::class);
-        $logger->expects($this->exactly(1))
-            ->method('log')
-            ->withConsecutive(
-                ['debug', 'GET 200 <href=http://example.com/foo>http://example.com/foo</> [Cache MISS]']
-            );
-        $logger->expects($this->never())
-            ->method('error');
+        $logger = \Mockery::mock(LoggerInterface::class);
+        $logger->expects('log')
+            ->with('debug', 'GET 200 <href=http://example.com/foo>http://example.com/foo</> [Cache MISS]');
+        $logger->expects('error')
+            ->never();
 
         [$httpFactory, $httpAsyncClient] = $command->http($logger);
-        $this->assertInstanceOf(RequestFactoryInterface::class, $httpFactory);
-        $this->assertInstanceOf(HttpClient::class, $httpAsyncClient);
-        $this->assertInstanceOf(HttpAsyncClient::class, $httpAsyncClient);
 
         $command->handlerStack()->push(function (callable $handler): callable {
             return static function ($request, array $options) {

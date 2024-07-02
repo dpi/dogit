@@ -9,14 +9,13 @@ use dogit\DrupalOrg\Objects\DrupalOrgPatch;
 use dogit\Events\PatchToBranch\FilterByResponseEvent;
 use dogit\Listeners\PatchToBranch\FilterByResponse\ByBody;
 use GuzzleHttp\Psr7\Response;
-use PHPUnit\Framework\TestCase;
 use Prophecy\PhpUnit\ProphecyTrait;
 use Psr\Log\LoggerInterface;
 
 /**
  * @coversDefaultClass \dogit\Listeners\PatchToBranch\FilterByResponse\ByBody
  */
-final class ByBodyTest extends TestCase
+final class ByBodyTest extends \dogit\tests\DogitTestBase
 {
     use ProphecyTrait;
 

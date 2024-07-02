@@ -16,13 +16,12 @@ use GuzzleHttp\HandlerStack;
 use GuzzleHttp\Psr7\Response;
 use Http\Adapter\Guzzle7\Client;
 use Http\Discovery\Psr17FactoryDiscovery;
-use PHPUnit\Framework\TestCase;
 use Psr\Http\Message\RequestFactoryInterface;
 
 /**
  * @coversDefaultClass \dogit\DrupalOrg\DrupalApi
  */
-final class DrupalOrgApiTest extends TestCase
+final class DrupalOrgApiTest extends \dogit\tests\DogitTestBase
 {
     private RequestFactoryInterface $httpFactory;
     private Client $httpAsyncClient;

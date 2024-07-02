@@ -10,14 +10,13 @@ use CzProject\GitPhp\IRunner;
 use dogit\Commands\Options\ProjectCloneCommandOptions;
 use dogit\Commands\ProjectCloneCommand;
 use dogit\tests\DogitGuzzleTestMiddleware;
-use PHPUnit\Framework\TestCase;
 use Symfony\Component\Console\Tester\CommandTester;
 use Symfony\Component\Finder\Finder;
 
 /**
  * @coversDefaultClass \dogit\Commands\ProjectCloneCommand
  */
-final class ProjectCloneCommandTest extends TestCase
+final class ProjectCloneCommandTest extends \dogit\tests\DogitTestBase
 {
     /**
      * @covers ::execute

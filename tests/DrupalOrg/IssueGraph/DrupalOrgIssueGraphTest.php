@@ -19,13 +19,12 @@ use GuzzleHttp\Client as GuzzleClient;
 use GuzzleHttp\HandlerStack;
 use Http\Adapter\Guzzle7\Client;
 use Http\Discovery\Psr17FactoryDiscovery;
-use PHPUnit\Framework\TestCase;
 use Psr\Log\LoggerInterface;
 
 /**
  * @coversDefaultClass \dogit\DrupalOrg\IssueGraph\DrupalOrgIssueGraph
  */
-final class DrupalOrgIssueGraphTest extends TestCase
+final class DrupalOrgIssueGraphTest extends \dogit\tests\DogitTestBase
 {
     /**
      * @covers ::findComments

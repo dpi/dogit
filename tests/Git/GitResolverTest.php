@@ -11,13 +11,12 @@ use dogit\Git\GitOperator;
 use dogit\Git\GitResolver;
 use dogit\tests\TestUtilities;
 use GuzzleHttp\Psr7\Response;
-use PHPUnit\Framework\TestCase;
 use Prophecy\PhpUnit\ProphecyTrait;
 
 /**
  * @coversDefaultClass \dogit\Git\GitResolver
  */
-final class GitResolverTest extends TestCase
+final class GitResolverTest extends \dogit\tests\DogitTestBase
 {
     use ProphecyTrait;
 

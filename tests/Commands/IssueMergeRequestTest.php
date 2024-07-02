@@ -12,7 +12,7 @@ use CzProject\GitPhp\RunnerResult;
 use dogit\Commands\IssueMergeRequest;
 use dogit\Commands\Options\IssueMergeRequestOptions;
 use dogit\tests\DogitGuzzleTestMiddleware;
-use PHPUnit\Framework\TestCase;
+use dogit\tests\DogitTestBase;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Tester\CommandTester;
 use Symfony\Component\Finder\Finder;
@@ -20,7 +20,7 @@ use Symfony\Component\Finder\Finder;
 /**
  * @coversDefaultClass \dogit\Commands\IssueMergeRequest
  */
-final class IssueMergeRequestTest extends TestCase
+final class IssueMergeRequestTest extends DogitTestBase
 {
     protected function setUp(): void
     {
@@ -107,36 +107,36 @@ final class IssueMergeRequestTest extends TestCase
     {
         $testRepoDir = '/tmp/dogit-testing/fakedir';
 
-        $repo = $this->createMock(GitRepository::class);
-        $repo->expects($this->exactly(5))
-            ->method('execute')
-            ->withConsecutive(
-                [['rev-parse', '--verify', '--quiet', 'my-cool-branch-name']],
-                ['remote'],
-                ['remote', 'get-url', 'foo-remote'],
-                ['remote', 'get-url', 'bar-remote'],
-                ['checkout', '-b', 'my-cool-branch-name', '--track', 'drupal-11110003/my-cool-branch-name'],
-            )
-            ->willReturn(
-                // Report the branch doesn't exist.
-                $this->throwException(new GitException(
-                    "Command 'git rev-parse --verify --quiet sdadasd' failed (exit-code 1).",
-                    1,
-                    null,
-                    new RunnerResult('git rev-parse --verify --quiet sdadasd', 1, [], []),
-                )),
-                $this->returnValue(['foo-remote', 'bar-remote']),
-                $this->returnValue(['git@github.com:test-foo/remote.git']),
-                $this->returnValue(['git@github.com:test-bar/remote.git']),
-                [],
-                [],
-                ["Branch 'my-cool-branch-name' set up to track remote branch 'my-cool-branch-name' from 'drupal-11110003/my-cool-branch-name'."]
-            );
+        $repo = \Mockery::mock(GitRepository::class);
+        $repo->expects('execute')
+            ->with(['rev-parse', '--verify', '--quiet', 'my-cool-branch-name'])
+            ->andThrow(new GitException(
+                "Command 'git rev-parse --verify --quiet sdadasd' failed (exit-code 1).",
+                1,
+                null,
+                new RunnerResult('git rev-parse --verify --quiet sdadasd', 1, [], []),
+            ));
 
-        $repo->expects($this->once())
-            ->method('addRemote')
+        $repo->expects('execute')
+            ->with('remote')
+            ->andReturn(['foo-remote', 'bar-remote']);
+
+        $repo->expects('execute')
+            ->with('remote', 'get-url', 'foo-remote')
+            ->andReturn(['git@github.com:test-foo/remote.git']);
+
+        $repo->expects('execute')
+            ->with('remote', 'get-url', 'bar-remote')
+            ->andReturn(['git@github.com:test-bar/remote.git']);
+
+        $repo->expects('execute')
+            ->with('checkout', '-b', 'my-cool-branch-name', '--track', 'drupal-11110003/my-cool-branch-name')
+            ->andReturn(["Branch 'my-cool-branch-name' set up to track remote branch 'my-cool-branch-name' from 'drupal-11110003/my-cool-branch-name'."]);
+
+        $repo->expects('addRemote')
             ->with('drupal-11110003', 'git@git.drupal.org:issue/drupal-11110003.git');
-        $repo->expects($this->once())->method('fetch')
+
+        $repo->expects('fetch')
             ->with('drupal-11110003');
 
         $git = $this->getMockBuilder(Git::class)
@@ -217,7 +217,6 @@ final class IssueMergeRequestTest extends TestCase
         $this->assertEquals(1, $result);
 
         $this->assertEquals(<<<OUTPUT
-        
          Issue #11110002 for drupal at Sun, 05 Oct 2014 15:47:01 +0000: Issue with no merge requests
         
          [ERROR] No merge requests found.                                                                                       

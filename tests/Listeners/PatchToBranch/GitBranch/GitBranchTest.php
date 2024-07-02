@@ -12,7 +12,7 @@ use dogit\DrupalOrg\Objects\DrupalOrgIssue;
 use dogit\Events\PatchToBranch\GitBranchEvent;
 use dogit\Git\GitOperator;
 use dogit\Listeners\PatchToBranch\GitBranch\GitBranch;
-use PHPUnit\Framework\TestCase;
+use dogit\tests\DogitTestBase;
 use Prophecy\PhpUnit\ProphecyTrait;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Console\Input\ArrayInput;
@@ -20,7 +20,7 @@ use Symfony\Component\Console\Input\ArrayInput;
 /**
  * @coversDefaultClass \dogit\Listeners\PatchToBranch\GitBranch\GitBranch
  */
-final class GitBranchTest extends TestCase
+final class GitBranchTest extends DogitTestBase
 {
     use ProphecyTrait;
 
@@ -29,32 +29,26 @@ final class GitBranchTest extends TestCase
      */
     public function testListenerBranchUnspecified(): void
     {
-        $gitRepository = $this->createMock(GitRepository::class);
-        $gitRepository->expects($this->any())
-            ->method('execute')
-            ->withConsecutive(
-                [['rev-parse', '--verify', '--quiet', 'dogit-1337-2.1.x']],
-                [['clean', '-f']],
-                ['checkout', '-b', 'dogit-1337-2.1.x', 'origin/2.1.x'],
-            )
-            ->willReturn(
-                // The branch does not exist:
-                $this->throwException(new GitException("Command 'git rev-parse --verify --quiet dogit-1337-2.1.x' failed (exit-code 1).", 1, null)),
-                [],
-                [],
-            );
+        $gitRepository = \Mockery::mock(GitRepository::class);
+        $gitRepository->expects('execute')
+            ->with(['rev-parse', '--verify', '--quiet', 'dogit-1337-2.1.x'])
+            // The branch does not exist:
+            ->andThrows(new GitException("Command 'git rev-parse --verify --quiet dogit-1337-2.1.x' failed (exit-code 1).", 1, null));
+
+        $gitRepository->expects('execute')
+            ->with(['clean', '-f'])
+            ->andReturn([]);
+        $gitRepository->expects('execute')
+            ->with('checkout', '-b', 'dogit-1337-2.1.x', 'origin/2.1.x')
+            ->andReturn([]);
 
         $gitOperator = new GitOperator($gitRepository);
-        $logger = $this->createMock(LoggerInterface::class);
-        $logger->expects($this->exactly(2))
-            ->method('info')
-            ->withConsecutive(
-                ['Starting branch at 2.1.x'],
-                ['Checked out branch: dogit-1337-2.1.x'],
-            );
+        $logger = \Mockery::mock(LoggerInterface::class);
+        $logger->expects('info')->with('Starting branch at 2.1.x');
+        $logger->expects('info')->with('Checked out branch: dogit-1337-2.1.x');
 
-        $issue = $this->createMock(DrupalOrgIssue::class);
-        $issue->method('id')->willReturn(1337);
+        $issue = \Mockery::mock(DrupalOrgIssue::class);
+        $issue->expects('id')->andReturn(1337);
 
         $command = new PatchToBranch();
         $input = new ArrayInput([
@@ -78,32 +72,19 @@ final class GitBranchTest extends TestCase
      */
     public function testListenerBranchNotExistsNoDelete(): void
     {
-        $gitRepository = $this->createMock(GitRepository::class);
-        $gitRepository->expects($this->any())
-            ->method('execute')
-            ->withConsecutive(
-                [['rev-parse', '--verify', '--quiet', 'dogit-1337-2.1.x']],
-                [['clean', '-f']],
-                ['checkout', '-b', 'dogit-1337-2.1.x', 'origin/2.1.x'],
-            )
-            ->willReturn(
-                // The branch does not exist:
-                $this->throwException(new GitException("Command 'git rev-parse --verify --quiet dogit-1337-2.1.x' failed (exit-code 1).", 1, null)),
-                [],
-                [],
-            );
+        $gitRepository = \Mockery::mock(GitRepository::class);
+        // The branch does not exist:
+        $gitRepository->expects('execute')->with(['rev-parse', '--verify', '--quiet', 'dogit-1337-2.1.x'])->andThrow(new GitException("Command 'git rev-parse --verify --quiet dogit-1337-2.1.x' failed (exit-code 1).", 1, null));
+        $gitRepository->expects('execute')->with(['clean', '-f'])->andReturn([]);
+        $gitRepository->expects('execute')->with('checkout', '-b', 'dogit-1337-2.1.x', 'origin/2.1.x')->andReturn([]);
 
         $gitOperator = new GitOperator($gitRepository);
-        $logger = $this->createMock(LoggerInterface::class);
-        $logger->expects($this->exactly(2))
-            ->method('info')
-            ->withConsecutive(
-                ['Starting branch at 2.1.x'],
-                ['Checked out branch: dogit-1337-2.1.x'],
-            );
+        $logger = \Mockery::mock(LoggerInterface::class);
+        $logger->expects('info')->with('Starting branch at 2.1.x');
+        $logger->expects('info')->with('Checked out branch: dogit-1337-2.1.x');
 
-        $issue = $this->createMock(DrupalOrgIssue::class);
-        $issue->method('id')->willReturn(1337);
+        $issue = \Mockery::mock(DrupalOrgIssue::class);
+        $issue->expects('id')->andReturn(1337);
 
         $command = new PatchToBranch();
         $input = new ArrayInput([
@@ -126,23 +107,15 @@ final class GitBranchTest extends TestCase
      */
     public function testListenerBranchExistsNoDelete(): void
     {
-        $gitRepository = $this->createMock(GitRepository::class);
-        $gitRepository->expects($this->any())
-            ->method('execute')
-            ->withConsecutive(
-                [['rev-parse', '--verify', '--quiet', 'dogit-1337-2.1.x']],
-            )
-            ->willReturn(
-                [],
-            );
+        $gitRepository = \Mockery::mock(GitRepository::class);
+        $gitRepository->expects('execute')->with(['rev-parse', '--verify', '--quiet', 'dogit-1337-2.1.x'])->andReturn([]);
 
         $gitOperator = new GitOperator($gitRepository);
-        $logger = $this->createMock(LoggerInterface::class);
-        $logger->expects($this->once())
-            ->method('error')
+        $logger = \Mockery::mock(LoggerInterface::class);
+        $logger->expects('error')
             ->with('Git branch dogit-1337-2.1.x already exists from a previous run. Specify a unique branch name with --branch or use --delete-existing-branch.');
-        $issue = $this->createMock(DrupalOrgIssue::class);
-        $issue->method('id')->willReturn(1337);
+        $issue = \Mockery::mock(DrupalOrgIssue::class);
+        $issue->expects('id')->andReturn(1337);
 
         $command = new PatchToBranch();
         $input = new ArrayInput([
@@ -165,43 +138,29 @@ final class GitBranchTest extends TestCase
      */
     public function testListenerBranchExistsWithDelete(): void
     {
-        $gitRepository = $this->createMock(GitRepository::class);
-        $gitRepository->expects($this->exactly(5))
-            ->method('execute')
-            ->withConsecutive(
-                [['rev-parse', '--verify', '--quiet', 'dogit-1337-2.1.x']],
-                [
-                    'branch',
-                    '-M',
-                    'dogit-1337-2.1.x',
-                    'dogit-1337-2.1.x-to-delete',
-                ],
-                [['clean', '-f']],
-                ['checkout', '-b', 'dogit-1337-2.1.x', 'origin/2.1.x'],
-                ['branch', '-D', 'dogit-1337-2.1.x-to-delete']
-            )
-            ->willReturn(
-                [],
-            );
+        $gitRepository = \Mockery::mock(GitRepository::class);
+        $gitRepository->expects('execute')->with(['rev-parse', '--verify', '--quiet', 'dogit-1337-2.1.x'])->andReturn([]);
+        $gitRepository->expects('execute')->with(
+            'branch',
+            '-M',
+            'dogit-1337-2.1.x',
+            'dogit-1337-2.1.x-to-delete',
+        )->andReturn([]);
+        $gitRepository->expects('execute')->with(['clean', '-f'])->andReturn([]);
+        $gitRepository->expects('execute')->with('checkout', '-b', 'dogit-1337-2.1.x', 'origin/2.1.x')->andReturn([]);
+        $gitRepository->expects('execute')->with('branch', '-D', 'dogit-1337-2.1.x-to-delete')->andReturn([]);
 
         $gitOperator = new GitOperator($gitRepository);
-        $logger = $this->createMock(LoggerInterface::class);
-        $logger->expects($this->once())
-            ->method('debug')
-            ->with('Renaming existing branch {branch_name} so it can be deleted after a new branch with the same name is created.', [
-                'branch_name' => 'dogit-1337-2.1.x',
-            ]);
-        $logger->expects($this->exactly(3))
-            ->method('info')
-            ->withConsecutive(
-                ['Starting branch at 2.1.x'],
-                ['Checked out branch: dogit-1337-2.1.x'],
-                ['Deleting old branch {branch_name}', [
-                    'branch_name' => 'dogit-1337-2.1.x-to-delete',
-                ]],
-            );
-        $issue = $this->createMock(DrupalOrgIssue::class);
-        $issue->method('id')->willReturn(1337);
+        $logger = \Mockery::mock(LoggerInterface::class);
+        $logger->expects('debug')->with('Renaming existing branch {branch_name} so it can be deleted after a new branch with the same name is created.', [
+            'branch_name' => 'dogit-1337-2.1.x',
+        ]);
+        $logger->expects('info')->with('Starting branch at 2.1.x');
+        $logger->expects('info')->with('Checked out branch: dogit-1337-2.1.x');
+        $logger->expects('info')->with('Deleting old branch {branch_name}', ['branch_name' => 'dogit-1337-2.1.x-to-delete']);
+
+        $issue = \Mockery::mock(DrupalOrgIssue::class);
+        $issue->expects('id')->andReturn(1337);
 
         $command = new PatchToBranch();
         $input = new ArrayInput([

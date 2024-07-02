@@ -9,14 +9,13 @@ use dogit\DrupalOrg\IssueGraph\Events\IssueEvent;
 use dogit\DrupalOrg\Objects\DrupalOrgComment;
 use dogit\DrupalOrg\Objects\DrupalOrgPatch;
 use dogit\Events\PatchToBranch\FilterEvent;
-use PHPUnit\Framework\TestCase;
 use Prophecy\PhpUnit\ProphecyTrait;
 use Psr\Log\LoggerInterface;
 
 /**
  * @coversDefaultClass \dogit\Events\PatchToBranch\FilterEvent
  */
-final class FilterEventTest extends TestCase
+final class FilterEventTest extends \dogit\tests\DogitTestBase
 {
     use ProphecyTrait;
 

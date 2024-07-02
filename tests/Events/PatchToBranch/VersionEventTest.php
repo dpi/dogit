@@ -9,14 +9,13 @@ use dogit\DrupalOrg\IssueGraph\Events\IssueEvent;
 use dogit\DrupalOrg\Objects\DrupalOrgComment;
 use dogit\DrupalOrg\Objects\DrupalOrgPatch;
 use dogit\Events\PatchToBranch\VersionEvent;
-use PHPUnit\Framework\TestCase;
 use Prophecy\PhpUnit\ProphecyTrait;
 use Psr\Log\LoggerInterface;
 
 /**
  * @coversDefaultClass \dogit\Events\PatchToBranch\VersionEvent
  */
-final class VersionEventTest extends TestCase
+final class VersionEventTest extends \dogit\tests\DogitTestBase
 {
     use ProphecyTrait;
 

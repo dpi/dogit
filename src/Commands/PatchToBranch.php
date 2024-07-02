@@ -65,7 +65,7 @@ class PatchToBranch extends Command
     protected Finder $finder;
     protected ProcessFactory $processFactory;
 
-    public function __construct(CliRunnerInterface $runner = null, Finder $finder = null, ProcessFactory $processFactory = null)
+    public function __construct(?CliRunnerInterface $runner = null, ?Finder $finder = null, ?ProcessFactory $processFactory = null)
     {
         parent::__construct();
         $this->gitRunner = $runner ?? new CliRunner();

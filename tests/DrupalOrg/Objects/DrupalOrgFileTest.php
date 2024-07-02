@@ -9,12 +9,11 @@ use dogit\DrupalOrg\Objects\DrupalOrgComment;
 use dogit\DrupalOrg\Objects\DrupalOrgFile;
 use dogit\tests\TestUtilities;
 use GuzzleHttp\Psr7\Response;
-use PHPUnit\Framework\TestCase;
 
 /**
  * @coversDefaultClass \dogit\DrupalOrg\Objects\DrupalOrgFile
  */
-class DrupalOrgFileTest extends TestCase
+class DrupalOrgFileTest extends \dogit\tests\DogitTestBase
 {
     /**
      * @covers ::getMime
@@ -73,7 +72,7 @@ class DrupalOrgFileTest extends TestCase
 
         $file = $this->createFile();
         $file->setParent($comment);
-        /** @var \dogit\DrupalOrg\Objects\DrupalOrgComment $parent */
+        /** @var DrupalOrgComment $parent */
         $parent = $file->getParent();
         $this->assertEquals(66, $parent->id());
 

@@ -5,13 +5,12 @@ declare(strict_types=1);
 namespace dogit\tests;
 
 use dogit\ProcessFactory;
-use PHPUnit\Framework\TestCase;
 use Prophecy\PhpUnit\ProphecyTrait;
 
 /**
  * @coversDefaultClass \dogit\ProcessFactory
  */
-final class ProcessFactoryTest extends TestCase
+final class ProcessFactoryTest extends DogitTestBase
 {
     use ProphecyTrait;
 

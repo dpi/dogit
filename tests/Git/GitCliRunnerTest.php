@@ -6,14 +6,13 @@ namespace dogit\tests\Git;
 
 use CzProject\GitPhp\GitException;
 use dogit\Git\CliRunner;
-use PHPUnit\Framework\TestCase;
 use Prophecy\PhpUnit\ProphecyTrait;
 use Psr\Log\LoggerInterface;
 
 /**
  * @coversDefaultClass \dogit\Git\CliRunner
  */
-final class GitCliRunnerTest extends TestCase
+final class GitCliRunnerTest extends \dogit\tests\DogitTestBase
 {
     use ProphecyTrait;
 

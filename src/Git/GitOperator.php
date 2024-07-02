@@ -111,7 +111,7 @@ final class GitOperator
         ]);
     }
 
-    public function renameBranch(string $newBranchName, string $oldBranchName = null): void
+    public function renameBranch(string $newBranchName, ?string $oldBranchName = null): void
     {
         $args = ['branch', '-M'];
         if (null !== $oldBranchName) {
@@ -173,11 +173,9 @@ final class GitOperator
     }
 
     /**
-     * @param mixed ...$args
-     *
      * @return string[]
      */
-    public function execute(...$args): array
+    public function execute(mixed ...$args): array
     {
         return $this->gitRepository->execute(...$args);
     }
@@ -196,7 +194,7 @@ final class GitOperator
     }
 
     /**
-     * @throws \CzProject\GitPhp\GitException
+     * @throws GitException
      *   On error, of if directory is not a Git repository
      */
     public static function fromDirectory(Git $git, string $directory, Finder $finder): static

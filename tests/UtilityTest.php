@@ -18,7 +18,6 @@ use dogit\Utility;
 use GuzzleHttp\Psr7\Response;
 use Http\Promise\Promise;
 use org\bovigo\vfs\vfsStream;
-use PHPUnit\Framework\TestCase;
 use Prophecy\Argument\Token\AnyValuesToken;
 use Prophecy\PhpUnit\ProphecyTrait;
 use Psr\Log\LoggerInterface;
@@ -27,7 +26,7 @@ use Symfony\Component\Finder\Finder;
 /**
  * @coversDefaultClass \dogit\Utility
  */
-class UtilityTest extends TestCase
+class UtilityTest extends DogitTestBase
 {
     use ProphecyTrait;
 
@@ -36,7 +35,7 @@ class UtilityTest extends TestCase
      */
     public function testFilterCommentsWithPatches(): void
     {
-        /** @var \Prophecy\Prophecy\ObjectProphecy|\dogit\DrupalOrg\DrupalApiInterface $api */
+        /** @var \Prophecy\Prophecy\ObjectProphecy|DrupalApiInterface $api */
         $api = $this->prophesize(DrupalApiInterface::class);
         $api->getCommentAsync(new AnyValuesToken())
             ->willReturn($this->prophesize(Promise::class)->reveal());
@@ -246,7 +245,6 @@ class UtilityTest extends TestCase
             $comment1,
             $comment2,
         ]);
-        $this->assertCount(2, $events);
         $events = Utility::ensureInitialVersionChange($events, $issue);
         $this->assertCount(3, $events);
         $versionChangeEvents = IssueEvent::filterVersionChangeEvents($events);
@@ -274,7 +272,6 @@ class UtilityTest extends TestCase
             $comment1,
         ]);
         $issue->method('getCurrentVersion')->willReturn('1.0.0');
-        $this->assertCount(1, $events);
         $events = Utility::ensureInitialVersionChange($events, $issue);
         $this->assertCount(2, $events);
         $versionChangeEvents = IssueEvent::filterVersionChangeEvents($events);
@@ -309,7 +306,7 @@ class UtilityTest extends TestCase
     /**
      * @return array<string, array<mixed>>
      */
-    public function provider_numericConstraintRuleBuilder(): array
+    public static function provider_numericConstraintRuleBuilder(): array
     {
         return [
             'verbatim fail' => ['100', 90, false],

@@ -6,13 +6,12 @@ namespace dogit\tests\Commands\IssueTimelineCommand;
 
 use dogit\Commands\IssueTimelineCommand;
 use dogit\tests\DogitGuzzleTestMiddleware;
-use PHPUnit\Framework\TestCase;
 use Symfony\Component\Console\Tester\CommandTester;
 
 /**
  * @coversDefaultClass \dogit\Commands\IssueTimelineCommand
  */
-final class DogitTimelineTest extends TestCase
+final class DogitTimelineTest extends \dogit\tests\DogitTestBase
 {
     /**
      * @covers ::execute

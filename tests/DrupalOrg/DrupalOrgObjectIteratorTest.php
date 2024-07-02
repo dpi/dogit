@@ -18,7 +18,6 @@ use GuzzleHttp\Psr7\Response;
 use Http\Adapter\Guzzle7\Client;
 use Http\Client\Exception\HttpException;
 use Http\Discovery\Psr17FactoryDiscovery;
-use PHPUnit\Framework\TestCase;
 use Prophecy\PhpUnit\ProphecyTrait;
 use Psr\Http\Message\RequestFactoryInterface;
 use Psr\Log\LoggerInterface;
@@ -26,7 +25,7 @@ use Psr\Log\LoggerInterface;
 /**
  * @coversDefaultClass \dogit\DrupalOrg\DrupalOrgObjectIterator
  */
-class DrupalOrgObjectIteratorTest extends TestCase
+class DrupalOrgObjectIteratorTest extends \dogit\tests\DogitTestBase
 {
     use ProphecyTrait;
 

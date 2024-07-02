@@ -6,12 +6,11 @@ namespace dogit\tests\DrupalOrg;
 
 use dogit\DrupalOrg\DrupalOrgObjectCollection;
 use dogit\DrupalOrg\Objects\DrupalOrgIssue;
-use PHPUnit\Framework\TestCase;
 
 /**
  * @coversDefaultClass \dogit\DrupalOrg\DrupalOrgObjectCollection
  */
-final class DrupalOrgObjectCollectionTest extends TestCase
+final class DrupalOrgObjectCollectionTest extends \dogit\tests\DogitTestBase
 {
     /**
      * @covers ::share

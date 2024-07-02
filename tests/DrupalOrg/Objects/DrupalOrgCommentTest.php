@@ -8,12 +8,11 @@ use dogit\DrupalOrg\DrupalOrgObjectRepository;
 use dogit\DrupalOrg\Objects\DrupalOrgComment;
 use dogit\tests\TestUtilities;
 use GuzzleHttp\Psr7\Response;
-use PHPUnit\Framework\TestCase;
 
 /**
  * @coversDefaultClass \dogit\DrupalOrg\Objects\DrupalOrgComment
  */
-final class DrupalOrgCommentTest extends TestCase
+final class DrupalOrgCommentTest extends \dogit\tests\DogitTestBase
 {
     /**
      * @covers ::getCreated
@@ -37,7 +36,6 @@ final class DrupalOrgCommentTest extends TestCase
     {
         $files = $this->createComment()->getFiles();
         $this->assertCount(1, $files);
-        assert(count($files) > 0);
         $this->assertEquals(22220001, reset($files)->id());
 
         $this->expectException(\DomainException::class);

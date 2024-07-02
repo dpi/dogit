@@ -60,7 +60,6 @@ class DrupalOrgPatchTest extends DrupalOrgFileTest
         $file->setRepository(new DrupalOrgObjectRepository());
 
         $patch = DrupalOrgPatch::fromFile($file);
-        $this->assertInstanceOf(DrupalOrgPatch::class, $patch);
         $this->assertEquals(33, $patch->id());
     }
 
@@ -70,7 +69,7 @@ class DrupalOrgPatchTest extends DrupalOrgFileTest
 
         $file = $this->createFile();
         $file->setParent($comment);
-        /** @var \dogit\DrupalOrg\Objects\DrupalOrgComment $parent */
+        /** @var DrupalOrgComment $parent */
         $parent = $file->getParent();
         $this->assertEquals(66, $parent->id());
     }

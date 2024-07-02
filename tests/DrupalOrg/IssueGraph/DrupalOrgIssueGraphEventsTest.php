@@ -15,12 +15,11 @@ use dogit\DrupalOrg\IssueGraph\Events\VersionChangeEvent;
 use dogit\DrupalOrg\Objects\DrupalOrgComment;
 use dogit\tests\TestUtilities;
 use GuzzleHttp\Psr7\Response;
-use PHPUnit\Framework\TestCase;
 
 /**
  * Covers events.
  */
-final class DrupalOrgIssueGraphEventsTest extends TestCase
+final class DrupalOrgIssueGraphEventsTest extends \dogit\tests\DogitTestBase
 {
     /**
      * @covers \dogit\DrupalOrg\IssueGraph\Events\AssignmentChangeEvent
@@ -85,7 +84,7 @@ final class DrupalOrgIssueGraphEventsTest extends TestCase
     /**
      * @return array<string, array{string, array{0: string, 1: string}, class-string, string}>
      */
-    public function issueEventFromRawProvider(): array
+    public static function issueEventFromRawProvider(): array
     {
         return [
             'StatusChangeEvent' => [
@@ -136,16 +135,16 @@ final class DrupalOrgIssueGraphEventsTest extends TestCase
         $events = [
             new MergeRequestCreateEvent($comment, '', '', 1, '', '', ''),
             new IssueEvent($comment, []),
-            new MergeRequestCreateEvent($comment, '', '', 1, '', '', ''),
+            new MergeRequestCreateEvent($comment, '', '', 2, '', '', ''),
             new IssueEvent($comment, []),
-            new MergeRequestCreateEvent($comment, '', '', 1, '', '', ''),
+            new MergeRequestCreateEvent($comment, '', '', 3, '', '', ''),
         ];
         $actual = IssueEvent::filterMergeRequestCreateEvents($events);
         $this->assertCount(3, $actual);
         $actual = array_values($actual);
-        $this->assertInstanceOf(MergeRequestCreateEvent::class, $actual[0]);
-        $this->assertInstanceOf(MergeRequestCreateEvent::class, $actual[1]);
-        $this->assertInstanceOf(MergeRequestCreateEvent::class, $actual[2]);
+        static::assertEquals(1, $actual[0]->mergeRequestId());
+        static::assertEquals(2, $actual[1]->mergeRequestId());
+        static::assertEquals(3, $actual[2]->mergeRequestId());
     }
 
     /**
@@ -164,9 +163,9 @@ final class DrupalOrgIssueGraphEventsTest extends TestCase
         $actual = IssueEvent::filterVersionChangeEvents($events);
         $this->assertCount(3, $actual);
         $actual = array_values($actual);
-        $this->assertInstanceOf(VersionChangeEvent::class, $actual[0]);
-        $this->assertInstanceOf(VersionChangeEvent::class, $actual[1]);
-        $this->assertInstanceOf(VersionChangeEvent::class, $actual[2]);
+        static::assertEquals('1.0.0', $actual[0]->from());
+        static::assertEquals('2.0.0', $actual[1]->from());
+        static::assertEquals('3.0.0', $actual[2]->from());
     }
 
     /**

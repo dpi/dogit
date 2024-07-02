@@ -8,13 +8,12 @@ use dogit\DrupalOrg\DrupalOrgObjectRepository;
 use dogit\DrupalOrg\Objects\DrupalOrgIssue;
 use dogit\tests\TestUtilities;
 use GuzzleHttp\Psr7\Response;
-use PHPUnit\Framework\TestCase;
 use Prophecy\PhpUnit\ProphecyTrait;
 
 /**
  * @coversDefaultClass \dogit\DrupalOrg\Objects\DrupalOrgObject
  */
-final class DrupalOrgObjectTest extends TestCase
+final class DrupalOrgObjectTest extends \dogit\tests\DogitTestBase
 {
     use ProphecyTrait;
 

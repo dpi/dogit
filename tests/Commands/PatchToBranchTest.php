@@ -13,7 +13,7 @@ use dogit\Commands\PatchToBranch;
 use dogit\Git\CliRunnerInterface;
 use dogit\ProcessFactory;
 use dogit\tests\DogitGuzzleTestMiddleware;
-use PHPUnit\Framework\TestCase;
+use dogit\tests\DogitTestBase;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Tester\CommandTester;
@@ -23,7 +23,7 @@ use Symfony\Component\Process\Process;
 /**
  * @coversDefaultClass \dogit\Commands\PatchToBranch
  */
-final class PatchToBranchTest extends TestCase
+final class PatchToBranchTest extends DogitTestBase
 {
     protected function setUp(): void
     {
@@ -44,41 +44,40 @@ final class PatchToBranchTest extends TestCase
     {
         $testRepoDir = '/tmp/dogit-testing/fakedir';
 
-        $repo = $this->createMock(GitRepository::class);
-        // For \dogit\Listeners\PatchToBranch\ValidateLocalRepository\IsGit::__invoke
-        $repo->expects($this->once())
-            ->method('getBranches')
-            ->willReturn(['abc', 'def']);
-        $repo->expects($this->once())
-            ->method('getRepositoryPath')
-            ->willReturn($testRepoDir);
-        $repo->expects($this->exactly(3))
-            ->method('addAllChanges');
+        $repo = \Mockery::mock(GitRepository::class);
 
-        $repo->expects($this->any())
-            ->method('execute')
-            ->withConsecutive(
-                // For \dogit\Listeners\PatchToBranch\ValidateLocalRepository\IsClean::__invoke
-                ['status', '--porcelain'],
-                // For \dogit\Listeners\PatchToBranch\GitBranch\GitBranch::__invoke
-                [['rev-parse', '--verify', '--quiet', 'dogit-2350939-8.2.x']],
-                [['clean', '-f']],
-                ['checkout', '-b', 'dogit-2350939-8.2.x', 'origin/8.2.x'],
-                [['rev-list', '-1', '--before="1428704703"', 'remotes/origin/8.2.x']],
-                [['rev-list', '-1', '--before="1428704703"', 'remotes/origin/8.3.x']],
-                [['rev-list', '-1', '--before="1428704703"', 'remotes/origin/8.3.x']],
-                ['reset', '--hard', '--quiet', 'abcdef0000000000000000000000000000000001'],
-                [
-                    'commit',
-                    [
-                        '--date',
-                        '1428704703',
-                    ],
-                    '--author=larowlan <395439@larowlan.no-reply.drupal.org>',
-                    '--allow-empty',
-                    [
-                        '--message',
-                        <<<MESSAGE
+        // For \dogit\Listeners\PatchToBranch\ValidateLocalRepository\IsGit::__invoke
+        $repo->expects('getBranches')->once()->andReturn(['abc', 'def']);
+        $repo->expects('getRepositoryPath')->once()->andReturn($testRepoDir);
+        $repo->expects('addAllChanges')->times(3);
+
+        // For \dogit\Listeners\PatchToBranch\ValidateLocalRepository\IsClean::__invoke
+        // The working copy is clean:
+        $repo->expects('execute')->with('status', '--porcelain')->andReturn([]);
+        // For \dogit\Listeners\PatchToBranch\GitBranch\GitBranch::__invoke
+        // The branch does not exist:
+        $repo->expects('execute')->with(['rev-parse', '--verify', '--quiet', 'dogit-2350939-8.2.x'])->andThrow(
+            new GitException("Command 'git rev-parse --verify --quiet dogit-2350939-8.8.x' failed (exit-code 1).", 1, null)
+        );
+        $repo->expects('execute')->with(['clean', '-f'])->andReturn([]);
+        $repo->expects('execute')->with('checkout', '-b', 'dogit-2350939-8.2.x', 'origin/8.2.x')->andReturn([]);
+        $repo->expects('execute')->with(['rev-list', '-1', '--before="1428704703"', 'remotes/origin/8.2.x'])->andReturn(['abcdef0000000000000000000000000000000001']);
+        $repo->expects('execute')->with(['rev-list', '-1', '--before="1428704703"', 'remotes/origin/8.3.x'])->andReturn(['abcdef0000000000000000000000000000000002']);
+        $repo->expects('execute')->with(['rev-list', '-1', '--before="1428704703"', 'remotes/origin/8.3.x'])->andReturn(['abcdef0000000000000000000000000000000003']);
+        // reset
+        $repo->expects('execute')->with('reset', '--hard', '--quiet', 'abcdef0000000000000000000000000000000001')->andReturn([]);
+        // commit
+        $repo->expects('execute')->with(
+            'commit',
+            [
+                '--date',
+                '1428704703',
+            ],
+            '--author=larowlan <395439@larowlan.no-reply.drupal.org>',
+            '--allow-empty',
+            [
+                '--message',
+                <<<MESSAGE
                         Patch #1 on 8.2.x
 
                         Patch URL: https://www.drupal.org/files/issues/alpha.patch
@@ -87,35 +86,37 @@ final class PatchToBranchTest extends TestCase
                         Patch uploaded by larowlan
                         Commit built with dogit.dev
                         MESSAGE
-                    ],
-                ],
-                [[
-                    'show',
-                    'cccccccccc000000000000000000000000000001',
-                    '--name-only',
-                    '--diff-filter=AR',
-                    '--no-commit-id',
-                ]],
-                [
-                    'commit',
-                    '--amend',
-                    '--allow-empty',
-                    ['--reuse-message', 'dddddddddd000000000000000000000000000001'],
-                    ['--date', 1428704703],
-                    ['--author', 'dogit <dogit@dogit.dev>'],
-                ],
-                [['checkout', 'abcdef0000000000000000000000000000000002', '--', '.']],
-                [
-                    'commit',
-                    [
-                      '--date',
-                      '1428704703',
-                    ],
-                    '--author=larowlan <395439@larowlan.no-reply.drupal.org>',
-                    '--allow-empty',
-                    [
-                      '--message',
-                      <<<MESSAGE
+            ],
+        )->andReturn([]);
+        // show new files
+        $repo->expects('execute')->with([
+            'show',
+            'cccccccccc000000000000000000000000000001',
+            '--name-only',
+            '--diff-filter=AR',
+            '--no-commit-id',
+        ])->andReturn(['new files 1.txt']);
+        // commit amend
+        $repo->expects('execute')->with('commit',
+            '--amend',
+            '--allow-empty',
+            ['--reuse-message', 'dddddddddd000000000000000000000000000001'],
+            ['--date', 1428704703],
+            ['--author', 'dogit <dogit@dogit.dev>'],
+        )->andReturn([]);
+        // checkout pathspec
+        $repo->expects('execute')->with(['checkout', 'abcdef0000000000000000000000000000000002', '--', '.'])->andReturn([]);
+        $repo->expects('execute')->with(
+            'commit',
+            [
+                '--date',
+                '1428704703',
+            ],
+            '--author=larowlan <395439@larowlan.no-reply.drupal.org>',
+            '--allow-empty',
+            [
+                '--message',
+                <<<MESSAGE
                             Patch #5 on 8.3.x
 
                             Patch URL: https://www.drupal.org/files/issues/bravo.patch
@@ -124,27 +125,28 @@ final class PatchToBranchTest extends TestCase
                             Patch uploaded by larowlan
                             Commit built with dogit.dev
                             MESSAGE
-                  ],
-                ],
-                [[
-                  'show',
-                  'eeeeeeeeee000000000000000000000000000001',
-                  '--name-only',
-                  '--diff-filter=AR',
-                  '--no-commit-id',
-                ]],
-                [['checkout', 'abcdef0000000000000000000000000000000003', '--', '.']],
-                [
-                    'commit',
-                    [
-                        '--date',
-                        '1428704703',
-                    ],
-                    '--author=larowlan <395439@larowlan.no-reply.drupal.org>',
-                    '--allow-empty',
-                    [
-                        '--message',
-                        <<<MESSAGE
+            ],
+        )->andReturn([]);
+        // show new files
+        $repo->expects('execute')->with([
+            'show',
+            'eeeeeeeeee000000000000000000000000000001',
+            '--name-only',
+            '--diff-filter=AR',
+            '--no-commit-id',
+        ])->andReturn(['new files 2.txt']);
+        $repo->expects('execute')->with(['checkout', 'abcdef0000000000000000000000000000000003', '--', '.'])->andReturn([]);
+        $repo->expects('execute')->with(
+            'commit',
+            [
+                '--date',
+                '1428704703',
+            ],
+            '--author=larowlan <395439@larowlan.no-reply.drupal.org>',
+            '--allow-empty',
+            [
+                '--message',
+                <<<MESSAGE
                             Patch #7 on 8.3.x
 
                             Patch URL: https://www.drupal.org/files/issues/charlie.patch
@@ -153,67 +155,28 @@ final class PatchToBranchTest extends TestCase
                             Patch uploaded by larowlan
                             Commit built with dogit.dev
                             MESSAGE
-                    ],
-                ],
-                [[
-                    'show',
-                    'ffffffffff000000000000000000000000000001',
-                    '--name-only',
-                    '--diff-filter=AR',
-                    '--no-commit-id',
-                ]],
-            )
-            ->willReturn(
-                // The working copy is clean:
-                $this->returnValue([]),
-                // The branch does not exist:
-                $this->throwException(new GitException("Command 'git rev-parse --verify --quiet dogit-2350939-8.8.x' failed (exit-code 1).", 1, null)),
-                $this->returnValue([]),
-                $this->returnValue([]),
-                $this->returnValue(['abcdef0000000000000000000000000000000001']),
-                $this->returnValue(['abcdef0000000000000000000000000000000002']),
-                $this->returnValue(['abcdef0000000000000000000000000000000003']),
-                // reset
-                $this->returnValue([]),
-                // commit
-                $this->returnValue([]),
-                // show new files
-                $this->returnValue(['new files 1.txt']),
-                // commit amend
-                $this->returnValue([]),
-                // checkout pathspec
-                $this->returnValue([]),
-                $this->returnValue([]),
-                // show new files
-                $this->returnValue(['new files 2.txt']),
-                $this->returnValue([]),
-                $this->returnValue([]),
-                // show new files 3
-                $this->returnValue(['new files 3.txt']),
-            );
+            ],
+        )->andReturn([]);
+        // show new files 3
+        $repo->expects('execute')->with([
+            'show',
+            'ffffffffff000000000000000000000000000001',
+            '--name-only',
+            '--diff-filter=AR',
+            '--no-commit-id',
+        ])->andReturn(['new files 3.txt']);
 
-        $repo->expects($this->exactly(6))
-        ->method('getLastCommitId')
-            ->willReturn(
-                // First commit.
-                $this->returnValue(new CommitId('cccccccccc000000000000000000000000000001')),
-                // First merge.
-                $this->returnValue(new CommitId('dddddddddd000000000000000000000000000001')),
-                $this->returnValue(new CommitId('dddddddddd000000000000000000000000000001')),
-                $this->returnValue(new CommitId('eeeeeeeeee000000000000000000000000000001')),
-                $this->returnValue(new CommitId('eeeeeeeeee000000000000000000000000000001')),
-                $this->returnValue(new CommitId('ffffffffff000000000000000000000000000001')),
-            );
+        // First commit.
+        $repo->expects('getLastCommitId')->andReturn(new CommitId('cccccccccc000000000000000000000000000001'));
+        // First merge.
+        $repo->expects('getLastCommitId')->andReturn(new CommitId('dddddddddd000000000000000000000000000001'));
+        $repo->expects('getLastCommitId')->andReturn(new CommitId('dddddddddd000000000000000000000000000001'));
+        $repo->expects('getLastCommitId')->andReturn(new CommitId('eeeeeeeeee000000000000000000000000000001'));
+        $repo->expects('getLastCommitId')->andReturn(new CommitId('eeeeeeeeee000000000000000000000000000001'));
+        $repo->expects('getLastCommitId')->andReturn(new CommitId('ffffffffff000000000000000000000000000001'));
 
-        $repo->expects($this->exactly(2))
-            ->method('merge')
-            ->withConsecutive(
-                ['abcdef0000000000000000000000000000000002'],
-                ['abcdef0000000000000000000000000000000003'],
-            )
-            ->willReturn(
-                $this->returnSelf()
-            );
+        $repo->expects('merge')->with('abcdef0000000000000000000000000000000002', ['--strategy-option=ours'])->andReturnSelf();
+        $repo->expects('merge')->with('abcdef0000000000000000000000000000000003', ['--strategy-option=ours'])->andReturnSelf();
 
         $git = $this->getMockBuilder(Git::class)
             ->getMock();

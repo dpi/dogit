@@ -6,14 +6,13 @@ namespace dogit\tests\Events\PatchToBranch;
 
 use dogit\DrupalOrg\Objects\DrupalOrgPatch;
 use dogit\Events\PatchToBranch\FilterByResponseEvent;
-use PHPUnit\Framework\TestCase;
 use Prophecy\PhpUnit\ProphecyTrait;
 use Psr\Log\LoggerInterface;
 
 /**
  * @coversDefaultClass \dogit\Events\PatchToBranch\FilterByResponseEvent
  */
-final class FilterByResponseEventTest extends TestCase
+final class FilterByResponseEventTest extends \dogit\tests\DogitTestBase
 {
     use ProphecyTrait;
 

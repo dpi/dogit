@@ -38,7 +38,7 @@
         "phpstan/phpstan": "1.10.32",
         "phpstan/phpstan-strict-rules": "^1.4.2",
         "phpstan/phpstan-symfony": "^1.2.6",
-        "phpunit/phpunit": "^9.5.25"
+        "phpunit/phpunit": "^9.5.25",
         "phpspec/prophecy": "^1.15",
         "phpspec/prophecy-phpunit": "^2.0.1"
     },

@@ -24,7 +24,7 @@ final class ByMetadata
         // Compute confidence upfront so these are all logged together.
         $event->filter(function (DrupalOrgPatch $patch) use ($logger, $issueEvents): bool {
             // Get tests results for this comment.
-            /** @var \dogit\DrupalOrg\IssueGraph\Events\TestResultEvent[] $testResults */
+            /** @var TestResultEvent[] $testResults */
             $testResults = array_filter(
                 $issueEvents,
                 fn (IssueEventInterface $event): bool => $event instanceof TestResultEvent && $event->getComment()->id() == $patch->getParent()->id(),

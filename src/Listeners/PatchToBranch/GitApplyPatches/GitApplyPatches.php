@@ -29,7 +29,7 @@ final class GitApplyPatches
         $linearMode = $event->linearMode;
 
         // Resolve hashes.
-        /** @var array<array{\dogit\DrupalOrg\Objects\DrupalOrgPatch, string}> $hashes */
+        /** @var array<array{DrupalOrgPatch, string}> $hashes */
         $hashes = array_map(fn (DrupalOrgPatch $patch): array => [
             $patch,
             (new GitResolver($patch, $gitIo))->getHash(),

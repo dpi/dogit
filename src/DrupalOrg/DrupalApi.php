@@ -24,7 +24,7 @@ final class DrupalApi implements DrupalApiInterface
     public function __construct(
         protected RequestFactoryInterface $httpFactory,
         protected HttpAsyncClient $httpClient,
-        protected DrupalOrgObjectRepository $repository
+        protected DrupalOrgObjectRepository $repository,
     ) {
     }
 

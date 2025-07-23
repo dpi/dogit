@@ -91,7 +91,7 @@ class IssueMergeRequest extends Command
         }
 
         // Remap to MR IDs.
-        /** @var \dogit\DrupalOrg\IssueGraph\Events\MergeRequestCreateEvent[] $mergeRequestCreateEvents */
+        /** @var MergeRequestCreateEvent[] $mergeRequestCreateEvents */
         $mergeRequestCreateEvents = array_combine(
             array_map(
                 fn (MergeRequestCreateEvent $mergeRequestCreateEvent): int => $mergeRequestCreateEvent->mergeRequestId(),

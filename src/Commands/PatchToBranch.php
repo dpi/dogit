@@ -239,7 +239,7 @@ class PatchToBranch extends Command
     }
 
     /**
-     * @return \dogit\DrupalOrg\IssueGraph\Events\IssueEventInterface[]
+     * @return IssueEventInterface[]
      *   Events ordered by time
      */
     private function getIssueEvents(RequestFactoryInterface $httpFactory, HttpAsyncClient $httpAsyncClient, DrupalOrgObjectRepository $repository, DrupalOrgIssue $issue): array

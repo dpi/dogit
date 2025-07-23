@@ -42,7 +42,7 @@ class DrupalOrgIssueGraph
      *
      * Initiates an external request.
      *
-     * @return \Generator<int,\dogit\DrupalOrg\IssueGraph\Events\IssueEventInterface>
+     * @return \Generator<int,Events\IssueEventInterface>
      *
      * @throws \Exception
      */

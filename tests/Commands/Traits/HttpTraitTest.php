@@ -17,7 +17,7 @@ final class HttpTraitTest extends DogitTestBase
 {
     public function testLogs(): void
     {
-        $command = new class() {
+        $command = new class {
             use HttpTrait {
                 http as originalHttp;
             }

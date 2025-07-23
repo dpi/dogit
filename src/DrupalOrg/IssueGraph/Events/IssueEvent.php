@@ -31,9 +31,9 @@ final class IssueEvent implements IssueEventInterface
     }
 
     /**
-     * @param \dogit\DrupalOrg\IssueGraph\Events\IssueEventInterface[] $events
+     * @param IssueEventInterface[] $events
      *
-     * @return \dogit\DrupalOrg\IssueGraph\Events\MergeRequestCreateEvent[]
+     * @return MergeRequestCreateEvent[]
      */
     public static function filterMergeRequestCreateEvents(array $events): array
     {
@@ -44,9 +44,9 @@ final class IssueEvent implements IssueEventInterface
     }
 
     /**
-     * @param \dogit\DrupalOrg\IssueGraph\Events\IssueEventInterface[] $events
+     * @param IssueEventInterface[] $events
      *
-     * @return \dogit\DrupalOrg\IssueGraph\Events\VersionChangeEvent[]
+     * @return VersionChangeEvent[]
      */
     public static function filterVersionChangeEvents(array $events): array
     {

@@ -2,7 +2,7 @@
     "name": "dpi/dogit",
     "type": "application",
     "require": {
-        "php": "^8.1",
+        "php": "^8.2",
         "ext-dom": "*",
         "ext-json": "*",
         "composer/semver": "^3.4.3",
@@ -10,7 +10,7 @@
         "guzzlehttp/guzzle": "^7.9.3",
         "kevinrob/guzzle-cache-middleware": "^5.1",
         "league/flysystem": "^3.30.0",
-        "m4tthumphrey/php-gitlab-api": "^11.14",
+        "m4tthumphrey/php-gitlab-api": "^11.14 || ^12",
         "nyholm/psr7": "^1.8.2",
         "php-http/client-common": "^2.7.2",
         "php-http/curl-client": "^2.3.3",
@@ -52,7 +52,7 @@
             "php-http/discovery": true
         },
         "platform": {
-            "php": "8.1.99999999"
+            "php": "8.2.99999999"
         }
     },
     "authors": [

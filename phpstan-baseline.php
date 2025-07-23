@@ -20,6 +20,12 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/src/DrupalOrg/IssueGraph/DrupalOrgIssueGraph.php',
 ];
 $ignoreErrors[] = [
+	'message' => '#^Property dogit\\\\DrupalOrg\\\\IssueGraph\\\\DrupalOrgIssueGraph\\:\\:\\$browser with generic class Symfony\\\\Component\\\\BrowserKit\\\\AbstractBrowser does not specify its types\\: TRequest, TResponse$#',
+	'identifier' => 'missingType.generics',
+	'count' => 1,
+	'path' => __DIR__ . '/src/DrupalOrg/IssueGraph/DrupalOrgIssueGraph.php',
+];
+$ignoreErrors[] = [
 	'message' => '#^Call to function array_filter\\(\\) requires parameter \\#2 to be passed to avoid loose comparison semantics\\.$#',
 	'identifier' => 'arrayFilter.strict',
 	'count' => 2,
@@ -30,6 +36,12 @@ $ignoreErrors[] = [
 	'identifier' => 'arrayFilter.strict',
 	'count' => 1,
 	'path' => __DIR__ . '/src/Git/GitOperator.php',
+];
+$ignoreErrors[] = [
+	'message' => '#^Class dogit\\\\HttplugBrowser extends generic class Symfony\\\\Component\\\\BrowserKit\\\\AbstractBrowser but does not specify its types\\: TRequest, TResponse$#',
+	'identifier' => 'missingType.generics',
+	'count' => 1,
+	'path' => __DIR__ . '/src/HttplugBrowser.php',
 ];
 $ignoreErrors[] = [
 	'message' => '#^Loose comparison via "\\=\\=" is not allowed\\.$#',

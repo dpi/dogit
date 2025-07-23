@@ -22,9 +22,9 @@ class DrupalOrgObjectIterator
     }
 
     /**
-     * @param \dogit\DrupalOrg\Objects\DrupalOrgComment[] $comments
+     * @param DrupalOrgComment[] $comments
      *
-     * @return \dogit\DrupalOrg\Objects\DrupalOrgComment[]
+     * @return DrupalOrgComment[]
      *   It's not necessary to use return value, can re-use $comments. Though return
      *   value will have its objects de-duplicated.
      */
@@ -56,9 +56,9 @@ class DrupalOrgObjectIterator
     }
 
     /**
-     * @param \dogit\DrupalOrg\Objects\DrupalOrgFile[] $files
+     * @param DrupalOrgFile[] $files
      *
-     * @return \dogit\DrupalOrg\Objects\DrupalOrgFile[]
+     * @return DrupalOrgFile[]
      *   It's not necessary to use return value, can re-use $files. Though return
      *   value will have its objects de-duplicated.
      */
@@ -89,10 +89,10 @@ class DrupalOrgObjectIterator
     }
 
     /**
-     * @param \dogit\DrupalOrg\Objects\DrupalOrgPatch[] $patches
+     * @param DrupalOrgPatch[] $patches
      *   Patches must not be stubs
      *
-     * @return \dogit\DrupalOrg\Objects\DrupalOrgPatch[]
+     * @return DrupalOrgPatch[]
      *   It's not necessary to use return value, can re-use $patches. Though return
      *   value will have its objects de-duplicated.
      *
@@ -100,7 +100,7 @@ class DrupalOrgObjectIterator
      */
     public function downloadPatchFiles(array $patches): array
     {
-        /** @var \dogit\DrupalOrg\Objects\DrupalOrgPatch[] $requestPatches */
+        /** @var DrupalOrgPatch[] $requestPatches */
         $requestPatches = Utility::deduplicateDrupalOrgObjects($patches);
         if (0 === count($requestPatches)) {
             return $patches;
@@ -125,7 +125,7 @@ class DrupalOrgObjectIterator
     }
 
     /**
-     * @param \Http\Promise\Promise[]|iterable $promises
+     * @param Promise[]|iterable $promises
      *
      * @return \GuzzleHttp\Psr7\Response[]
      *

@@ -17,7 +17,7 @@ final class MergeRequestCreateEvent implements IssueEventInterface
         protected int $mergeRequestId,
         protected string $repoUrlGit,
         protected string $repoUrlHttp,
-        protected string $branch
+        protected string $branch,
     ) {
     }
 

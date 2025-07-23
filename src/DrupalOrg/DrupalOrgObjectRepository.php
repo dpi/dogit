@@ -9,7 +9,7 @@ use dogit\DrupalOrg\Objects\DrupalOrgObject;
 final class DrupalOrgObjectRepository
 {
     /**
-     * @var \dogit\DrupalOrg\DrupalOrgObjectCollection<\dogit\DrupalOrg\Objects\DrupalOrgObject>[]
+     * @var DrupalOrgObjectCollection<DrupalOrgObject>[]
      */
     private array $collections = [];
 
@@ -26,7 +26,7 @@ final class DrupalOrgObjectRepository
      */
     public function share(DrupalOrgObject $object): DrupalOrgObject
     {
-        /** @var \dogit\DrupalOrg\DrupalOrgObjectCollection<T> $collection */
+        /** @var DrupalOrgObjectCollection<T> $collection */
         $collection = $this->collections[$object::class] ?? (
             $this->collections[$object::class] = new DrupalOrgObjectCollection()
         );
@@ -40,7 +40,7 @@ final class DrupalOrgObjectRepository
     /**
      * Get all objects in all collections.
      *
-     * @return \Generator<int, \dogit\DrupalOrg\Objects\DrupalOrgObject>
+     * @return \Generator<int, DrupalOrgObject>
      *   Yields instances of \dogit\DrupalOrg\Objects\DrupalOrgObject
      */
     public function all(): \Generator

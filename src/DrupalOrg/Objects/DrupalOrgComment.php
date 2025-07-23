@@ -12,7 +12,7 @@ class DrupalOrgComment extends DrupalOrgObject
     protected int $sequence;
 
     /**
-     * @var \dogit\DrupalOrg\Objects\DrupalOrgFile[]
+     * @var DrupalOrgFile[]
      */
     protected array $files;
 
@@ -31,7 +31,7 @@ class DrupalOrgComment extends DrupalOrgObject
     }
 
     /**
-     * @return \dogit\DrupalOrg\Objects\DrupalOrgFile[]
+     * @return DrupalOrgFile[]
      */
     public function getFiles(): array
     {
@@ -41,7 +41,7 @@ class DrupalOrgComment extends DrupalOrgObject
     }
 
     /**
-     * @param \dogit\DrupalOrg\Objects\DrupalOrgFile[] $files
+     * @param DrupalOrgFile[] $files
      */
     public function setFiles(array $files): static
     {

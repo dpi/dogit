@@ -1,3 +1,6 @@
+includes:
+	- phpstan-baseline.php
+
 parameters:
 	level: 8
 	paths:
@@ -5,6 +8,6 @@ parameters:
 		- ./src
 		- ./tests
 	symfony:
-		console_application_loader: phpstan/console-application.php
+		consoleApplicationLoader: phpstan/console-application.php
 	ignoreErrors:
 		- '#Dynamic call to static method PHPUnit\\Framework\\.*#'

@@ -35,7 +35,7 @@ class DrupalOrgIssue extends DrupalOrgObject
     }
 
     /**
-     * @return \dogit\DrupalOrg\Objects\DrupalOrgComment[]
+     * @return DrupalOrgComment[]
      */
     public function commentsWithFiles(): array
     {
@@ -61,7 +61,7 @@ class DrupalOrgIssue extends DrupalOrgObject
     }
 
     /**
-     * @return \dogit\DrupalOrg\Objects\DrupalOrgComment[]
+     * @return DrupalOrgComment[]
      *   Ordered chronologically
      */
     public function getComments(): array
@@ -90,7 +90,7 @@ class DrupalOrgIssue extends DrupalOrgObject
     /**
      * Patches ordered by comment and patch order within each comment.
      *
-     * @return \Generator|\dogit\DrupalOrg\Objects\DrupalOrgPatch[]
+     * @return \Generator|DrupalOrgPatch[]
      */
     public function getPatches(DrupalOrgObjectIterator $objectIterator): \Generator
     {

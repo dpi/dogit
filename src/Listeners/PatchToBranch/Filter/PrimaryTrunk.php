@@ -18,7 +18,7 @@ final class PrimaryTrunk
         $event->logger->info('Constructing trunk.');
 
         // @todo allow building non-linear tree.
-        /** @var \dogit\DrupalOrg\Objects\DrupalOrgPatch[] $secondaries */
+        /** @var DrupalOrgPatch[] $secondaries */
         $secondaries = [];
 
         // Compute Version high-water mark to figure out linear graph of

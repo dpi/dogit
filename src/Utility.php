@@ -20,9 +20,9 @@ final class Utility
      *
      * Comments without patches, and non-patch files are discarded.
      *
-     * @param \dogit\DrupalOrg\Objects\DrupalOrgComment[] $comments
+     * @param DrupalOrg\Objects\DrupalOrgComment[] $comments
      *
-     * @return array<int, array{\dogit\DrupalOrg\Objects\DrupalOrgComment, array<int, \dogit\DrupalOrg\Objects\DrupalOrgFile>}>
+     * @return array<int, array{DrupalOrg\Objects\DrupalOrgComment, array<int, DrupalOrgFile>}>
      */
     public static function filterCommentsWithPatches(DrupalOrgObjectIterator $objectIterator, array $comments): array
     {
@@ -53,9 +53,9 @@ final class Utility
     }
 
     /**
-     * @param \dogit\DrupalOrg\IssueGraph\Events\IssueEventInterface[] $events
+     * @param DrupalOrg\IssueGraph\Events\IssueEventInterface[] $events
      *
-     * @return \Generator<int, \dogit\DrupalOrg\Objects\DrupalOrgComment>
+     * @return \Generator<int, DrupalOrg\Objects\DrupalOrgComment>
      */
     public static function getCommentsFromEvents(array $events): \Generator
     {
@@ -65,9 +65,9 @@ final class Utility
     }
 
     /**
-     * @param \dogit\DrupalOrg\Objects\DrupalOrgComment[] $comments
+     * @param DrupalOrg\Objects\DrupalOrgComment[] $comments
      *
-     * @return \Generator<int, \dogit\DrupalOrg\Objects\DrupalOrgFile>
+     * @return \Generator<int, DrupalOrgFile>
      */
     public static function getFilesFromComments(array $comments): \Generator
     {
@@ -104,7 +104,7 @@ final class Utility
     }
 
     /**
-     * @param \dogit\DrupalOrg\IssueGraph\Events\VersionChangeEvent[] $events
+     * @param VersionChangeEvent[] $events
      *   Must be ordered by time ASC
      */
     public static function versionAt(DrupalOrgObjectIterator $objectIterator, \DateTimeImmutable $at, array $events): string
@@ -142,10 +142,10 @@ final class Utility
     }
 
     /**
-     * @param \dogit\DrupalOrg\IssueGraph\Events\IssueEventInterface[] $events
+     * @param DrupalOrg\IssueGraph\Events\IssueEventInterface[] $events
      *   Stack of events
      *
-     * @return \dogit\DrupalOrg\IssueGraph\Events\IssueEventInterface[]
+     * @return DrupalOrg\IssueGraph\Events\IssueEventInterface[]
      *   New stack of events
      */
     public static function ensureInitialVersionChange(array $events, DrupalOrgIssue $issue): array

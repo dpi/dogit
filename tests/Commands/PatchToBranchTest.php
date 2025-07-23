@@ -85,7 +85,7 @@ final class PatchToBranchTest extends DogitTestBase
                         Issue URL: https://www.drupal.org/project/drupal/issues/2350939
                         Patch uploaded by larowlan
                         Commit built with dogit.dev
-                        MESSAGE
+                        MESSAGE,
             ],
         )->andReturn([]);
         // show new files
@@ -124,7 +124,7 @@ final class PatchToBranchTest extends DogitTestBase
                             Issue URL: https://www.drupal.org/project/drupal/issues/2350939
                             Patch uploaded by larowlan
                             Commit built with dogit.dev
-                            MESSAGE
+                            MESSAGE,
             ],
         )->andReturn([]);
         // show new files
@@ -154,7 +154,7 @@ final class PatchToBranchTest extends DogitTestBase
                             Issue URL: https://www.drupal.org/project/drupal/issues/2350939
                             Patch uploaded by larowlan
                             Commit built with dogit.dev
-                            MESSAGE
+                            MESSAGE,
             ],
         )->andReturn([]);
         // show new files 3

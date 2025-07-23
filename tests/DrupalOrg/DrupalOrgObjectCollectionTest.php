@@ -17,7 +17,7 @@ final class DrupalOrgObjectCollectionTest extends \dogit\tests\DogitTestBase
      */
     public function testShare(): void
     {
-        /** @var \dogit\DrupalOrg\DrupalOrgObjectCollection<\dogit\DrupalOrg\Objects\DrupalOrgIssue> $collection */
+        /** @var DrupalOrgObjectCollection<DrupalOrgIssue> $collection */
         $collection = new DrupalOrgObjectCollection();
         $this->assertCount(0, iterator_to_array($collection->all(), false));
 
@@ -47,7 +47,7 @@ final class DrupalOrgObjectCollectionTest extends \dogit\tests\DogitTestBase
      */
     public function testAll(): void
     {
-        /** @var \dogit\DrupalOrg\DrupalOrgObjectCollection<\dogit\DrupalOrg\Objects\DrupalOrgIssue> $collection */
+        /** @var DrupalOrgObjectCollection<DrupalOrgIssue> $collection */
         $collection = new DrupalOrgObjectCollection();
         $ref1 = $collection->share(DrupalOrgIssue::fromStub((object) ['id' => 1]));
         $ref2 = $collection->share(DrupalOrgIssue::fromStub((object) ['id' => 2]));

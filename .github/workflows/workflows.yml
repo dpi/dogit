@@ -1,5 +1,12 @@
 name: DOGIT
-on: [push]
+on:
+    push:
+        branches:
+            - 1.x
+    pull_request:
+        branches:
+            - 1.x
+
 jobs:
   code-style:
     runs-on: ubuntu-latest

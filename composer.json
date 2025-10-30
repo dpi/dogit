@@ -21,7 +21,7 @@
         "psr/http-client": "^1.0.3",
         "psr/log": "^3.0.2",
         "symfony/browser-kit": "^6.4.19 || ^7",
-        "symfony/console": "^6.4.23",
+        "symfony/console": "^7.3.5",
         "symfony/css-selector": "^6.4.13 || ^7",
         "symfony/dom-crawler": "^6.4.23 || ^7",
         "symfony/event-dispatcher": "^6.4.13 || ^7",
